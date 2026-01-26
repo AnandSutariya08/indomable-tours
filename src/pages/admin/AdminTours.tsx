@@ -46,6 +46,7 @@ const AdminTours = () => {
     highlights: "",
     included: "",
     notIncluded: "",
+    gallery: [] as string[],
     itinerary: [] as { day: number; title: string; description: string }[],
   });
 
@@ -102,6 +103,7 @@ const AdminTours = () => {
         highlights: tour.highlights.join(", "),
         included: tour.included?.join(", ") || "",
         notIncluded: tour.notIncluded?.join(", ") || "",
+        gallery: tour.gallery || [],
         itinerary: tour.itinerary || [],
       });
     } else {
@@ -120,10 +122,19 @@ const AdminTours = () => {
         highlights: "",
         included: "",
         notIncluded: "",
+        gallery: [],
         itinerary: [],
       });
     }
     setIsModalOpen(true);
+  };
+
+  const addGalleryImage = (url: string) => {
+    setFormData({ ...formData, gallery: [...formData.gallery, url] });
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setFormData({ ...formData, gallery: formData.gallery.filter((_, i) => i !== index) });
   };
 
   const addItineraryDay = () => {
@@ -167,6 +178,7 @@ const AdminTours = () => {
         included: formData.included.split(",").map(s => s.trim()).filter(Boolean),
         notIncluded: formData.notIncluded.split(",").map(s => s.trim()).filter(Boolean),
         itinerary: formData.itinerary,
+        gallery: formData.gallery,
       };
 
       if (editingTour) {
@@ -436,6 +448,30 @@ const AdminTours = () => {
                 onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
                 placeholder="e.g., Sunrise at Taj Mahal, Camel safari, Royal Palace dinner"
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold text-primary">Tour Gallery Images</Label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 border rounded-xl bg-muted/20">
+                {formData.gallery.map((url, index) => (
+                  <div key={index} className="relative aspect-video rounded-lg overflow-hidden border group shadow-sm">
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeGalleryImage(index)}
+                      className="absolute top-1 right-1 p-1 bg-destructive text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+                <ImageUploader
+                  value=""
+                  onChange={(url) => addGalleryImage(url)}
+                  folder="tours/gallery"
+                  label="Add Image"
+                />
+              </div>
             </div>
 
             <div className="space-y-4">

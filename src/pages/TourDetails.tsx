@@ -43,7 +43,7 @@ const TourDetails = () => {
     );
   }
 
-  const gallery = tour.itinerary?.slice(0, 4).map(() => tour.image) || [tour.image];
+  const gallery = tour.gallery?.length ? tour.gallery : [tour.image];
 
   return (
     <main className="min-h-screen bg-background">
