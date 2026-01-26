@@ -41,7 +41,7 @@ const Header = () => {
             className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
                 ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-2 shadow-2xl max-w-6xl mt-2" 
-                : "bg-transparent py-2 max-w-full"
+                : "bg-black/20 backdrop-blur-sm border border-white/10 rounded-full px-6 md:px-10 py-2 max-w-7xl"
             }`}
           >
             {/* Logo */}
@@ -61,9 +61,7 @@ const Header = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-body font-bold text-[13px] uppercase tracking-[0.2em] transition-all duration-300 relative group ${
-                    isScrolled ? "text-white" : "text-white"
-                  } hover:text-secondary`}
+                  className={`font-body font-bold text-[13px] uppercase tracking-[0.2em] transition-all duration-300 relative group text-white hover:text-secondary`}
                 >
                   {item.label}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-full" />
@@ -81,7 +79,7 @@ const Header = () => {
                   onClick={() => setIsQuoteOpen(true)}
                   className={`transition-all duration-500 font-bold tracking-widest uppercase text-xs ${
                     !isScrolled 
-                      ? "border-2 px-8 py-6 text-sm bg-transparent border-white text-white hover:bg-white hover:text-black" 
+                      ? "border-2 px-8 py-6 text-sm bg-transparent border-white text-white hover:bg-white hover:text-black rounded-full" 
                       : "rounded-full bg-secondary text-white hover:bg-secondary/90"
                   }`}
                 >
@@ -91,7 +89,7 @@ const Header = () => {
 
               {/* Mobile Menu Button */}
               <button
-                className={`lg:hidden p-2 transition-colors ${isScrolled ? "text-foreground" : "text-white"}`}
+                className="lg:hidden p-2 transition-colors text-white"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
