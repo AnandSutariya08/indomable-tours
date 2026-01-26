@@ -47,7 +47,7 @@ const Header = () => {
             className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
                 ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-2 shadow-2xl max-w-6xl mt-2" 
-                : "bg-transparent py-2 max-w-full"
+                : "bg-transparent py-2 max-w-full lg:px-4"
             }`}
           >
             {/* Logo */}

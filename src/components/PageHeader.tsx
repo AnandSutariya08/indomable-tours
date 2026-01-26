@@ -22,8 +22,8 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
             className="w-full h-full object-cover"
           />
           {/* Sophisticated gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/50 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
         </div>
       )}
       
