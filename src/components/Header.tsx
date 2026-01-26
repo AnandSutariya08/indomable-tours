@@ -32,16 +32,16 @@ const Header = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? "py-2 md:py-4" 
-            : "py-4 md:py-8"
+            ? "py-2 md:py-3" 
+            : "py-4 md:py-6"
         }`}
       >
         <div className="container mx-auto px-4 md:px-8">
           <div 
-            className={`flex items-center justify-between transition-all duration-500 mx-auto ${
+            className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
-                ? "bg-background/60 backdrop-blur-xl border border-white/10 rounded-full px-6 md:px-10 py-2 shadow-2xl max-w-6xl" 
-                : "bg-transparent py-4 max-w-7xl"
+                ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-2 shadow-2xl max-w-6xl mt-2" 
+                : "bg-transparent py-2 max-w-full"
             }`}
           >
             {/* Logo */}
@@ -49,24 +49,24 @@ const Header = () => {
               <img 
                 src={logo} 
                 alt="Indomable Tours" 
-                className={`transition-all duration-500 object-contain ${
-                  isScrolled ? "h-10 md:h-12" : "h-14 md:h-24 lg:h-28"
+                className={`transition-all duration-500 object-contain brightness-0 invert ${
+                  isScrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-20"
                 } w-auto`}
               />
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-10">
+            <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10">
               {navItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-body font-semibold text-sm uppercase tracking-widest transition-all duration-300 relative group ${
-                    isScrolled ? "text-foreground" : "text-white"
-                  } hover:text-primary`}
+                  className={`font-body font-bold text-[13px] uppercase tracking-[0.2em] transition-all duration-300 relative group ${
+                    isScrolled ? "text-white" : "text-white"
+                  } hover:text-secondary`}
                 >
                   {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
             </nav>
@@ -77,8 +77,10 @@ const Header = () => {
                 variant={isScrolled ? "hero" : "heroOutline"} 
                 size={isScrolled ? "lg" : "xl"}
                 onClick={() => setIsQuoteOpen(true)}
-                className={`transition-all duration-500 font-bold tracking-tighter ${
-                  !isScrolled && "border-2 px-8 py-6 text-lg hover:bg-white hover:text-black"
+                className={`transition-all duration-500 font-bold tracking-widest uppercase text-xs ${
+                  !isScrolled 
+                    ? "border-2 px-8 py-6 text-sm bg-transparent border-white text-white hover:bg-white hover:text-black" 
+                    : "rounded-full bg-secondary text-white hover:bg-secondary/90"
                 }`}
               >
                 Get Quote
