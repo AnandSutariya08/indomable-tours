@@ -15,7 +15,7 @@ import {
   deleteDocument,
   COLLECTIONS 
 } from "@/services/firestoreService";
-import { uploadImage, getImagePath } from "@/services/storageService";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BlogPost } from "@/hooks/useFirestoreData";
 import blogPostsData from "@/data/seed/blogPosts.json";
 
@@ -26,7 +26,6 @@ const AdminBlog = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -92,14 +91,7 @@ const AdminBlog = () => {
         tags: "",
       });
     }
-    setImageFile(null);
     setIsModalOpen(true);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,19 +99,11 @@ const AdminBlog = () => {
     setSaving(true);
 
     try {
-      let imageUrl = formData.image;
-
-      if (imageFile) {
-        const path = getImagePath("blog", imageFile.name);
-        const url = await uploadImage(imageFile, path);
-        if (url) imageUrl = url;
-      }
-
       const postData: Omit<BlogPost, "id"> = {
         title: formData.title,
         excerpt: formData.excerpt,
         content: formData.content,
-        image: imageUrl,
+        image: formData.image,
         category: formData.category,
         author: formData.author,
         readTime: formData.readTime,
@@ -200,7 +184,7 @@ const AdminBlog = () => {
                 <div className="h-40 bg-muted relative">
                   {post.image && (
                     <img 
-                      src={post.image.startsWith("/") ? `/src/assets${post.image}` : post.image} 
+                      src={post.image} 
                       alt={post.title}
                       className="w-full h-full object-cover"
                     />
@@ -298,20 +282,12 @@ const AdminBlog = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Image</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="Image URL or upload"
-                  />
-                  <label className="flex items-center gap-2 px-4 py-2 bg-muted rounded-md cursor-pointer hover:bg-muted/80">
-                    <Upload className="w-4 h-4" />
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                  </label>
-                </div>
-              </div>
+              <ImageUploader
+                value={formData.image}
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                folder="blog"
+                label="Blog Post Image"
+              />
 
               <div className="space-y-2">
                 <Label>Excerpt</Label>

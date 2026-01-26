@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { getCollection, addDocument, updateDocument, deleteDocument, COLLECTIONS } from "@/services/firestoreService";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import type { TeamMember } from "@/hooks/useFirestoreData";
 
 const AdminTeam = () => {
@@ -144,14 +145,12 @@ const AdminTeam = () => {
                   />
                 </div>
               </div>
-              <div>
-                <label className="text-sm font-medium">Image URL</label>
-                <Input
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="https://..."
-                />
-              </div>
+              <ImageUploader
+                value={formData.image}
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                folder="team"
+                label="Team Member Image"
+              />
               <div>
                 <label className="text-sm font-medium">Bio</label>
                 <Textarea
