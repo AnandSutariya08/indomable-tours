@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const AdminInquiries = () => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -35,61 +36,63 @@ const AdminInquiries = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="font-heading text-3xl text-primary">Customer Inquiries</h1>
-      </div>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="font-heading text-3xl text-primary">Customer Inquiries</h1>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Quotes & Custom Trips</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Destination</TableHead>
-                <TableHead>Dates</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Quotes & Custom Trips</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-10">Loading inquiries...</TableCell>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Destination</TableHead>
+                  <TableHead>Dates</TableHead>
+                  <TableHead>Status</TableHead>
                 </TableRow>
-              ) : inquiries.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-10">No inquiries found.</TableCell>
-                </TableRow>
-              ) : (
-                inquiries.map((inquiry) => (
-                  <TableRow key={inquiry.id}>
-                    <TableCell>
-                      {inquiry.createdAt ? format(inquiry.createdAt.toDate(), "MMM dd, yyyy") : "Pending"}
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium">{inquiry.fullName}</div>
-                      <div className="text-sm text-muted-foreground">{inquiry.email}</div>
-                      {inquiry.phone && <div className="text-sm text-muted-foreground">{inquiry.phone}</div>}
-                    </TableCell>
-                    <TableCell>{inquiry.destination}</TableCell>
-                    <TableCell>{inquiry.travelDates}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(inquiry.status)}>
-                        {inquiry.status.toUpperCase()}
-                      </Badge>
-                    </TableCell>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-10">Loading inquiries...</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+                ) : inquiries.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-10">No inquiries found.</TableCell>
+                  </TableRow>
+                ) : (
+                  inquiries.map((inquiry) => (
+                    <TableRow key={inquiry.id}>
+                      <TableCell>
+                        {inquiry.createdAt ? format(inquiry.createdAt.toDate(), "MMM dd, yyyy") : "Pending"}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{inquiry.fullName}</div>
+                        <div className="text-sm text-muted-foreground">{inquiry.email}</div>
+                        {inquiry.phone && <div className="text-sm text-muted-foreground">{inquiry.phone}</div>}
+                      </TableCell>
+                      <TableCell>{inquiry.destination}</TableCell>
+                      <TableCell>{inquiry.travelDates}</TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(inquiry.status)}>
+                          {inquiry.status.toUpperCase()}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    </AdminLayout>
   );
 };
 
