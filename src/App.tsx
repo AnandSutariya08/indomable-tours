@@ -24,6 +24,7 @@ import AdminCities from "./pages/admin/AdminCities";
 import AdminTeam from "./pages/admin/AdminTeam";
 import AdminTravelInfo from "./pages/admin/AdminTravelInfo";
 import AdminHomeSections from "./pages/admin/AdminHomeSections";
+import AdminInquiries from "./pages/admin/AdminInquiries";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/admin/team" element={<AdminTeam />} />
             <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
             <Route path="/admin/home-sections" element={<AdminHomeSections />} />
+            <Route path="/admin/inquiries" element={<AdminInquiries />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

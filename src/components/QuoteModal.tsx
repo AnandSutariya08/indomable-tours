@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { saveInquiry } from "@/services/inquiryService";
+import { toast } from "sonner";
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface QuoteModalProps {
 }
 
 const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -20,11 +23,28 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
-    onClose();
+    setIsSubmitting(true);
+    
+    const result = await saveInquiry(formData);
+    
+    if (result.success) {
+      toast.success("Inquiry sent successfully! We'll contact you soon.");
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        destination: "",
+        travelDates: "",
+        message: "",
+      });
+      onClose();
+    } else {
+      toast.error("Failed to send inquiry. Please try again.");
+    }
+    
+    setIsSubmitting(false);
   };
 
   if (!isOpen) return null;
@@ -147,8 +167,15 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
             />
           </div>
 
-          <Button type="submit" variant="hero" size="xl" className="w-full">
-            Request Quote
+          <Button type="submit" variant="hero" size="xl" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              "Request Quote"
+            )}
           </Button>
         </form>
       </div>

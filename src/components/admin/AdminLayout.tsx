@@ -29,6 +29,7 @@ const navItems = [
   { icon: MessageSquare, label: "Testimonials", href: "/admin/testimonials" },
   { icon: Users, label: "Team", href: "/admin/team" },
   { icon: Info, label: "Travel Info", href: "/admin/travel-info" },
+  { icon: MessageSquare, label: "Inquiries", href: "/admin/inquiries" },
   { icon: Home, label: "Home Sections", href: "/admin/home-sections" },
 ];
 
