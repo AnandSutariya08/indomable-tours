@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Clock, MapPin, Users, Star, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -23,6 +23,7 @@ const tours = [
     id: 1,
     title: "Golden Triangle Classic",
     location: "Delhi - Agra - Jaipur",
+    country: "India",
     image: tajMahal,
     duration: "7 Days",
     groupSize: "2-12",
@@ -35,6 +36,7 @@ const tours = [
     id: 2,
     title: "Royal Rajasthan",
     location: "Jaipur - Udaipur - Jodhpur",
+    country: "India",
     image: jaipur,
     duration: "10 Days",
     groupSize: "2-8",
@@ -47,6 +49,7 @@ const tours = [
     id: 3,
     title: "Kerala Serenity",
     location: "Kochi - Munnar - Alleppey",
+    country: "India",
     image: kerala,
     duration: "8 Days",
     groupSize: "2-10",
@@ -59,6 +62,7 @@ const tours = [
     id: 4,
     title: "Spiritual Varanasi",
     location: "Delhi - Varanasi - Bodh Gaya",
+    country: "India",
     image: varanasi,
     duration: "6 Days",
     groupSize: "2-8",
@@ -71,6 +75,7 @@ const tours = [
     id: 5,
     title: "Himalayan Adventure",
     location: "Leh - Nubra Valley - Pangong",
+    country: "India",
     image: lehLadakh,
     duration: "9 Days",
     groupSize: "4-12",
@@ -83,6 +88,7 @@ const tours = [
     id: 6,
     title: "Nepal Himalayan Trek",
     location: "Kathmandu - Pokhara - Everest",
+    country: "Nepal",
     image: nepal,
     duration: "12 Days",
     groupSize: "4-10",
@@ -95,6 +101,7 @@ const tours = [
     id: 7,
     title: "Bhutan: Last Shangri-La",
     location: "Paro - Thimphu - Punakha",
+    country: "Bhutan",
     image: bhutan,
     duration: "8 Days",
     groupSize: "2-8",
@@ -107,6 +114,7 @@ const tours = [
     id: 8,
     title: "Sri Lanka Explorer",
     location: "Colombo - Sigiriya - Kandy",
+    country: "Sri Lanka",
     image: srilanka,
     duration: "10 Days",
     groupSize: "2-10",
@@ -125,7 +133,7 @@ const Tours = () => {
 
   const filteredTours = selectedCategory === "All Tours" 
     ? tours 
-    : tours.filter(tour => tour.location.toLowerCase().includes(selectedCategory.toLowerCase()));
+    : tours.filter(tour => tour.country === selectedCategory);
 
   return (
     <main className="min-h-screen bg-background">
@@ -138,113 +146,130 @@ const Tours = () => {
       />
 
       {/* Filter Section */}
-      <section className="py-12 bg-muted">
+      <section className="py-8 md:py-12 bg-muted/50 border-b border-border">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-wrap justify-center gap-3"
+            className="flex flex-col items-center gap-4"
           >
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-body font-medium transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground"
-                }`}
-              >
-                {category}
-              </motion.button>
-            ))}
+            <p className="font-body text-sm text-foreground/60 uppercase tracking-wider">Filter by destination</p>
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+              {categories.map((category) => (
+                <motion.button
+                  key={category}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-5 md:px-8 py-2.5 md:py-3 rounded-full font-body text-sm md:text-base font-medium transition-all duration-300 border-2 ${
+                    selectedCategory === category
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
+                      : "bg-background text-foreground border-border hover:border-secondary hover:text-secondary"
+                  }`}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Tours Grid */}
-      <section className="py-20 md:py-28">
+      <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredTours.map((tour, index) => (
-              <motion.div
-                key={tour.id}
-                variants={fadeInUp}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="group"
-              >
-                <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
-                  {/* Image */}
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={tour.image}
-                      alt={tour.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
-                        {tour.duration}
-                      </span>
-                    </div>
-                    <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
-                      <Star className="w-4 h-4 text-secondary fill-secondary" />
-                      <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 text-foreground/70 mb-2">
-                      <MapPin className="w-4 h-4" />
-                      <span className="font-body text-sm">{tour.location}</span>
-                    </div>
-                    <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-accent transition-colors">
-                      {tour.title}
-                    </h3>
-                    <p className="font-body text-sm text-foreground/80 mb-4 line-clamp-2">
-                      {tour.description}
-                    </p>
-
-                    {/* Highlights */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {tour.highlights.slice(0, 2).map((highlight) => (
-                        <span
-                          key={highlight}
-                          className="px-2 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
-                        >
-                          {highlight}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedCategory}
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {filteredTours.map((tour, index) => (
+                <motion.div
+                  key={tour.id}
+                  variants={fadeInUp}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="group"
+                >
+                  <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+                    {/* Image */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={tour.image}
+                        alt={tour.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute top-4 left-4 flex gap-2">
+                        <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
+                          {tour.duration}
                         </span>
-                      ))}
+                        <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-xs font-medium">
+                          {tour.country}
+                        </span>
+                      </div>
+                      <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
+                        <Star className="w-4 h-4 text-secondary fill-secondary" />
+                        <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
+                      </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <div>
-                        <span className="font-body text-xs text-foreground/60">From</span>
-                        <p className="font-heading text-2xl text-primary">{tour.price}</p>
+                    {/* Content */}
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 text-foreground/70 mb-2">
+                        <MapPin className="w-4 h-4" />
+                        <span className="font-body text-sm">{tour.location}</span>
                       </div>
-                      <Link to={`/tours/${tour.id}`}>
-                        <Button variant="hero" size="sm" className="group/btn">
-                          View Details
-                          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
+                      <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-accent transition-colors">
+                        {tour.title}
+                      </h3>
+                      <p className="font-body text-sm text-foreground/80 mb-4 line-clamp-2">
+                        {tour.description}
+                      </p>
+
+                      {/* Highlights */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {tour.highlights.slice(0, 2).map((highlight) => (
+                          <span
+                            key={highlight}
+                            className="px-2 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
+                          >
+                            {highlight}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                          <span className="font-body text-xs text-foreground/60">From</span>
+                          <p className="font-heading text-2xl text-primary">{tour.price}</p>
+                        </div>
+                        <Link to={`/tours/${tour.id}`}>
+                          <Button variant="hero" size="sm" className="group/btn">
+                            View Details
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+          
+          {filteredTours.length === 0 && (
+            <div className="text-center py-16">
+              <h3 className="font-heading text-2xl text-primary mb-4">No tours found</h3>
+              <p className="font-body text-foreground/70">Try selecting a different destination.</p>
+            </div>
+          )}
         </div>
       </section>
 
