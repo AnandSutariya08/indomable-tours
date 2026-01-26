@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "Taj Mahal",
+    "location": "Agra, India",
+    "image": "/destinations/taj-mahal.jpg",
+    "duration": "3 Days",
+    "description": "Witness the eternal monument of love at sunrise"
+  },
+  {
+    "id": "2",
+    "title": "Pink City",
+    "location": "Jaipur, India",
+    "image": "/destinations/jaipur.jpg",
+    "duration": "4 Days",
+    "description": "Explore royal palaces and vibrant bazaars"
+  },
+  {
+    "id": "3",
+    "title": "Backwaters",
+    "location": "Kerala, India",
+    "image": "/destinations/kerala.jpg",
+    "duration": "5 Days",
+    "description": "Cruise through serene waterways on luxury houseboats"
+  },
+  {
+    "id": "4",
+    "title": "Ganges Ghats",
+    "location": "Varanasi, India",
+    "image": "/destinations/varanasi.jpg",
+    "duration": "3 Days",
+    "description": "Experience spiritual awakening at the sacred river"
+  },
+  {
+    "id": "5",
+    "title": "Himalayan Adventure",
+    "location": "Leh-Ladakh, India",
+    "image": "/destinations/leh-ladakh.jpg",
+    "duration": "7 Days",
+    "description": "Journey through the world's highest motorable roads"
+  }
+]
