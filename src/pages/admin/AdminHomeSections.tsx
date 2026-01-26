@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { getCollection, addDocument, updateDocument, deleteDocument, COLLECTIONS } from "@/services/firestoreService";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import type { ExploreDestination, ExploreTour, Testimonial } from "@/hooks/useFirestoreData";
 
 const AdminHomeSections = () => {
@@ -291,10 +292,12 @@ const AdminHomeSections = () => {
                   <Input value={destFormData.landmark} onChange={(e) => setDestFormData({ ...destFormData, landmark: e.target.value })} />
                 </div>
               </div>
-              <div>
-                <label className="text-sm font-medium">Image URL</label>
-                <Input value={destFormData.image} onChange={(e) => setDestFormData({ ...destFormData, image: e.target.value })} />
-              </div>
+              <ImageUploader
+                value={destFormData.image}
+                onChange={(url) => setDestFormData({ ...destFormData, image: url })}
+                folder="destinations"
+                label="Destination Image"
+              />
               <div>
                 <label className="text-sm font-medium">Description</label>
                 <Textarea value={destFormData.description} onChange={(e) => setDestFormData({ ...destFormData, description: e.target.value })} rows={3} />
@@ -324,15 +327,15 @@ const AdminHomeSections = () => {
                   <Input value={tourFormData.location} onChange={(e) => setTourFormData({ ...tourFormData, location: e.target.value })} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Image URL</label>
-                  <Input value={tourFormData.image} onChange={(e) => setTourFormData({ ...tourFormData, image: e.target.value })} />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Duration</label>
-                  <Input value={tourFormData.duration} onChange={(e) => setTourFormData({ ...tourFormData, duration: e.target.value })} />
-                </div>
+              <ImageUploader
+                value={tourFormData.image}
+                onChange={(url) => setTourFormData({ ...tourFormData, image: url })}
+                folder="tours"
+                label="Tour Image"
+              />
+              <div>
+                <label className="text-sm font-medium">Duration</label>
+                <Input value={tourFormData.duration} onChange={(e) => setTourFormData({ ...tourFormData, duration: e.target.value })} />
               </div>
               <div>
                 <label className="text-sm font-medium">Description</label>
@@ -363,15 +366,15 @@ const AdminHomeSections = () => {
                   <Input value={testFormData.location} onChange={(e) => setTestFormData({ ...testFormData, location: e.target.value })} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Avatar (initials or URL)</label>
-                  <Input value={testFormData.avatar} onChange={(e) => setTestFormData({ ...testFormData, avatar: e.target.value })} />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Rating (1-5)</label>
-                  <Input type="number" min={1} max={5} value={testFormData.rating} onChange={(e) => setTestFormData({ ...testFormData, rating: Number(e.target.value) })} />
-                </div>
+              <ImageUploader
+                value={testFormData.avatar}
+                onChange={(url) => setTestFormData({ ...testFormData, avatar: url })}
+                folder="testimonials"
+                label="Avatar Image"
+              />
+              <div>
+                <label className="text-sm font-medium">Rating (1-5)</label>
+                <Input type="number" min={1} max={5} value={testFormData.rating} onChange={(e) => setTestFormData({ ...testFormData, rating: Number(e.target.value) })} />
               </div>
               <div>
                 <label className="text-sm font-medium">Quote</label>
