@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Belanosima';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/belanosima/v4/3y9k6bI8ejDo_3MfCDSLxAA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Belanosima';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/belanosima/v4/3y9n6bI8ejDo_3MfCDSL_Nh1M3o.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Belanosima';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/belanosima/v4/3y9n6bI8ejDo_3MfCDSL_Lx0M3o.ttf) format('truetype');
+}
