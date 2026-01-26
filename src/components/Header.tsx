@@ -51,68 +51,73 @@ const Header = () => {
                 : "bg-transparent py-1.5 max-w-full lg:px-2"
             }`}
           >
-            {/* Logo */}
-            <div className="flex-1 flex justify-start lg:w-1/4">
-              <a href="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
-                <img 
-                  src={logo} 
-                  alt="Indomable Tours" 
-                  className={`transition-all duration-500 object-contain ${
-                    isScrolled ? "h-6 md:h-8" : "h-6 md:h-8 lg:h-10"
-                  } w-auto`}
-                />
-              </a>
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 space-x-6 xl:space-x-10">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className={`font-body uppercase tracking-[0.25em] transition-all duration-300 relative group whitespace-nowrap ${
-                    isScrolled 
-                      ? "text-secondary hover:text-brand-blue text-[12px] xl:text-[13px] font-black" 
-                      : "text-white hover:text-secondary text-[10px] xl:text-[11px] font-bold"
-                  }`}
-                >
-                  {item.label}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
-                    isScrolled ? "bg-brand-blue" : "bg-secondary"
-                  }`} />
+            <div className="flex items-center w-full relative h-12 md:h-14 lg:h-16 px-4 md:px-6">
+              {/* Logo - Positioned left */}
+              <div className="flex-1 flex justify-start items-center">
+                <a href="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
+                  <img 
+                    src={logo} 
+                    alt="Indomable Tours" 
+                    className={`transition-all duration-500 object-contain ${
+                      isScrolled ? "h-5 md:h-6" : "h-6 md:h-7 lg:h-8"
+                    } w-auto`}
+                  />
                 </a>
-              ))}
-            </nav>
-
-            {/* CTA Button & Mobile Toggle Container */}
-            <div className="flex-1 flex items-center justify-end lg:w-1/4 space-x-4">
-              {/* CTA Button - Hidden on mobile, shown in sidebar */}
-              <div className="hidden lg:flex items-center">
-                <Button 
-                  variant="gold" 
-                  size={isScrolled ? "sm" : "lg"}
-                  onClick={() => setIsQuoteOpen(true)}
-                  className={`transition-all duration-500 font-black tracking-widest uppercase rounded-full ${
-                    !isScrolled 
-                      ? "px-5 py-3 shadow-xl text-[10px]" 
-                      : "bg-brand-blue text-white hover:bg-brand-blue/90 px-5 py-2 text-[10px]"
-                  }`}
-                >
-                  Get Quote
-                </Button>
               </div>
 
-              {/* Mobile Menu Button */}
-              <button
-                className="lg:hidden p-2 transition-colors text-white"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
+              {/* Desktop Navigation - Absolute Centered in Header */}
+              <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <nav className="flex items-center justify-center space-x-6 xl:space-x-8">
+                  {navItems.map((item) => (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      className={`font-body uppercase tracking-[0.2em] transition-all duration-300 relative group whitespace-nowrap ${
+                        isScrolled 
+                          ? "text-secondary hover:text-brand-blue text-[11px] xl:text-[12px] font-black" 
+                          : "text-white hover:text-secondary text-[10px] xl:text-[11px] font-bold"
+                      }`}
+                    >
+                      {item.label}
+                      <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                        isScrolled ? "bg-brand-blue" : "bg-secondary"
+                      }`} />
+                    </a>
+                  ))}
+                </nav>
+              </div>
+
+              {/* CTA Button & Mobile Toggle - Positioned right */}
+              <div className="flex-1 flex items-center justify-end">
+                {/* CTA Button - Hidden on mobile */}
+                <div className="hidden lg:flex items-center">
+                  <Button 
+                    variant="gold" 
+                    size={isScrolled ? "sm" : "lg"}
+                    onClick={() => setIsQuoteOpen(true)}
+                    className={`transition-all duration-500 font-black tracking-widest uppercase rounded-full ${
+                      !isScrolled 
+                        ? "px-5 py-3 shadow-xl text-[10px]" 
+                        : "bg-brand-blue text-white hover:bg-brand-blue/90 px-4 py-1.5 text-[9px]"
+                    }`}
+                  >
+                    Get Quote
+                  </Button>
+                </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                  className="lg:hidden p-2 transition-colors text-white ml-2"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  aria-label="Toggle menu"
+                >
+                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
+      </header>
 
         {/* Mobile Menu */}
         <AnimatePresence>
