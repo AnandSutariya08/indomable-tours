@@ -43,7 +43,7 @@ const Footer = () => {
             <img 
               src={logo} 
               alt="Indomable Tours" 
-              className="h-12 md:h-16 w-auto brightness-0 invert"
+              className="h-8 md:h-12 w-auto brightness-0 invert"
             />
             <p className="font-body text-primary-foreground/80 max-w-sm leading-relaxed">
               India Expertise. Canadian Standards. Crafting extraordinary journeys 

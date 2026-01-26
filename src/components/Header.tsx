@@ -57,7 +57,7 @@ const Header = () => {
                 src={logo} 
                 alt="Indomable Tours" 
                 className={`transition-all duration-500 object-contain ${
-                  isScrolled ? "h-8 md:h-10" : "h-12 md:h-16 lg:h-20"
+                  isScrolled ? "h-6 md:h-8" : "h-8 md:h-12 lg:h-16"
                 } w-auto`}
               />
             </a>
