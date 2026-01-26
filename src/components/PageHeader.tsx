@@ -22,7 +22,7 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
             className="w-full h-full object-cover"
           />
           {/* Sophisticated gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
         </div>
       )}
@@ -96,7 +96,7 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
       </div>
       
       {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent opacity-60" />
     </section>
   );
 };
