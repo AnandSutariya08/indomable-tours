@@ -34,26 +34,25 @@ const Tours = () => {
       />
 
       {/* Filter Section */}
-      <section className="py-8 md:py-12 bg-muted/50 border-b border-border">
+      <section className="py-12 bg-muted/30 border-b border-border sticky top-20 z-30 backdrop-blur-md">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-6"
           >
-            <p className="font-body text-sm text-foreground/60 uppercase tracking-wider">Filter by destination</p>
-            <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4">
               {categories.map((category) => (
                 <motion.button
                   key={category}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-5 md:px-8 py-2.5 md:py-3 rounded-full font-body text-sm md:text-base font-medium transition-all duration-300 border-2 ${
+                  className={`px-6 md:px-10 py-3 md:py-4 rounded-xl font-heading text-base md:text-lg transition-all duration-300 shadow-sm ${
                     selectedCategory === category
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                      : "bg-background text-foreground border-border hover:border-secondary hover:text-secondary"
+                      ? "bg-primary text-primary-foreground shadow-xl scale-105"
+                      : "bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground"
                   }`}
                 >
                   {category}

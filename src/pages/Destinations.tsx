@@ -104,18 +104,18 @@ const Destinations = () => {
       />
 
       {/* Country Selector */}
-      <section className="py-12 bg-muted sticky top-20 z-30">
+      <section className="py-12 bg-muted/30 border-b border-border sticky top-20 z-30 backdrop-blur-md">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
             {countries.map((country) => (
               <motion.button
                 key={country.id}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveCountry(country)}
-                className={`px-8 py-4 rounded-xl font-heading text-lg transition-all duration-300 ${
+                className={`px-6 md:px-10 py-3 md:py-4 rounded-xl font-heading text-base md:text-lg transition-all duration-300 shadow-sm ${
                   activeCountry.id === country.id
-                    ? "bg-primary text-primary-foreground shadow-xl"
+                    ? "bg-primary text-primary-foreground shadow-xl scale-105"
                     : "bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground"
                 }`}
               >
