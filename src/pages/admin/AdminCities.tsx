@@ -168,8 +168,9 @@ const AdminCities = () => {
                 folder="cities"
                 label="City Image"
               />
-              <div>
-                <label className="text-sm font-medium">Number of Tours</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Number of Tours</label>
                   <Input
                     type="number"
                     value={formData.tours}
