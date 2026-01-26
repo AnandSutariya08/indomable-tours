@@ -36,7 +36,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 text-center pt-20 md:pt-32">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Badge */}
           <div className="inline-block">
