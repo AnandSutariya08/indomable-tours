@@ -19,6 +19,11 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminTours from "./pages/admin/AdminTours";
 import AdminBlog from "./pages/admin/AdminBlog";
 import AdminTestimonials from "./pages/admin/AdminTestimonials";
+import AdminDestinations from "./pages/admin/AdminDestinations";
+import AdminCities from "./pages/admin/AdminCities";
+import AdminTeam from "./pages/admin/AdminTeam";
+import AdminTravelInfo from "./pages/admin/AdminTravelInfo";
+import AdminHomeSections from "./pages/admin/AdminHomeSections";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +50,11 @@ const App = () => (
             <Route path="/admin/tours" element={<AdminTours />} />
             <Route path="/admin/blog" element={<AdminBlog />} />
             <Route path="/admin/testimonials" element={<AdminTestimonials />} />
+            <Route path="/admin/destinations" element={<AdminDestinations />} />
+            <Route path="/admin/cities" element={<AdminCities />} />
+            <Route path="/admin/team" element={<AdminTeam />} />
+            <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
+            <Route path="/admin/home-sections" element={<AdminHomeSections />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

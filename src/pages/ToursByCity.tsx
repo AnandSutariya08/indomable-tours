@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, ArrowRight, Search } from "lucide-react";
+import { MapPin, ArrowRight, Search, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,153 +9,9 @@ import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/Animat
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuoteModal from "@/components/QuoteModal";
+import { useCities } from "@/hooks/useFirestoreData";
 
-import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 import jaipur from "@/assets/destinations/jaipur.jpg";
-import kerala from "@/assets/destinations/kerala.jpg";
-import varanasi from "@/assets/destinations/varanasi.jpg";
-import lehLadakh from "@/assets/destinations/leh-ladakh.jpg";
-import nepal from "@/assets/destinations/nepal.jpg";
-import bhutan from "@/assets/destinations/bhutan.jpg";
-import srilanka from "@/assets/destinations/srilanka.jpg";
-
-const cities = [
-  {
-    id: 1,
-    name: "Delhi",
-    country: "India",
-    image: tajMahal,
-    tours: 12,
-    description: "India's capital blends ancient history with modern vibrancy",
-    popular: ["Red Fort", "Qutub Minar", "India Gate"],
-  },
-  {
-    id: 2,
-    name: "Agra",
-    country: "India",
-    image: tajMahal,
-    tours: 8,
-    description: "Home to the iconic Taj Mahal and Mughal architecture",
-    popular: ["Taj Mahal", "Agra Fort", "Fatehpur Sikri"],
-  },
-  {
-    id: 3,
-    name: "Jaipur",
-    country: "India",
-    image: jaipur,
-    tours: 10,
-    description: "The Pink City of royal palaces and colorful bazaars",
-    popular: ["Amber Fort", "Hawa Mahal", "City Palace"],
-  },
-  {
-    id: 4,
-    name: "Udaipur",
-    country: "India",
-    image: jaipur,
-    tours: 7,
-    description: "The City of Lakes with romantic palace hotels",
-    popular: ["Lake Pichola", "City Palace", "Jagdish Temple"],
-  },
-  {
-    id: 5,
-    name: "Varanasi",
-    country: "India",
-    image: varanasi,
-    tours: 6,
-    description: "One of the world's oldest living cities on the Ganges",
-    popular: ["Ganga Aarti", "Boat Ride", "Sarnath"],
-  },
-  {
-    id: 6,
-    name: "Kochi",
-    country: "India",
-    image: kerala,
-    tours: 5,
-    description: "Gateway to Kerala's backwaters and spice trade history",
-    popular: ["Chinese Fishing Nets", "Fort Kochi", "Mattancherry"],
-  },
-  {
-    id: 7,
-    name: "Leh",
-    country: "India",
-    image: lehLadakh,
-    tours: 4,
-    description: "High-altitude adventure in the Himalayan desert",
-    popular: ["Pangong Lake", "Nubra Valley", "Monasteries"],
-  },
-  {
-    id: 8,
-    name: "Mumbai",
-    country: "India",
-    image: tajMahal,
-    tours: 8,
-    description: "India's financial capital with colonial charm",
-    popular: ["Gateway of India", "Marine Drive", "Elephanta Caves"],
-  },
-  {
-    id: 9,
-    name: "Kathmandu",
-    country: "Nepal",
-    image: nepal,
-    tours: 9,
-    description: "Nepal's vibrant capital of temples and culture",
-    popular: ["Durbar Square", "Swayambhunath", "Boudhanath"],
-  },
-  {
-    id: 10,
-    name: "Pokhara",
-    country: "Nepal",
-    image: nepal,
-    tours: 6,
-    description: "Lakeside paradise with Himalayan panoramas",
-    popular: ["Phewa Lake", "Sarangkot", "Annapurna Views"],
-  },
-  {
-    id: 11,
-    name: "Paro",
-    country: "Bhutan",
-    image: bhutan,
-    tours: 5,
-    description: "Gateway to Bhutan and Tiger's Nest monastery",
-    popular: ["Tiger's Nest", "Rinpung Dzong", "National Museum"],
-  },
-  {
-    id: 12,
-    name: "Thimphu",
-    country: "Bhutan",
-    image: bhutan,
-    tours: 4,
-    description: "The world's only capital without traffic lights",
-    popular: ["Tashichho Dzong", "Buddha Point", "Weekend Market"],
-  },
-  {
-    id: 13,
-    name: "Colombo",
-    country: "Sri Lanka",
-    image: srilanka,
-    tours: 6,
-    description: "Sri Lanka's bustling capital of colonial heritage",
-    popular: ["Galle Face", "Gangaramaya Temple", "Pettah Market"],
-  },
-  {
-    id: 14,
-    name: "Kandy",
-    country: "Sri Lanka",
-    image: srilanka,
-    tours: 7,
-    description: "Hill country gem with sacred Buddhist heritage",
-    popular: ["Temple of the Tooth", "Royal Botanical Gardens", "Tea Estates"],
-  },
-  {
-    id: 15,
-    name: "Sigiriya",
-    country: "Sri Lanka",
-    image: srilanka,
-    tours: 5,
-    description: "Ancient rock fortress rising from the jungle",
-    popular: ["Lion Rock", "Frescoes", "Water Gardens"],
-  },
-];
 
 const countries = ["All", "India", "Nepal", "Bhutan", "Sri Lanka"];
 
@@ -163,6 +19,7 @@ const ToursByCity = () => {
   const [selectedCountry, setSelectedCountry] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const { data: cities, loading } = useCities();
 
   const filteredCities = cities.filter((city) => {
     const matchesCountry = selectedCountry === "All" || city.country === selectedCountry;
@@ -222,82 +79,88 @@ const ToursByCity = () => {
       {/* Cities Grid */}
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredCities.map((city, index) => (
-              <motion.div
-                key={city.id}
-                variants={fadeInUp}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -10 }}
-                className="group"
-              >
-                <Link to="/tours">
-                  <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
-                    {/* Image */}
-                    <div className="relative h-56 overflow-hidden">
-                      <img
-                        src={city.image}
-                        alt={city.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <div className="absolute top-4 right-4">
-                        <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
-                          {city.tours} Tours
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center gap-2 text-cream/80 mb-1">
-                          <MapPin className="w-4 h-4" />
-                          <span className="font-body text-sm">{city.country}</span>
-                        </div>
-                        <h3 className="font-heading text-2xl text-cream">
-                          {city.name}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <p className="font-body text-sm text-foreground/80 mb-4">
-                        {city.description}
-                      </p>
-                      
-                      {/* Popular Attractions */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {city.popular.map((attraction) => (
-                          <span
-                            key={attraction}
-                            className="px-3 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
-                          >
-                            {attraction}
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            </div>
+          ) : (
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {filteredCities.map((city, index) => (
+                <motion.div
+                  key={city.id}
+                  variants={fadeInUp}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ y: -10 }}
+                  className="group"
+                >
+                  <Link to="/tours">
+                    <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+                      {/* Image */}
+                      <div className="relative h-56 overflow-hidden">
+                        <img
+                          src={city.image}
+                          alt={city.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute top-4 right-4">
+                          <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
+                            {city.tours} Tours
                           </span>
-                        ))}
+                        </div>
+                        <div className="absolute bottom-4 left-4">
+                          <div className="flex items-center gap-2 text-cream/80 mb-1">
+                            <MapPin className="w-4 h-4" />
+                            <span className="font-body text-sm">{city.country}</span>
+                          </div>
+                          <h3 className="font-heading text-2xl text-cream">
+                            {city.name}
+                          </h3>
+                        </div>
                       </div>
 
-                      {/* CTA */}
-                      <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <span className="font-body text-sm text-foreground/60">
-                          Explore {city.tours} tours
-                        </span>
-                        <span className="flex items-center gap-2 text-primary font-body font-medium group-hover:text-accent transition-colors">
-                          View Tours
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
+                      {/* Content */}
+                      <div className="p-6">
+                        <p className="font-body text-sm text-foreground/80 mb-4">
+                          {city.description}
+                        </p>
+                        
+                        {/* Popular Attractions */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {city.popular.map((attraction) => (
+                            <span
+                              key={attraction}
+                              className="px-3 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
+                            >
+                              {attraction}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* CTA */}
+                        <div className="flex items-center justify-between pt-4 border-t border-border">
+                          <span className="font-body text-sm text-foreground/60">
+                            Explore {city.tours} tours
+                          </span>
+                          <span className="flex items-center gap-2 text-primary font-body font-medium group-hover:text-accent transition-colors">
+                            View Tours
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
-          {filteredCities.length === 0 && (
+          {!loading && filteredCities.length === 0 && (
             <div className="text-center py-20">
               <h3 className="font-heading text-2xl text-primary mb-4">No cities found</h3>
               <p className="font-body text-foreground/70">Try adjusting your search or filter criteria.</p>

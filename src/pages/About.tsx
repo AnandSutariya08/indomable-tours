@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
-import { Users, Award, Globe, Heart, Leaf, Shield, ArrowRight } from "lucide-react";
+import { Users, Heart, Leaf, Shield, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
+import { useTeam } from "@/hooks/useFirestoreData";
 
 import luxuryHero from "@/assets/luxury-hero.jpg";
 import kerala from "@/assets/destinations/kerala.jpg";
-import bhutan from "@/assets/destinations/bhutan.jpg";
 
 const stats = [
   { value: "15+", label: "Years Experience" },
@@ -41,27 +41,6 @@ const values = [
   },
 ];
 
-const team = [
-  {
-    name: "Rajesh Sharma",
-    role: "Founder & CEO",
-    image: luxuryHero,
-    bio: "Born in Jaipur, Rajesh has spent 20 years sharing India's wonders with the world.",
-  },
-  {
-    name: "Sarah Mitchell",
-    role: "Operations Director",
-    image: kerala,
-    bio: "Canadian expat who fell in love with Asia and now ensures every tour runs flawlessly.",
-  },
-  {
-    name: "Tenzin Dorji",
-    role: "Bhutan Specialist",
-    image: bhutan,
-    bio: "A Bhutanese native who brings deep cultural knowledge and mountain expertise.",
-  },
-];
-
 const milestones = [
   { year: "2010", event: "Founded in Toronto with a mission to share authentic Asian travel" },
   { year: "2012", event: "Expanded to Nepal and established local partnerships" },
@@ -72,6 +51,8 @@ const milestones = [
 ];
 
 const About = () => {
+  const { data: team, loading } = useTeam();
+
   return (
     <main className="min-h-screen bg-background">
       <Header />
@@ -254,35 +235,41 @@ const About = () => {
             </div>
           </AnimatedSection>
 
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                variants={fadeInUp}
-                transition={{ delay: index * 0.15 }}
-                whileHover={{ y: -10 }}
-                className="group"
-              >
-                <div className="relative h-80 rounded-2xl overflow-hidden mb-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                </div>
-                <h3 className="font-heading text-xl text-primary mb-1">{member.name}</h3>
-                <p className="font-body text-secondary font-medium mb-3">{member.role}</p>
-                <p className="font-body text-foreground/80 text-sm">{member.bio}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            </div>
+          ) : (
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.id}
+                  variants={fadeInUp}
+                  transition={{ delay: index * 0.15 }}
+                  whileHover={{ y: -10 }}
+                  className="group"
+                >
+                  <div className="relative h-80 rounded-2xl overflow-hidden mb-6">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  </div>
+                  <h3 className="font-heading text-xl text-primary mb-1">{member.name}</h3>
+                  <p className="font-body text-secondary font-medium mb-3">{member.role}</p>
+                  <p className="font-body text-foreground/80 text-sm">{member.bio}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
