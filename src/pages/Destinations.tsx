@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Compass } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
@@ -76,8 +76,22 @@ const countries = [
 ];
 
 const Destinations = () => {
-  const [activeCountry, setActiveCountry] = useState(countries[0]);
+  const [searchParams] = useSearchParams();
+  const countryParam = searchParams.get("country");
+  
+  const initialCountry = countries.find(c => c.id === countryParam) || countries[0];
+  const [activeCountry, setActiveCountry] = useState(initialCountry);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+
+  useEffect(() => {
+    if (countryParam) {
+      const country = countries.find(c => c.id === countryParam);
+      if (country) {
+        setActiveCountry(country);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+  }, [countryParam]);
 
   return (
     <main className="min-h-screen bg-background">

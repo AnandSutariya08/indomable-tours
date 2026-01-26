@@ -6,10 +6,10 @@ import logo from "@/assets/logo.png";
 
 const footerLinks = {
   destinations: [
-    { label: "India", href: "/destinations/india" },
-    { label: "Nepal", href: "/destinations/nepal" },
-    { label: "Bhutan", href: "/destinations/bhutan" },
-    { label: "Sri Lanka", href: "/destinations/srilanka" },
+    { label: "India", href: "/destinations?country=india" },
+    { label: "Nepal", href: "/destinations?country=nepal" },
+    { label: "Bhutan", href: "/destinations?country=bhutan" },
+    { label: "Sri Lanka", href: "/destinations?country=srilanka" },
   ],
   company: [
     { label: "About Us", href: "/about" },
