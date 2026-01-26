@@ -24,7 +24,7 @@ const Tours = () => {
     : tours.filter(tour => tour.country === selectedCategory);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-[#F5F1E9]">
       <Header />
       <PageHeader
         badge="Curated Experiences"
@@ -34,7 +34,7 @@ const Tours = () => {
       />
 
       {/* Filter Section */}
-      <section className="py-12 bg-muted/50 relative overflow-hidden">
+      <section className="py-12 bg-[#F5F1E9] relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
@@ -64,7 +64,7 @@ const Tours = () => {
       </section>
 
       {/* Tours Grid */}
-      <section className="py-16 md:py-24 bg-muted/30">
+      <section className="py-16 md:py-24 bg-[#F5F1E9]">
         <div className="container mx-auto px-4 md:px-6">
           {loading ? (
             <div className="flex justify-center py-20">
@@ -88,7 +88,7 @@ const Tours = () => {
                     whileHover={{ y: -10 }}
                     className="group"
                   >
-                    <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+                    <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5">
                       {/* Image */}
                       <div className="relative h-64 overflow-hidden">
                         <img
@@ -112,7 +112,7 @@ const Tours = () => {
                       </div>
 
                       {/* Content */}
-                      <div className="p-6 bg-muted/50">
+                      <div className="p-6">
                         <div className="flex items-center gap-2 text-primary/70 mb-2">
                           <MapPin className="w-4 h-4" />
                           <span className="font-body text-sm font-medium">{tour.location}</span>
