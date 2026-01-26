@@ -36,10 +36,10 @@ const Header = () => {
 
   return (
     <>
-      <header 
+    <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? "py-2" 
+            ? "py-3" 
             : "py-2 md:py-3"
         }`}
       >
@@ -47,7 +47,7 @@ const Header = () => {
           <div 
             className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
-                ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-1.5 shadow-2xl max-w-6xl" 
+                ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-8 md:px-12 py-3 shadow-2xl max-w-7xl" 
                 : "bg-transparent py-1.5 max-w-full lg:px-2"
             }`}
           >
@@ -58,20 +58,22 @@ const Header = () => {
                   src={logo} 
                   alt="Indomable Tours" 
                   className={`transition-all duration-500 object-contain ${
-                    isScrolled ? "h-5 md:h-6" : "h-6 md:h-8 lg:h-10"
+                    isScrolled ? "h-6 md:h-8" : "h-6 md:h-8 lg:h-10"
                   } w-auto`}
                 />
               </a>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center justify-center flex-1 space-x-4 xl:space-x-8">
+            <nav className="hidden lg:flex items-center justify-center flex-1 space-x-6 xl:space-x-10">
               {navItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-body font-bold text-[10px] xl:text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative group whitespace-nowrap ${
-                    isScrolled ? "text-secondary hover:text-brand-blue" : "text-white hover:text-secondary"
+                  className={`font-body uppercase tracking-[0.25em] transition-all duration-300 relative group whitespace-nowrap ${
+                    isScrolled 
+                      ? "text-secondary hover:text-brand-blue text-[12px] xl:text-[13px] font-black" 
+                      : "text-white hover:text-secondary text-[10px] xl:text-[11px] font-bold"
                   }`}
                 >
                   {item.label}
@@ -88,12 +90,12 @@ const Header = () => {
               <div className="hidden lg:flex items-center">
                 <Button 
                   variant="gold" 
-                  size={isScrolled ? "sm" : "lg"}
+                  size={isScrolled ? "lg" : "lg"}
                   onClick={() => setIsQuoteOpen(true)}
-                  className={`transition-all duration-500 font-bold tracking-widest uppercase text-[10px] rounded-full ${
+                  className={`transition-all duration-500 font-black tracking-widest uppercase rounded-full ${
                     !isScrolled 
-                      ? "px-5 py-3 shadow-xl" 
-                      : "bg-brand-blue text-white hover:bg-brand-blue/90"
+                      ? "px-5 py-3 shadow-xl text-[10px]" 
+                      : "bg-brand-blue text-white hover:bg-brand-blue/90 px-8 py-4 text-[12px]"
                   }`}
                 >
                   Get Quote
