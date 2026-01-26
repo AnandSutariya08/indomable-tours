@@ -1,17 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCollection, COLLECTIONS } from "@/services/firestoreService";
 
-// Import seed data for fallback
-import toursData from "@/data/seed/tours.json";
-import destinationsData from "@/data/seed/destinations.json";
-import blogPostsData from "@/data/seed/blogPosts.json";
-import citiesData from "@/data/seed/cities.json";
-import testimonialsData from "@/data/seed/testimonials.json";
-import travelInfoData from "@/data/seed/travelInfo.json";
-import exploreDestinationsData from "@/data/seed/exploreDestinations.json";
-import exploreToursData from "@/data/seed/exploreTours.json";
-import teamData from "@/data/seed/team.json";
-
 // Types
 export interface Tour {
   id: string;
@@ -113,12 +102,11 @@ export interface FAQ {
   answer: string;
 }
 
-// Generic hook for fetching Firestore data with fallback
+// Generic hook for fetching Firestore data without fallback
 function useFirestoreCollection<T>(
-  collectionName: string,
-  fallbackData: T[]
+  collectionName: string
 ) {
-  const [data, setData] = useState<T[]>(fallbackData);
+  const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -127,11 +115,9 @@ function useFirestoreCollection<T>(
       try {
         setLoading(true);
         const result = await getCollection<T>(collectionName);
-        if (result.length > 0) {
-          setData(result);
-        }
+        setData(result);
       } catch (err) {
-        console.warn(`Using fallback data for ${collectionName}:`, err);
+        console.error(`Error fetching ${collectionName}:`, err);
         setError(err as Error);
       } finally {
         setLoading(false);
@@ -145,40 +131,40 @@ function useFirestoreCollection<T>(
 
 // Hooks for each collection
 export const useTours = () => 
-  useFirestoreCollection<Tour>(COLLECTIONS.TOURS, toursData as Tour[]);
+  useFirestoreCollection<Tour>(COLLECTIONS.TOURS);
 
 export const useDestinations = () => 
-  useFirestoreCollection<Destination>(COLLECTIONS.DESTINATIONS, destinationsData as Destination[]);
+  useFirestoreCollection<Destination>(COLLECTIONS.DESTINATIONS);
 
 export const useBlogPosts = () => 
-  useFirestoreCollection<BlogPost>(COLLECTIONS.BLOG_POSTS, blogPostsData as BlogPost[]);
+  useFirestoreCollection<BlogPost>(COLLECTIONS.BLOG_POSTS);
 
 export const useCities = () => 
-  useFirestoreCollection<City>(COLLECTIONS.CITIES, citiesData as City[]);
+  useFirestoreCollection<City>(COLLECTIONS.CITIES);
 
 export const useTestimonials = () => 
-  useFirestoreCollection<Testimonial>(COLLECTIONS.TESTIMONIALS, testimonialsData as Testimonial[]);
+  useFirestoreCollection<Testimonial>(COLLECTIONS.TESTIMONIALS);
 
 export const useExploreDestinations = () => 
-  useFirestoreCollection<ExploreDestination>(COLLECTIONS.EXPLORE_DESTINATIONS, exploreDestinationsData as ExploreDestination[]);
+  useFirestoreCollection<ExploreDestination>(COLLECTIONS.EXPLORE_DESTINATIONS);
 
 export const useExploreTours = () => 
-  useFirestoreCollection<ExploreTour>(COLLECTIONS.EXPLORE_TOURS, exploreToursData as ExploreTour[]);
+  useFirestoreCollection<ExploreTour>(COLLECTIONS.EXPLORE_TOURS);
 
 export const useTeam = () => 
-  useFirestoreCollection<TeamMember>(COLLECTIONS.TEAM, teamData as TeamMember[]);
+  useFirestoreCollection<TeamMember>(COLLECTIONS.TEAM);
 
 export const useTravelEssentials = () => {
-  const [data, setData] = useState<TravelEssential[]>(travelInfoData.essentials as TravelEssential[]);
+  const [data, setData] = useState<TravelEssential[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getCollection<TravelEssential>("travelEssentials");
-        if (result.length > 0) setData(result);
+        setData(result);
       } catch (err) {
-        console.warn("Using fallback travel essentials");
+        console.error("Error fetching travel essentials:", err);
       } finally {
         setLoading(false);
       }
@@ -190,16 +176,16 @@ export const useTravelEssentials = () => {
 };
 
 export const useFaqs = () => {
-  const [data, setData] = useState<FAQ[]>(travelInfoData.faqs as FAQ[]);
+  const [data, setData] = useState<FAQ[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getCollection<FAQ>("faqs");
-        if (result.length > 0) setData(result);
+        setData(result);
       } catch (err) {
-        console.warn("Using fallback FAQs");
+        console.error("Error fetching FAQs:", err);
       } finally {
         setLoading(false);
       }
