@@ -1,10 +1,20 @@
-import { Play } from "lucide-react";
+import { useState } from "react";
+import { Play, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import luxuryHero from "@/assets/luxury-hero.jpg";
 import kerala from "@/assets/destinations/kerala.jpg";
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const LuxuryHero = () => {
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+
+  const playVideo = (url: string) => {
+    setVideoUrl(url);
+  };
+
+  const dummyVideoUrl = "https://player.vimeo.com/external/370467553.hd.mp4?s=ce49c8c6d8e28a89298ffb4c53a2e842bdb11546&profile_id=175";
+
   return (
     <section className="py-20 md:py-28 bg-muted overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
@@ -59,21 +69,31 @@ const LuxuryHero = () => {
           {/* Right - Image Section */}
           <div className="relative">
             {/* Main Image */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer" onClick={() => playVideo(dummyVideoUrl)}>
               <img
                 src={luxuryHero}
                 alt="Luxury travel experience"
-                className="w-full h-[500px] md:h-[600px] object-cover"
+                className="w-full h-[500px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full bg-cream/90 flex items-center justify-center shadow-2xl transform transition-transform group-hover:scale-110">
+                  <Play size={32} className="text-primary ml-1" />
+                </div>
+              </div>
             </div>
 
             {/* Floating Video Cards */}
-            <div className="absolute -bottom-8 -left-8 w-36 h-48 md:w-44 md:h-56 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer">
+            <div 
+              className="absolute -bottom-8 -left-8 w-36 h-48 md:w-44 md:h-56 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer z-20"
+              onClick={(e) => {
+                e.stopPropagation();
+                playVideo(dummyVideoUrl);
+              }}
+            >
               <img
                 src={kerala}
                 alt="Kerala backwaters"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
                 <div className="w-12 h-12 rounded-full bg-cream/90 flex items-center justify-center">
@@ -82,11 +102,17 @@ const LuxuryHero = () => {
               </div>
             </div>
 
-            <div className="absolute -top-6 -right-6 w-32 h-40 md:w-40 md:h-48 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer">
+            <div 
+              className="absolute -top-6 -right-6 w-32 h-40 md:w-40 md:h-48 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer z-20"
+              onClick={(e) => {
+                e.stopPropagation();
+                playVideo(dummyVideoUrl);
+              }}
+            >
               <img
                 src={tajMahal}
                 alt="Taj Mahal"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
                 <div className="w-10 h-10 rounded-full bg-cream/90 flex items-center justify-center">
@@ -100,6 +126,22 @@ const LuxuryHero = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      <Dialog open={!!videoUrl} onOpenChange={(open) => !open && setVideoUrl(null)}>
+        <DialogContent className="max-w-4xl p-0 bg-black overflow-hidden border-none">
+          <div className="relative aspect-video">
+            {videoUrl && (
+              <video
+                src={videoUrl}
+                autoPlay
+                controls
+                className="w-full h-full"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
