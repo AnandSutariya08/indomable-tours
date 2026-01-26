@@ -26,7 +26,7 @@ const HeroSection = () => {
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Badge */}
-          <div className="inline-block animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <div className="inline-block">
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-cream/20 backdrop-blur-sm border border-cream/30 text-cream font-body text-sm tracking-wide">
               ✦ India Expertise. Canadian Standards.
             </span>
@@ -34,16 +34,14 @@ const HeroSection = () => {
 
           {/* Heading */}
           <h1 
-            className="heading-display-lg text-cream animate-slide-up"
-            style={{ animationDelay: "0.4s" }}
+            className="heading-display-lg text-cream"
           >
             Where Ancient Wonders Meet <span className="text-secondary">Timeless Luxury</span>
           </h1>
 
           {/* Subtitle */}
           <p 
-            className="body-display-lg text-cream/90 max-w-2xl mx-auto animate-slide-up"
-            style={{ animationDelay: "0.6s" }}
+            className="body-display-lg text-cream/90 max-w-2xl mx-auto"
           >
             Embark on a journey through the heart of Asia's most captivating destinations. 
             Curated experiences that transcend the ordinary.
@@ -51,8 +49,7 @@ const HeroSection = () => {
 
           {/* CTA Button */}
           <div 
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-slide-up"
-            style={{ animationDelay: "0.8s" }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
             <Button variant="hero" size="xl">
               Start Your Journey With Us
