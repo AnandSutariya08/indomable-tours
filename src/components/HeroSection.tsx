@@ -74,13 +74,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <div className="w-6 h-10 rounded-full border-2 border-cream/50 flex items-start justify-center p-2">
-          <div className="w-1.5 h-3 bg-cream/80 rounded-full" />
-        </div>
-      </div>
-
       {/* Video Modal */}
       <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
         <DialogContent className="max-w-4xl p-0 bg-black overflow-hidden border-none">
