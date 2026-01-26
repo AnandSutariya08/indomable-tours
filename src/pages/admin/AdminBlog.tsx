@@ -17,7 +17,6 @@ import {
 } from "@/services/firestoreService";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BlogPost } from "@/hooks/useFirestoreData";
-import blogPostsData from "@/data/seed/blogPosts.json";
 
 const AdminBlog = () => {
   const { toast } = useToast();
@@ -48,11 +47,7 @@ const AdminBlog = () => {
   const fetchPosts = async () => {
     setLoading(true);
     const result = await getCollection<BlogPost>(COLLECTIONS.BLOG_POSTS);
-    if (result.length > 0) {
-      setPosts(result);
-    } else {
-      setPosts(blogPostsData as BlogPost[]);
-    }
+    setPosts(result);
     setLoading(false);
   };
 

@@ -17,7 +17,6 @@ import {
 } from "@/services/firestoreService";
 import { uploadImage, getImagePath } from "@/services/storageService";
 import { Testimonial } from "@/hooks/useFirestoreData";
-import testimonialsData from "@/data/seed/testimonials.json";
 
 const AdminTestimonials = () => {
   const { toast } = useToast();
@@ -42,11 +41,7 @@ const AdminTestimonials = () => {
   const fetchData = async () => {
     setLoading(true);
     const result = await getCollection<Testimonial>(COLLECTIONS.TESTIMONIALS);
-    if (result.length > 0) {
-      setTestimonials(result);
-    } else {
-      setTestimonials(testimonialsData as Testimonial[]);
-    }
+    setTestimonials(result);
     setLoading(false);
   };
 

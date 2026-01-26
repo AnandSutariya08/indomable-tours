@@ -1,0 +1,34 @@
+client:702 [vite] Internal Server Error
+Failed to resolve import "@/data/seed/tours.json" from "src/pages/admin/AdminTours.tsx". Does the file exist?
+    at TransformPluginContext._formatError (/home/runner/workspa…6uTJdX2.js:49258:41)
+    at TransformPluginContext.error (/home/runner/workspa…6uTJdX2.js:49253:16)
+    at normalizeUrl (/home/runner/workspa…6uTJdX2.js:64291:23)
+    at async /home/runner/workspa…6uTJdX2.js:64423:39
+    at async Promise.all (/index 15)
+    at async TransformPluginContext.transform (/home/runner/workspa…C6uTJdX2.js:64350:7)
+    at async PluginContainer.transform (/home/runner/workspa…6uTJdX2.js:49099:18)
+    at async loadAndTransform (/home/runner/workspa…6uTJdX2.js:51977:27)
+    at async viteTransformMiddleware (/home/runner/workspa…6uTJdX2.js:62105:24)
+
+client:702 [vite] Internal Server Error
+Failed to resolve import "@/data/seed/blogPosts.json" from "src/pages/admin/AdminBlog.tsx". Does the file exist?
+    at TransformPluginContext._formatError (/home/runner/workspa…6uTJdX2.js:49258:41)
+    at TransformPluginContext.error (/home/runner/workspa…6uTJdX2.js:49253:16)
+    at normalizeUrl (/home/runner/workspa…6uTJdX2.js:64291:23)
+    at async /home/runner/workspa…6uTJdX2.js:64423:39
+    at async Promise.all (/index 15)
+    at async TransformPluginContext.transform (/home/runner/workspa…C6uTJdX2.js:64350:7)
+    at async PluginContainer.transform (/home/runner/workspa…6uTJdX2.js:49099:18)
+    at async loadAndTransform (/home/runner/workspa…6uTJdX2.js:51977:27)
+    at async viteTransformMiddleware (/home/runner/workspa…6uTJdX2.js:62105:24)
+client:702 [vite] Internal Server Error
+Failed to resolve import "@/data/seed/testimonials.json" from "src/pages/admin/AdminTestimonials.tsx". Does the file exist?
+    at TransformPluginContext._formatError (/home/runner/workspa…6uTJdX2.js:49258:41)
+    at TransformPluginContext.error (/home/runner/workspa…6uTJdX2.js:49253:16)
+    at normalizeUrl (/home/runner/workspa…6uTJdX2.js:64291:23)
+    at async /home/runner/workspa…6uTJdX2.js:64423:39
+    at async Promise.all (/index 14)
+    at async TransformPluginContext.transform (/home/runner/workspa…C6uTJdX2.js:64350:7)
+    at async PluginContainer.transform (/home/runner/workspa…6uTJdX2.js:49099:18)
+    at async loadAndTransform (/home/runner/workspa…6uTJdX2.js:51977:27)
+    at async viteTransformMiddleware (/home/runner/workspa…6uTJdX2.js:62105:24)

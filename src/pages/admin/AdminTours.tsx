@@ -19,7 +19,6 @@ import {
 import { uploadImage, getImagePath } from "@/services/storageService";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { Tour } from "@/hooks/useFirestoreData";
-import toursData from "@/data/seed/tours.json";
 
 const AdminTours = () => {
   const { toast } = useToast();
@@ -53,11 +52,7 @@ const AdminTours = () => {
   const fetchTours = async () => {
     setLoading(true);
     const result = await getCollection<Tour>(COLLECTIONS.TOURS);
-    if (result.length > 0) {
-      setTours(result);
-    } else {
-      setTours(toursData as Tour[]);
-    }
+    setTours(result);
     setLoading(false);
   };
 
