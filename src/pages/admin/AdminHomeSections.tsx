@@ -168,7 +168,7 @@ const AdminHomeSections = () => {
             </div>
           ) : (
             <Tabs defaultValue="destinations" className="flex-1 flex flex-col overflow-hidden">
-              <TabsList className="bg-card border border-border/50 p-1 shrink-0">
+              <TabsList className="shrink-0">
                 <TabsTrigger value="destinations" className="flex items-center gap-2">
                   <Globe className="w-4 h-4" /> Explore Destinations
                 </TabsTrigger>
@@ -180,8 +180,8 @@ const AdminHomeSections = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="flex-1 mt-4 overflow-hidden">
-                <TabsContent value="destinations" className="h-full flex flex-col space-y-4">
+              <div className="flex-1 mt-0 overflow-hidden">
+                <TabsContent value="destinations" className="h-full flex flex-col space-y-4 mt-4">
                   <Card className="flex-1 flex flex-col overflow-hidden">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
                       <div>
@@ -230,7 +230,7 @@ const AdminHomeSections = () => {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="tours" className="h-full flex flex-col space-y-4">
+                <TabsContent value="tours" className="h-full flex flex-col space-y-4 mt-4">
                   <Card className="flex-1 flex flex-col overflow-hidden">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
                       <div>
@@ -279,7 +279,7 @@ const AdminHomeSections = () => {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="testimonials" className="h-full flex flex-col space-y-4">
+                <TabsContent value="testimonials" className="h-full flex flex-col space-y-4 mt-4">
                   <Card className="flex-1 flex flex-col overflow-hidden">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
                       <div>
