@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import QuoteModal from "./QuoteModal";
 import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -110,35 +111,73 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden fixed inset-x-4 top-24 z-[60] bg-black/95 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-300">
-            <nav className="px-6 py-10 flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-white font-body font-bold text-lg uppercase tracking-widest py-3 border-b border-white/5 hover:text-secondary transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-4">
-                <Button 
-                  variant="accent" 
-                  size="xl" 
-                  className="w-full text-white font-bold py-8 rounded-2xl text-lg shadow-xl"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsQuoteOpen(true);
-                  }}
-                >
-                  Get Quote
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMenuOpen(false)}
+                className="lg:hidden fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm"
+              />
+              
+              {/* Sidebar */}
+              <motion.div 
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-[400px] z-[60] bg-black/95 backdrop-blur-2xl border-l border-white/10 flex flex-col shadow-2xl"
+              >
+                {/* Mobile Menu Header */}
+                <div className="flex items-center justify-between px-6 py-6 border-b border-white/5">
+                  <img src={logo} alt="Indomable Tours" className="h-10 w-auto object-contain" />
+                  <button
+                    className="p-2 text-white hover:text-secondary transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <X size={28} />
+                  </button>
+                </div>
+
+                <nav className="flex-1 px-6 py-8 overflow-y-auto">
+                  <div className="flex flex-col space-y-2">
+                    {navItems.map((item, index) => (
+                      <motion.a
+                        key={item.label}
+                        href={item.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="text-white font-body font-bold text-lg uppercase tracking-widest py-4 border-b border-white/5 hover:text-secondary transition-colors flex items-center justify-between group"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.label}
+                        <span className="w-2 h-2 rounded-full bg-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.a>
+                    ))}
+                  </div>
+                </nav>
+
+                <div className="p-6 border-t border-white/5">
+                  <Button 
+                    variant="accent" 
+                    size="xl" 
+                    className="w-full text-white font-bold py-8 rounded-2xl text-lg shadow-xl"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setIsQuoteOpen(true);
+                    }}
+                  >
+                    Get Quote
+                  </Button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </header>
 
       <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} />
