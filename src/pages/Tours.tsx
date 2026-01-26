@@ -168,15 +168,6 @@ const Tours = () => {
           </div>
         </section>
       </div>
-          
-          {!loading && filteredTours.length === 0 && (
-            <div className="text-center py-16">
-              <h3 className="font-heading text-2xl text-primary mb-4">No tours found</h3>
-              <p className="font-body text-foreground/70">Try selecting a different destination.</p>
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* CTA Section */}
       <AnimatedSection>
