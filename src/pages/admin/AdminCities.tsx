@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { getCollection, addDocument, updateDocument, deleteDocument, COLLECTIONS } from "@/services/firestoreService";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import type { City } from "@/hooks/useFirestoreData";
 
 const AdminCities = () => {
@@ -161,17 +162,14 @@ const AdminCities = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Image URL</label>
-                  <Input
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="https://..."
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Number of Tours</label>
+              <ImageUploader
+                value={formData.image}
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                folder="cities"
+                label="City Image"
+              />
+              <div>
+                <label className="text-sm font-medium">Number of Tours</label>
                   <Input
                     type="number"
                     value={formData.tours}
