@@ -34,9 +34,9 @@ const Tours = () => {
       />
 
       {/* Filter Section */}
-      <section className="py-4 md:py-6 transition-all duration-500">
+      <section className="py-8 md:py-12 bg-muted/50 border-y border-border/50">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
             {categories.map((category) => (
               <motion.button
                 key={category}
@@ -57,7 +57,7 @@ const Tours = () => {
       </section>
 
       {/* Tours Grid */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
           {loading ? (
             <div className="flex justify-center py-20">
