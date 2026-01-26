@@ -50,7 +50,7 @@ const TourDetails = () => {
       <Header />
 
       {/* Hero */}
-      <div className="relative h-[60vh] md:h-[70vh] pt-20">
+      <div className="relative h-[60vh] md:h-[70vh]">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -59,7 +59,7 @@ const TourDetails = () => {
           alt={tour.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
           <div className="container mx-auto">
             <motion.div

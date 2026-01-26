@@ -33,129 +33,141 @@ const Tours = () => {
         backgroundImage={tajMahal}
       />
 
-      {/* Filter Section */}
-      <section className="py-12 bg-[#F5F1E9] relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="flex flex-col items-center gap-6">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
-            <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-              {categories.map((category) => (
-                <motion.button
-                  key={category}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
-                    selectedCategory === category
-                      ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
-                      : "text-cream/60 hover:text-secondary hover:bg-white/5"
-                  }`}
-                >
-                  {category}
-                </motion.button>
-              ))}
+      {/* Unified Background Wrapper */}
+      <div className="bg-[#F5F1E9]">
+        {/* Filter Section */}
+        <section className="py-12 relative overflow-hidden">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
+          
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center gap-6">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                      selectedCategory === category
+                        ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                        : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                    }`}
+                  >
+                    {category}
+                  </motion.button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Tours Grid */}
-      <section className="py-16 md:py-24 bg-[#F5F1E9]">
-        <div className="container mx-auto px-4 md:px-6">
-          {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedCategory}
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-                exit={{ opacity: 0 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              >
-                {filteredTours.map((tour, index) => (
-                  <motion.div
-                    key={tour.id}
-                    variants={fadeInUp}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ y: -10 }}
-                    className="group"
-                  >
-                    <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5">
-                      {/* Image */}
-                      <div className="relative h-64 overflow-hidden">
-                        <img
-                          src={tour.image}
-                          alt={tour.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute top-4 left-4 flex gap-2">
-                          <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
-                            {tour.duration}
-                          </span>
-                          <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-xs font-medium">
-                            {tour.country}
-                          </span>
-                        </div>
-                        <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
-                          <Star className="w-4 h-4 text-secondary fill-secondary" />
-                          <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-primary/70 mb-2">
-                          <MapPin className="w-4 h-4" />
-                          <span className="font-body text-sm font-medium">{tour.location}</span>
-                        </div>
-                        <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
-                          {tour.title}
-                        </h3>
-                        <p className="font-body text-sm text-foreground/70 mb-4 line-clamp-2 min-h-[40px]">
-                          {tour.description}
-                        </p>
-
-                        {/* Highlights */}
-                        <div className="flex flex-wrap gap-2 mb-6">
-                          {tour.highlights.slice(0, 3).map((highlight) => (
-                            <span
-                              key={highlight}
-                              className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
-                            >
-                              {highlight}
+        {/* Tours Grid */}
+        <section className="pb-16 md:pb-24">
+          <div className="container mx-auto px-4 md:px-6">
+            {loading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              </div>
+            ) : (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedCategory}
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0 }}
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
+                >
+                  {filteredTours.map((tour, index) => (
+                    <motion.div
+                      key={tour.id}
+                      variants={fadeInUp}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      whileHover={{ y: -10 }}
+                      className="group flex flex-col h-full"
+                    >
+                      <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
+                        {/* Image */}
+                        <div className="relative h-64 overflow-hidden shrink-0">
+                          <img
+                            src={tour.image}
+                            alt={tour.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute top-4 left-4 flex gap-2">
+                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
+                              {tour.duration}
                             </span>
-                          ))}
+                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-xs font-medium">
+                              {tour.country}
+                            </span>
+                          </div>
+                          <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
+                            <Star className="w-4 h-4 text-secondary fill-secondary" />
+                            <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
+                          </div>
                         </div>
 
-                        {/* Footer */}
-                        <div className="flex items-center justify-between pt-4 border-t border-primary/10">
-                          <div>
-                            <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">From</span>
-                            <p className="font-heading text-2xl text-secondary">{tour.price}</p>
+                        {/* Content */}
+                        <div className="p-6 flex flex-col flex-grow">
+                          <div className="flex items-center gap-2 text-primary/70 mb-2">
+                            <MapPin className="w-4 h-4" />
+                            <span className="font-body text-sm font-medium">{tour.location}</span>
                           </div>
-                          <Link to={`/tours/${tour.id}`}>
-                            <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
-                              Explore
-                              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                            </Button>
-                          </Link>
+                          <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
+                            {tour.title}
+                          </h3>
+                          <p className="font-body text-sm text-foreground/70 mb-4 line-clamp-2 min-h-[40px]">
+                            {tour.description}
+                          </p>
+
+                          {/* Highlights */}
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {tour.highlights.slice(0, 3).map((highlight) => (
+                              <span
+                                key={highlight}
+                                className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
+                              >
+                                {highlight}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Footer */}
+                          <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
+                            <div>
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">From</span>
+                              <p className="font-heading text-2xl text-secondary">{tour.price}</p>
+                            </div>
+                            <Link to={`/tours/${tour.id}`}>
+                              <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
+                                Explore
+                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          )}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            )}
+            
+            {!loading && filteredTours.length === 0 && (
+              <div className="text-center py-16">
+                <h3 className="font-heading text-2xl text-primary mb-4">No tours found</h3>
+                <p className="font-body text-foreground/70">Try selecting a different destination.</p>
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
           
           {!loading && filteredTours.length === 0 && (
             <div className="text-center py-16">
