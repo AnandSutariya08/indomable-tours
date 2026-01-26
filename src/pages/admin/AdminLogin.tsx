@@ -92,14 +92,14 @@ const AdminLogin = () => {
               Sign In
             </Button>
           </form>
-
+{/* 
           <div className="mt-6 p-4 bg-secondary/10 rounded-lg">
             <p className="font-body text-xs text-foreground/60 text-center">
               ⚠️ Demo credentials: admin / 123
               <br />
               <span className="text-destructive">Not for production use!</span>
             </p>
-          </div>
+          </div> */}
         </div>
       </motion.div>
     </div>
