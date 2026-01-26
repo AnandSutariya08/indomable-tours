@@ -11,7 +11,8 @@ import {
   Info,
   LogOut,
   Home,
-  Newspaper
+  Newspaper,
+  Upload
 } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ const navItems = [
   { icon: Users, label: "Team", href: "/admin/team" },
   { icon: Info, label: "Travel Info", href: "/admin/travel-info" },
   { icon: Home, label: "Home Sections", href: "/admin/home-sections" },
+  { icon: Upload, label: "Seed Uploader", href: "/admin/seed-uploader" },
 ];
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {

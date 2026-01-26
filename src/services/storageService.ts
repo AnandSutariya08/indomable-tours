@@ -3,9 +3,12 @@ import { storage } from "@/lib/firebase";
 
 export const uploadImage = async (
   file: File,
-  path: string
+  folder: string
 ): Promise<string | null> => {
   try {
+    const timestamp = Date.now();
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+    const path = `${folder}/${timestamp}_${sanitizedName}`;
     const storageRef = ref(storage, path);
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
