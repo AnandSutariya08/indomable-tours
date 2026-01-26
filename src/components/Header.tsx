@@ -41,7 +41,7 @@ const Header = () => {
             className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
                 ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-2 shadow-2xl max-w-6xl mt-2" 
-                : "bg-black/20 backdrop-blur-sm border border-white/10 rounded-full px-6 md:px-10 py-2 max-w-7xl"
+                : "bg-transparent py-2 max-w-full"
             }`}
           >
             {/* Logo */}
@@ -50,7 +50,7 @@ const Header = () => {
                 src={logo} 
                 alt="Indomable Tours" 
                 className={`transition-all duration-500 object-contain brightness-0 invert ${
-                  isScrolled ? "h-10 md:h-12" : "h-14 md:h-16 lg:h-20"
+                  isScrolled ? "h-10 md:h-12" : "h-16 md:h-20 lg:h-28"
                 } w-auto`}
               />
             </a>
