@@ -90,12 +90,12 @@ const Header = () => {
               <div className="hidden lg:flex items-center">
                 <Button 
                   variant="gold" 
-                  size={isScrolled ? "lg" : "lg"}
+                  size={isScrolled ? "sm" : "lg"}
                   onClick={() => setIsQuoteOpen(true)}
                   className={`transition-all duration-500 font-black tracking-widest uppercase rounded-full ${
                     !isScrolled 
                       ? "px-5 py-3 shadow-xl text-[10px]" 
-                      : "bg-brand-blue text-white hover:bg-brand-blue/90 px-8 py-4 text-[12px]"
+                      : "bg-brand-blue text-white hover:bg-brand-blue/90 px-5 py-2 text-[10px]"
                   }`}
                 >
                   Get Quote
