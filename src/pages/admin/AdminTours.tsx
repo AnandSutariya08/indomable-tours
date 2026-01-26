@@ -17,6 +17,7 @@ import {
   COLLECTIONS 
 } from "@/services/firestoreService";
 import { uploadImage, getImagePath } from "@/services/storageService";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { Tour } from "@/hooks/useFirestoreData";
 import toursData from "@/data/seed/tours.json";
 
@@ -27,7 +28,6 @@ const AdminTours = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTour, setEditingTour] = useState<Tour | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -102,14 +102,7 @@ const AdminTours = () => {
         notIncluded: "",
       });
     }
-    setImageFile(null);
     setIsModalOpen(true);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -117,19 +110,11 @@ const AdminTours = () => {
     setSaving(true);
 
     try {
-      let imageUrl = formData.image;
-
-      if (imageFile) {
-        const path = getImagePath("tours", imageFile.name);
-        const url = await uploadImage(imageFile, path);
-        if (url) imageUrl = url;
-      }
-
       const tourData: Omit<Tour, "id"> = {
         title: formData.title,
         location: formData.location,
         country: formData.country,
-        image: imageUrl,
+        image: formData.image,
         duration: formData.duration,
         groupSize: formData.groupSize,
         rating: Number(formData.rating),
@@ -212,7 +197,7 @@ const AdminTours = () => {
                 <div className="h-40 bg-muted relative">
                   {tour.image && (
                     <img 
-                      src={tour.image.startsWith("/") ? `/src/assets${tour.image}` : tour.image} 
+                      src={tour.image} 
                       alt={tour.title}
                       className="w-full h-full object-cover"
                     />
@@ -318,21 +303,12 @@ const AdminTours = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Image</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={formData.image}
-                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    placeholder="Image URL or upload"
-                  />
-                  <label className="flex items-center gap-2 px-4 py-2 bg-muted rounded-md cursor-pointer hover:bg-muted/80">
-                    <Upload className="w-4 h-4" />
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                  </label>
-                </div>
-                {imageFile && <p className="text-xs text-secondary">Selected: {imageFile.name}</p>}
-              </div>
+              <ImageUploader
+                value={formData.image}
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                folder="tours"
+                label="Tour Image"
+              />
 
               <div className="space-y-2">
                 <Label>Short Description</Label>
