@@ -41,9 +41,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-muted flex">
+    <div className="h-screen bg-muted flex overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-card border-r border-border flex flex-col">
+      <aside className="w-64 bg-card border-r border-border flex flex-col h-full shrink-0">
         <div className="p-6 border-b border-border">
           <h1 className="font-heading text-xl text-primary">Admin Panel</h1>
           <p className="font-body text-xs text-foreground/60">Manage your content</p>
@@ -58,20 +58,20 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 to={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm transition-all ${
                   isActive
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-foreground hover:bg-muted"
                 }`}
               >
-                <item.icon className="w-5 h-5" />
-                {item.label}
+                <item.icon className="w-5 h-5 shrink-0" />
+                <span className="truncate">{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-border space-y-2">
+        <div className="p-4 border-t border-border space-y-2 shrink-0">
           <Link to="/" target="_blank">
-            <Button variant="outline" size="sm" className="w-full">
+            <Button variant="outline" size="sm" className="w-full justify-start">
               <Home className="w-4 h-4 mr-2" />
               View Site
             </Button>
@@ -79,7 +79,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <Button 
             variant="destructive" 
             size="sm" 
-            className="w-full"
+            className="w-full justify-start"
             onClick={logout}
           >
             <LogOut className="w-4 h-4 mr-2" />
@@ -89,9 +89,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="p-8">
-          {children}
+      <main className="flex-1 flex flex-col min-w-0 h-full">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-8">
+          <div className="max-w-7xl mx-auto h-full flex flex-col">
+            {children}
+          </div>
         </div>
       </main>
     </div>

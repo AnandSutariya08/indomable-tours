@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Search, ArrowUpDown, Save, LayoutDashboard, Globe, MessageSquare } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { getCollection, addDocument, updateDocument, deleteDocument, COLLECTIONS } from "@/services/firestoreService";
 import { ImageUploader } from "@/components/admin/ImageUploader";
@@ -17,6 +18,7 @@ const AdminHomeSections = () => {
   const [exploreTours, setExploreTours] = useState<ExploreTour[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Dialog states
   const [isDestDialogOpen, setIsDestDialogOpen] = useState(false);
@@ -150,240 +152,308 @@ const AdminHomeSections = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <h1 className="text-2xl font-heading text-primary">Manage Home Page Sections</h1>
-
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="space-y-6 flex flex-col h-full">
+        <div className="flex items-center justify-between shrink-0">
+          <div>
+            <h1 className="font-heading text-3xl text-primary font-bold">Home Page Sections</h1>
+            <p className="font-body text-foreground/70">Manage featured content showcased on the landing page</p>
           </div>
-        ) : (
-          <Tabs defaultValue="destinations">
-            <TabsList>
-              <TabsTrigger value="destinations">Explore Destinations</TabsTrigger>
-              <TabsTrigger value="tours">Explore Tours</TabsTrigger>
-              <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-            </TabsList>
+        </div>
 
-            {/* Explore Destinations Tab */}
-            <TabsContent value="destinations" className="space-y-4">
-              <div className="flex justify-end">
-                <Button onClick={() => handleOpenDestDialog()}>
-                  <Plus className="w-4 h-4 mr-2" /> Add Destination
-                </Button>
-              </div>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Landmark</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {exploreDestinations.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.name}</TableCell>
-                      <TableCell>{item.landmark}</TableCell>
-                      <TableCell className="max-w-xs truncate">{item.description}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => handleOpenDestDialog(item)}>
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDeleteDest(item.id)}>
-                          <Trash2 className="w-4 h-4 text-destructive" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          {loading ? (
+            <div className="flex-1 flex flex-col items-center justify-center py-12 gap-3">
+              <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              <p className="animate-pulse font-medium text-foreground/60">Loading home sections...</p>
+            </div>
+          ) : (
+            <Tabs defaultValue="destinations" className="flex-1 flex flex-col overflow-hidden">
+              <TabsList className="bg-card border border-border/50 p-1 shrink-0">
+                <TabsTrigger value="destinations" className="flex items-center gap-2">
+                  <Globe className="w-4 h-4" /> Explore Destinations
+                </TabsTrigger>
+                <TabsTrigger value="tours" className="flex items-center gap-2">
+                  <LayoutDashboard className="w-4 h-4" /> Explore Tours
+                </TabsTrigger>
+                <TabsTrigger value="testimonials" className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" /> Testimonials
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Explore Tours Tab */}
-            <TabsContent value="tours" className="space-y-4">
-              <div className="flex justify-end">
-                <Button onClick={() => handleOpenTourDialog()}>
-                  <Plus className="w-4 h-4 mr-2" /> Add Tour
-                </Button>
-              </div>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {exploreTours.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.title}</TableCell>
-                      <TableCell>{item.location}</TableCell>
-                      <TableCell>{item.duration}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => handleOpenTourDialog(item)}>
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDeleteTour(item.id)}>
-                          <Trash2 className="w-4 h-4 text-destructive" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
+              <div className="flex-1 mt-4 overflow-hidden">
+                <TabsContent value="destinations" className="h-full flex flex-col space-y-4">
+                  <Card className="flex-1 flex flex-col overflow-hidden">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
+                      <div>
+                        <CardTitle className="text-xl">Featured Destinations</CardTitle>
+                        <CardDescription>Destinations highlighted in the "Explore Destinations" section</CardDescription>
+                      </div>
+                      <Button onClick={() => handleOpenDestDialog()} size="sm">
+                        <Plus className="w-4 h-4 mr-2" /> Add Featured
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="flex-1 overflow-auto p-0">
+                      <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          <TableRow>
+                            <TableHead className="w-[80px]">Image</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Landmark</TableHead>
+                            <TableHead className="text-right pr-6">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {exploreDestinations.map((item) => (
+                            <TableRow key={item.id} className="group">
+                              <TableCell>
+                                <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border/50">
+                                  {item.image && <img src={item.image} alt="" className="w-full h-full object-cover" />}
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-semibold text-primary">{item.name}</TableCell>
+                              <TableCell className="text-foreground/70">{item.landmark}</TableCell>
+                              <TableCell className="text-right pr-6">
+                                <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <Button variant="ghost" size="icon" onClick={() => handleOpenDestDialog(item)} className="h-8 w-8">
+                                    <Pencil className="w-4 h-4" />
+                                  </Button>
+                                  <Button variant="ghost" size="icon" onClick={() => handleDeleteDest(item.id)} className="h-8 w-8 text-destructive">
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-            {/* Testimonials Tab */}
-            <TabsContent value="testimonials" className="space-y-4">
-              <div className="flex justify-end">
-                <Button onClick={() => handleOpenTestDialog()}>
-                  <Plus className="w-4 h-4 mr-2" /> Add Testimonial
-                </Button>
+                <TabsContent value="tours" className="h-full flex flex-col space-y-4">
+                  <Card className="flex-1 flex flex-col overflow-hidden">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
+                      <div>
+                        <CardTitle className="text-xl">Featured Tours</CardTitle>
+                        <CardDescription>Tours highlighted in the "Explore Tours" carousel</CardDescription>
+                      </div>
+                      <Button onClick={() => handleOpenTourDialog()} size="sm">
+                        <Plus className="w-4 h-4 mr-2" /> Add Featured
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="flex-1 overflow-auto p-0">
+                      <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          <TableRow>
+                            <TableHead className="w-[80px]">Image</TableHead>
+                            <TableHead>Title</TableHead>
+                            <TableHead>Location</TableHead>
+                            <TableHead className="text-right pr-6">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {exploreTours.map((item) => (
+                            <TableRow key={item.id} className="group">
+                              <TableCell>
+                                <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border/50">
+                                  {item.image && <img src={item.image} alt="" className="w-full h-full object-cover" />}
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-semibold text-primary">{item.title}</TableCell>
+                              <TableCell className="text-foreground/70">{item.location}</TableCell>
+                              <TableCell className="text-right pr-6">
+                                <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <Button variant="ghost" size="icon" onClick={() => handleOpenTourDialog(item)} className="h-8 w-8">
+                                    <Pencil className="w-4 h-4" />
+                                  </Button>
+                                  <Button variant="ghost" size="icon" onClick={() => handleDeleteTour(item.id)} className="h-8 w-8 text-destructive">
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="testimonials" className="h-full flex flex-col space-y-4">
+                  <Card className="flex-1 flex flex-col overflow-hidden">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
+                      <div>
+                        <CardTitle className="text-xl">Featured Testimonials</CardTitle>
+                        <CardDescription>Traveler stories shown on the home page</CardDescription>
+                      </div>
+                      <Button onClick={() => handleOpenTestDialog()} size="sm">
+                        <Plus className="w-4 h-4 mr-2" /> Add Featured
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="flex-1 overflow-auto p-0">
+                      <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          <TableRow>
+                            <TableHead className="w-[60px]">Avatar</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Location</TableHead>
+                            <TableHead className="text-right pr-6">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {testimonials.map((item) => (
+                            <TableRow key={item.id} className="group">
+                              <TableCell>
+                                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs overflow-hidden">
+                                  {item.avatar && item.avatar.startsWith('http') ? <img src={item.avatar} alt="" className="w-full h-full object-cover" /> : item.avatar}
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-semibold text-primary">{item.name}</TableCell>
+                              <TableCell className="text-foreground/70">{item.location}</TableCell>
+                              <TableCell className="text-right pr-6">
+                                <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <Button variant="ghost" size="icon" onClick={() => handleOpenTestDialog(item)} className="h-8 w-8">
+                                    <Pencil className="w-4 h-4" />
+                                  </Button>
+                                  <Button variant="ghost" size="icon" onClick={() => handleDeleteTest(item.id)} className="h-8 w-8 text-destructive">
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
               </div>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Rating</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {testimonials.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.name}</TableCell>
-                      <TableCell>{item.location}</TableCell>
-                      <TableCell>{item.rating} ★</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => handleOpenTestDialog(item)}>
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDeleteTest(item.id)}>
-                          <Trash2 className="w-4 h-4 text-destructive" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-          </Tabs>
-        )}
+            </Tabs>
+          )}
+        </div>
 
         {/* Destination Dialog */}
         <Dialog open={isDestDialogOpen} onOpenChange={setIsDestDialogOpen}>
-          <DialogContent>
+          <DialogContent className="max-w-xl">
             <DialogHeader>
-              <DialogTitle>{editingDest ? "Edit Destination" : "Add Destination"}</DialogTitle>
+              <DialogTitle className="font-heading text-xl font-bold">{editingDest ? "Edit Featured Destination" : "Add Featured Destination"}</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Name</label>
-                  <Input value={destFormData.name} onChange={(e) => setDestFormData({ ...destFormData, name: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Destination Name</label>
+                  <Input value={destFormData.name} onChange={(e) => setDestFormData({ ...destFormData, name: e.target.value })} placeholder="e.g., Rajasthan" />
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Landmark</label>
-                  <Input value={destFormData.landmark} onChange={(e) => setDestFormData({ ...destFormData, landmark: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Key Landmark</label>
+                  <Input value={destFormData.landmark} onChange={(e) => setDestFormData({ ...destFormData, landmark: e.target.value })} placeholder="e.g., Amber Fort" />
                 </div>
               </div>
-              <ImageUploader
-                value={destFormData.image}
-                onChange={(url) => setDestFormData({ ...destFormData, image: url })}
-                folder="destinations"
-                label="Destination Image"
-              />
-              <div>
-                <label className="text-sm font-medium">Description</label>
-                <Textarea value={destFormData.description} onChange={(e) => setDestFormData({ ...destFormData, description: e.target.value })} rows={3} />
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Preview Image</label>
+                <ImageUploader
+                  value={destFormData.image}
+                  onChange={(url) => setDestFormData({ ...destFormData, image: url })}
+                  folder="destinations"
+                  label="Featured Image"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Short Description</label>
+                <Textarea value={destFormData.description} onChange={(e) => setDestFormData({ ...destFormData, description: e.target.value })} placeholder="Engaging snippet for the home page card..." rows={3} className="resize-none" />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="border-t pt-4">
               <Button variant="outline" onClick={() => setIsDestDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleSubmitDest}>{editingDest ? "Update" : "Add"}</Button>
+              <Button onClick={handleSubmitDest} variant="hero">{editingDest ? "Update Featured" : "Add Featured"}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         {/* Tour Dialog */}
         <Dialog open={isTourDialogOpen} onOpenChange={setIsTourDialogOpen}>
-          <DialogContent>
+          <DialogContent className="max-w-xl">
             <DialogHeader>
-              <DialogTitle>{editingTour ? "Edit Tour" : "Add Tour"}</DialogTitle>
+              <DialogTitle className="font-heading text-xl font-bold">{editingTour ? "Edit Featured Tour" : "Add Featured Tour"}</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Title</label>
-                  <Input value={tourFormData.title} onChange={(e) => setTourFormData({ ...tourFormData, title: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Tour Title</label>
+                  <Input value={tourFormData.title} onChange={(e) => setTourFormData({ ...tourFormData, title: e.target.value })} placeholder="e.g., Luxury Golden Triangle" />
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Location</label>
-                  <Input value={tourFormData.location} onChange={(e) => setTourFormData({ ...tourFormData, location: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Route / Location</label>
+                  <Input value={tourFormData.location} onChange={(e) => setTourFormData({ ...tourFormData, location: e.target.value })} placeholder="e.g., Delhi - Agra - Jaipur" />
                 </div>
               </div>
-              <ImageUploader
-                value={tourFormData.image}
-                onChange={(url) => setTourFormData({ ...tourFormData, image: url })}
-                folder="tours"
-                label="Tour Image"
-              />
-              <div>
-                <label className="text-sm font-medium">Duration</label>
-                <Input value={tourFormData.duration} onChange={(e) => setTourFormData({ ...tourFormData, duration: e.target.value })} />
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Featured Image</label>
+                <ImageUploader
+                  value={tourFormData.image}
+                  onChange={(url) => setTourFormData({ ...tourFormData, image: url })}
+                  folder="tours"
+                  label="Display Photo"
+                />
               </div>
-              <div>
-                <label className="text-sm font-medium">Description</label>
-                <Textarea value={tourFormData.description} onChange={(e) => setTourFormData({ ...tourFormData, description: e.target.value })} rows={3} />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Duration</label>
+                  <Input value={tourFormData.duration} onChange={(e) => setTourFormData({ ...tourFormData, duration: e.target.value })} placeholder="e.g., 7 Days" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Home Page Tagline</label>
+                <Textarea value={tourFormData.description} onChange={(e) => setTourFormData({ ...tourFormData, description: e.target.value })} placeholder="One-line hook for the carousel..." rows={2} className="resize-none" />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="border-t pt-4">
               <Button variant="outline" onClick={() => setIsTourDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleSubmitTour}>{editingTour ? "Update" : "Add"}</Button>
+              <Button onClick={handleSubmitTour} variant="hero">{editingTour ? "Update Featured" : "Add Featured"}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         {/* Testimonial Dialog */}
         <Dialog open={isTestDialogOpen} onOpenChange={setIsTestDialogOpen}>
-          <DialogContent>
+          <DialogContent className="max-w-xl">
             <DialogHeader>
-              <DialogTitle>{editingTest ? "Edit Testimonial" : "Add Testimonial"}</DialogTitle>
+              <DialogTitle className="font-heading text-xl font-bold">{editingTest ? "Edit Featured Story" : "Add Featured Story"}</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Name</label>
-                  <Input value={testFormData.name} onChange={(e) => setTestFormData({ ...testFormData, name: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Traveler Name</label>
+                  <Input value={testFormData.name} onChange={(e) => setTestFormData({ ...testFormData, name: e.target.value })} placeholder="e.g., Michael Brown" />
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Location</label>
-                  <Input value={testFormData.location} onChange={(e) => setTestFormData({ ...testFormData, location: e.target.value })} />
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Location</label>
+                  <Input value={testFormData.location} onChange={(e) => setTestFormData({ ...testFormData, location: e.target.value })} placeholder="e.g., New York, USA" />
                 </div>
               </div>
-              <ImageUploader
-                value={testFormData.avatar}
-                onChange={(url) => setTestFormData({ ...testFormData, avatar: url })}
-                folder="testimonials"
-                label="Avatar Image"
-              />
-              <div>
-                <label className="text-sm font-medium">Rating (1-5)</label>
-                <Input type="number" min={1} max={5} value={testFormData.rating} onChange={(e) => setTestFormData({ ...testFormData, rating: Number(e.target.value) })} />
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Avatar Image</label>
+                <ImageUploader
+                  value={testFormData.avatar}
+                  onChange={(url) => setTestFormData({ ...testFormData, avatar: url })}
+                  folder="testimonials"
+                  label="Traveler Photo"
+                />
               </div>
-              <div>
-                <label className="text-sm font-medium">Quote</label>
-                <Textarea value={testFormData.quote} onChange={(e) => setTestFormData({ ...testFormData, quote: e.target.value })} rows={3} />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold">Star Rating</label>
+                  <Input type="number" min={1} max={5} value={testFormData.rating} onChange={(e) => setTestFormData({ ...testFormData, rating: Number(e.target.value) })} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Featured Quote</label>
+                <Textarea value={testFormData.quote} onChange={(e) => setTestFormData({ ...testFormData, quote: e.target.value })} placeholder="The most impactful part of their feedback..." rows={3} className="resize-none" />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="border-t pt-4">
               <Button variant="outline" onClick={() => setIsTestDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleSubmitTest}>{editingTest ? "Update" : "Add"}</Button>
+              <Button onClick={handleSubmitTest} variant="hero">{editingTest ? "Update Story" : "Add Story"}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
