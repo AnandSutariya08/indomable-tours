@@ -39,20 +39,20 @@ const Header = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? "py-1 md:py-2" 
-            : "py-0"
+            ? "py-2" 
+            : "py-4 md:py-6"
         }`}
       >
         <div className="container mx-auto px-4 md:px-6">
           <div 
             className={`flex items-center justify-between transition-all duration-500 mx-auto w-full ${
               isScrolled 
-                ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-1.5 shadow-2xl max-w-6xl mt-2" 
-                : "bg-transparent py-0.5 max-w-full lg:px-2"
+                ? "bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 md:px-10 py-1.5 shadow-2xl max-w-6xl" 
+                : "bg-transparent py-2 max-w-full lg:px-2"
             }`}
           >
             {/* Logo */}
-            <div className="flex-1 flex justify-start lg:w-1/4">
+            <div className="flex-1 flex justify-center lg:justify-start lg:w-1/4">
               <a href="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
                 <img 
                   src={logo} 
@@ -83,7 +83,7 @@ const Header = () => {
             </nav>
 
             {/* CTA Button & Mobile Toggle Container */}
-            <div className="flex-1 flex items-center justify-end lg:w-1/4 space-x-4">
+            <div className="flex-1 flex items-center justify-center lg:justify-end lg:w-1/4 space-x-4">
               {/* CTA Button - Hidden on mobile, shown in sidebar */}
               <div className="hidden lg:flex items-center">
                 <Button 
