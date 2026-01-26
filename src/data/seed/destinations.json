@@ -1,0 +1,56 @@
+[
+  {
+    "id": "india",
+    "name": "India",
+    "tagline": "A Tapestry of Wonders",
+    "description": "From the snow-capped Himalayas to tropical Kerala, India offers an unparalleled diversity of experiences. Ancient temples, bustling cities, and serene landscapes await the curious traveler.",
+    "image": "/destinations/taj-mahal.jpg",
+    "highlights": ["UNESCO World Heritage Sites", "Ayurvedic Wellness", "Tiger Safaris", "Culinary Tours"],
+    "subDestinations": [
+      { "name": "Taj Mahal, Agra", "image": "/destinations/taj-mahal.jpg", "tours": 5 },
+      { "name": "Jaipur, Rajasthan", "image": "/destinations/jaipur.jpg", "tours": 8 },
+      { "name": "Kerala Backwaters", "image": "/destinations/kerala.jpg", "tours": 6 },
+      { "name": "Varanasi", "image": "/destinations/varanasi.jpg", "tours": 4 },
+      { "name": "Leh-Ladakh", "image": "/destinations/leh-ladakh.jpg", "tours": 3 }
+    ]
+  },
+  {
+    "id": "nepal",
+    "name": "Nepal",
+    "tagline": "Roof of the World",
+    "description": "Home to eight of the world's highest peaks, Nepal blends adventure with spirituality. Trek through rhododendron forests, explore ancient Kathmandu, and find peace in Buddhist monasteries.",
+    "image": "/destinations/nepal.jpg",
+    "highlights": ["Himalayan Trekking", "Buddhist Heritage", "Mountain Views", "Wildlife"],
+    "subDestinations": [
+      { "name": "Kathmandu Valley", "image": "/destinations/nepal.jpg", "tours": 4 },
+      { "name": "Everest Region", "image": "/destinations/nepal.jpg", "tours": 3 },
+      { "name": "Pokhara", "image": "/destinations/nepal.jpg", "tours": 5 }
+    ]
+  },
+  {
+    "id": "bhutan",
+    "name": "Bhutan",
+    "tagline": "The Last Shangri-La",
+    "description": "This Buddhist kingdom measures success in Gross National Happiness. Discover fortress monasteries, pristine nature, and a culture that has remained largely untouched by modernity.",
+    "image": "/destinations/bhutan.jpg",
+    "highlights": ["Tiger's Nest Monastery", "Festival Tours", "Sustainable Travel", "Archery"],
+    "subDestinations": [
+      { "name": "Paro & Tiger's Nest", "image": "/destinations/bhutan.jpg", "tours": 4 },
+      { "name": "Thimphu", "image": "/destinations/bhutan.jpg", "tours": 3 },
+      { "name": "Punakha", "image": "/destinations/bhutan.jpg", "tours": 2 }
+    ]
+  },
+  {
+    "id": "srilanka",
+    "name": "Sri Lanka",
+    "tagline": "The Pearl of the Indian Ocean",
+    "description": "This teardrop island packs incredible diversity into its compact size. Ancient ruins, wildlife encounters, pristine beaches, and the world's finest tea plantations await.",
+    "image": "/destinations/srilanka.jpg",
+    "highlights": ["Ancient Ruins", "Safari Adventures", "Beach Retreats", "Tea Country"],
+    "subDestinations": [
+      { "name": "Sigiriya Rock", "image": "/destinations/srilanka.jpg", "tours": 5 },
+      { "name": "Kandy", "image": "/destinations/srilanka.jpg", "tours": 4 },
+      { "name": "Yala National Park", "image": "/destinations/srilanka.jpg", "tours": 3 }
+    ]
+  }
+]

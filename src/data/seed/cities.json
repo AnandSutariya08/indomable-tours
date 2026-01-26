@@ -1,0 +1,137 @@
+[
+  {
+    "id": "1",
+    "name": "Delhi",
+    "country": "India",
+    "image": "/destinations/taj-mahal.jpg",
+    "tours": 12,
+    "description": "India's capital blends ancient history with modern vibrancy",
+    "popular": ["Red Fort", "Qutub Minar", "India Gate"]
+  },
+  {
+    "id": "2",
+    "name": "Agra",
+    "country": "India",
+    "image": "/destinations/taj-mahal.jpg",
+    "tours": 8,
+    "description": "Home to the iconic Taj Mahal and Mughal architecture",
+    "popular": ["Taj Mahal", "Agra Fort", "Fatehpur Sikri"]
+  },
+  {
+    "id": "3",
+    "name": "Jaipur",
+    "country": "India",
+    "image": "/destinations/jaipur.jpg",
+    "tours": 10,
+    "description": "The Pink City of royal palaces and colorful bazaars",
+    "popular": ["Amber Fort", "Hawa Mahal", "City Palace"]
+  },
+  {
+    "id": "4",
+    "name": "Udaipur",
+    "country": "India",
+    "image": "/destinations/jaipur.jpg",
+    "tours": 7,
+    "description": "The City of Lakes with romantic palace hotels",
+    "popular": ["Lake Pichola", "City Palace", "Jagdish Temple"]
+  },
+  {
+    "id": "5",
+    "name": "Varanasi",
+    "country": "India",
+    "image": "/destinations/varanasi.jpg",
+    "tours": 6,
+    "description": "One of the world's oldest living cities on the Ganges",
+    "popular": ["Ganga Aarti", "Boat Ride", "Sarnath"]
+  },
+  {
+    "id": "6",
+    "name": "Kochi",
+    "country": "India",
+    "image": "/destinations/kerala.jpg",
+    "tours": 5,
+    "description": "Gateway to Kerala's backwaters and spice trade history",
+    "popular": ["Chinese Fishing Nets", "Fort Kochi", "Mattancherry"]
+  },
+  {
+    "id": "7",
+    "name": "Leh",
+    "country": "India",
+    "image": "/destinations/leh-ladakh.jpg",
+    "tours": 4,
+    "description": "High-altitude adventure in the Himalayan desert",
+    "popular": ["Pangong Lake", "Nubra Valley", "Monasteries"]
+  },
+  {
+    "id": "8",
+    "name": "Mumbai",
+    "country": "India",
+    "image": "/destinations/taj-mahal.jpg",
+    "tours": 8,
+    "description": "India's financial capital with colonial charm",
+    "popular": ["Gateway of India", "Marine Drive", "Elephanta Caves"]
+  },
+  {
+    "id": "9",
+    "name": "Kathmandu",
+    "country": "Nepal",
+    "image": "/destinations/nepal.jpg",
+    "tours": 9,
+    "description": "Nepal's vibrant capital of temples and culture",
+    "popular": ["Durbar Square", "Swayambhunath", "Boudhanath"]
+  },
+  {
+    "id": "10",
+    "name": "Pokhara",
+    "country": "Nepal",
+    "image": "/destinations/nepal.jpg",
+    "tours": 6,
+    "description": "Lakeside paradise with Himalayan panoramas",
+    "popular": ["Phewa Lake", "Sarangkot", "Annapurna Views"]
+  },
+  {
+    "id": "11",
+    "name": "Paro",
+    "country": "Bhutan",
+    "image": "/destinations/bhutan.jpg",
+    "tours": 5,
+    "description": "Gateway to Bhutan and Tiger's Nest monastery",
+    "popular": ["Tiger's Nest", "Rinpung Dzong", "National Museum"]
+  },
+  {
+    "id": "12",
+    "name": "Thimphu",
+    "country": "Bhutan",
+    "image": "/destinations/bhutan.jpg",
+    "tours": 4,
+    "description": "The world's only capital without traffic lights",
+    "popular": ["Tashichho Dzong", "Buddha Point", "Weekend Market"]
+  },
+  {
+    "id": "13",
+    "name": "Colombo",
+    "country": "Sri Lanka",
+    "image": "/destinations/srilanka.jpg",
+    "tours": 6,
+    "description": "Sri Lanka's bustling capital of colonial heritage",
+    "popular": ["Galle Face", "Gangaramaya Temple", "Pettah Market"]
+  },
+  {
+    "id": "14",
+    "name": "Kandy",
+    "country": "Sri Lanka",
+    "image": "/destinations/srilanka.jpg",
+    "tours": 7,
+    "description": "Hill country gem with sacred Buddhist heritage",
+    "popular": ["Temple of the Tooth", "Royal Botanical Gardens", "Tea Estates"]
+  },
+  {
+    "id": "15",
+    "name": "Sigiriya",
+    "country": "Sri Lanka",
+    "image": "/destinations/srilanka.jpg",
+    "tours": 5,
+    "description": "Ancient rock fortress rising from the jungle",
+    "popular": ["Lion Rock", "Frescoes", "Water Gardens"]
+  }
+]

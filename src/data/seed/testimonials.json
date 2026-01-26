@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Mitchell",
+    "location": "Vancouver, Canada",
+    "quote": "The attention to detail was extraordinary. From the private palace dinners to the sunrise at the Taj, every moment felt like a dream. Indomable Tours exceeded every expectation.",
+    "rating": 5,
+    "avatar": "SM"
+  },
+  {
+    "id": "2",
+    "name": "David Chen",
+    "location": "Toronto, Canada",
+    "quote": "Our family trip to Bhutan was transformative. The guides knew every hidden monastery and local story. This wasn't just travel—it was a journey into another world.",
+    "rating": 5,
+    "avatar": "DC"
+  },
+  {
+    "id": "3",
+    "name": "Emma Thompson",
+    "location": "Calgary, Canada",
+    "quote": "After 20 years of traveling, I thought nothing could surprise me. Kerala's backwaters and the hospitality we experienced proved me wonderfully wrong.",
+    "rating": 5,
+    "avatar": "ET"
+  }
+]
