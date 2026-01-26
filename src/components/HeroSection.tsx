@@ -6,10 +6,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import QuoteModal from "./QuoteModal";
 
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   const dummyVideoUrl = "https://player.vimeo.com/external/370467553.hd.mp4?s=ce49c8c6d8e28a89298ffb4c53a2e842bdb11546&profile_id=175";
 
@@ -63,7 +64,7 @@ const HeroSection = () => {
           <div 
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
-            <Button variant="hero" size="xl" onClick={() => setIsFormOpen(true)}>
+            <Button variant="hero" size="xl" onClick={() => setIsQuoteModalOpen(true)}>
               Start Your Journey With Us
             </Button>
             <Button variant="heroOutline" size="xl" onClick={() => setIsVideoOpen(true)}>
@@ -99,42 +100,15 @@ const HeroSection = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Form Modal */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-md bg-cream text-brand-blue">
-          <DialogHeader>
-            <DialogTitle className="heading-display-sm text-brand-blue">Start Your Journey</DialogTitle>
-          </DialogHeader>
-          <form className="space-y-4 pt-4" onSubmit={(e) => { e.preventDefault(); setIsFormOpen(false); }}>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Full Name</label>
-              <input type="text" className="w-full p-2 border border-brand-blue/20 rounded bg-white/50" placeholder="John Doe" required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Email Address</label>
-              <input type="email" className="w-full p-2 border border-brand-blue/20 rounded bg-white/50" placeholder="john@example.com" required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Destination of Interest</label>
-              <select className="w-full p-2 border border-brand-blue/20 rounded bg-white/50">
-                <option>India</option>
-                <option>Nepal</option>
-                <option>Bhutan</option>
-                <option>Sri Lanka</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Message</label>
-              <textarea className="w-full p-2 border border-brand-blue/20 rounded bg-white/50 h-24" placeholder="Tell us about your dream trip..."></textarea>
-            </div>
-            <Button type="submit" className="w-full bg-brand-blue text-cream hover:bg-brand-blue/90">
-              Submit Inquiry
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {/* Existing Quote Modal */}
+      <QuoteModal 
+        isOpen={isQuoteModalOpen} 
+        onClose={() => setIsQuoteModalOpen(false)} 
+      />
     </section>
   );
 };
+
+export default HeroSection;
 
 export default HeroSection;
