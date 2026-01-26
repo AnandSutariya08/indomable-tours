@@ -1,76 +1,49 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, MapPin, Users, Star, Check, Calendar, ArrowRight } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Users, Star, Check, Calendar, ArrowRight, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import QuoteModal from "@/components/QuoteModal";
-
-import tajMahal from "@/assets/destinations/taj-mahal.jpg";
-import jaipur from "@/assets/destinations/jaipur.jpg";
-import kerala from "@/assets/destinations/kerala.jpg";
-import varanasi from "@/assets/destinations/varanasi.jpg";
-import lehLadakh from "@/assets/destinations/leh-ladakh.jpg";
-import nepal from "@/assets/destinations/nepal.jpg";
-import bhutan from "@/assets/destinations/bhutan.jpg";
-import srilanka from "@/assets/destinations/srilanka.jpg";
-
-const tours = [
-  {
-    id: 1,
-    title: "Golden Triangle Classic",
-    location: "Delhi - Agra - Jaipur",
-    image: tajMahal,
-    duration: "7 Days",
-    groupSize: "2-12",
-    rating: 4.9,
-    price: "$2,499",
-    description: "Experience India's iconic trio: witness the Taj Mahal at sunrise, explore Jaipur's pink-hued palaces, and discover Delhi's rich heritage.",
-    fullDescription: "This carefully crafted journey takes you through India's most celebrated destinations. From the bustling streets of Delhi to the romantic beauty of the Taj Mahal and the regal splendor of Jaipur, you'll experience the very best of India's cultural heritage.",
-    highlights: ["Taj Mahal sunrise visit", "Amber Fort elephant ride", "Old Delhi food tour", "Jaipur palace tour", "Private guide throughout"],
-    itinerary: [
-      { day: 1, title: "Arrival in Delhi", description: "Welcome to India! Meet your guide and transfer to your heritage hotel." },
-      { day: 2, title: "Explore Delhi", description: "Full day exploring Old and New Delhi, including Red Fort and India Gate." },
-      { day: 3, title: "Delhi to Agra", description: "Drive to Agra. Afternoon visit to Agra Fort." },
-      { day: 4, title: "Taj Mahal & Fatehpur Sikri", description: "Sunrise at Taj Mahal, then explore the abandoned city of Fatehpur Sikri." },
-      { day: 5, title: "Agra to Jaipur", description: "Drive to Jaipur with a stop at Abhaneri stepwell." },
-      { day: 6, title: "Jaipur Exploration", description: "Visit Amber Fort, City Palace, Hawa Mahal, and local bazaars." },
-      { day: 7, title: "Departure", description: "Transfer to airport for your onward journey." },
-    ],
-    included: ["6 nights luxury accommodation", "Daily breakfast", "Private AC vehicle", "English-speaking guide", "All entrance fees", "Airport transfers"],
-    notIncluded: ["International flights", "Travel insurance", "Personal expenses", "Tips and gratuities", "Optional activities"],
-    gallery: [tajMahal, jaipur, tajMahal, jaipur],
-  },
-  {
-    id: 2,
-    title: "Royal Rajasthan",
-    location: "Jaipur - Udaipur - Jodhpur",
-    image: jaipur,
-    duration: "10 Days",
-    groupSize: "2-8",
-    rating: 4.8,
-    price: "$3,299",
-    description: "Journey through the land of Maharajas, staying in heritage palace hotels and experiencing royal traditions.",
-    fullDescription: "Immerse yourself in the regal splendor of Rajasthan. This journey takes you through the state's most magnificent cities, with stays in palace hotels that were once home to royalty.",
-    highlights: ["Palace hotel stays", "Desert safari", "Traditional cooking class", "Lake cruise", "Private performances"],
-    itinerary: [
-      { day: 1, title: "Arrival in Jaipur", description: "Welcome to the Pink City." },
-      { day: 2, title: "Jaipur Exploration", description: "Amber Fort, City Palace, local markets." },
-    ],
-    included: ["9 nights palace accommodation", "Daily breakfast & select dinners", "Private vehicle", "Expert guide"],
-    notIncluded: ["Flights", "Insurance", "Personal expenses"],
-    gallery: [jaipur, jaipur, jaipur, jaipur],
-  },
-  // Add more tours as needed
-];
+import { useTours } from "@/hooks/useFirestoreData";
 
 const TourDetails = () => {
   const { id } = useParams();
-  const tour = tours.find((t) => t.id === Number(id)) || tours[0];
+  const { data: tours, loading } = useTours();
+  const tour = tours.find((t) => t.id === id) || tours[0];
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-background">
+        <Header />
+        <div className="flex justify-center items-center h-[60vh]">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  if (!tour) {
+    return (
+      <main className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-32 pb-20 text-center">
+          <h1 className="heading-display-md text-primary mb-4">Tour Not Found</h1>
+          <Link to="/tours">
+            <Button variant="hero">Back to Tours</Button>
+          </Link>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  const gallery = tour.itinerary?.slice(0, 4).map(() => tour.image) || [tour.image];
 
   return (
     <main className="min-h-screen bg-background">
@@ -154,7 +127,7 @@ const TourDetails = () => {
                     <div>
                       <h2 className="font-heading text-2xl text-primary mb-4">About This Tour</h2>
                       <p className="font-body text-foreground/80 leading-relaxed">
-                        {tour.fullDescription}
+                        {tour.fullDescription || tour.description}
                       </p>
                     </div>
 
@@ -176,7 +149,7 @@ const TourDetails = () => {
                     <div>
                       <h3 className="font-heading text-xl text-primary mb-4">Gallery</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {tour.gallery.map((img, index) => (
+                        {gallery.map((img, index) => (
                           <motion.div
                             key={index}
                             whileHover={{ scale: 1.05 }}
@@ -195,7 +168,7 @@ const TourDetails = () => {
                 <AnimatedSection>
                   <div className="space-y-6">
                     <h2 className="font-heading text-2xl text-primary mb-6">Day-by-Day Itinerary</h2>
-                    {tour.itinerary.map((day, index) => (
+                    {tour.itinerary?.map((day, index) => (
                       <motion.div
                         key={day.day}
                         initial={{ opacity: 0, x: -20 }}
@@ -211,7 +184,7 @@ const TourDetails = () => {
                           <p className="font-body text-foreground/80">{day.description}</p>
                         </div>
                       </motion.div>
-                    ))}
+                    )) || <p className="text-foreground/70">Itinerary details coming soon.</p>}
                   </div>
                 </AnimatedSection>
               )}
@@ -225,22 +198,22 @@ const TourDetails = () => {
                         What's Included
                       </h3>
                       <ul className="space-y-3">
-                        {tour.included.map((item) => (
+                        {tour.included?.map((item) => (
                           <li key={item} className="flex items-start gap-3">
                             <Check className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
                             <span className="font-body text-foreground/80">{item}</span>
                           </li>
-                        ))}
+                        )) || <li className="text-foreground/70">Details coming soon.</li>}
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-heading text-xl text-primary mb-4">Not Included</h3>
                       <ul className="space-y-3">
-                        {tour.notIncluded.map((item) => (
+                        {tour.notIncluded?.map((item) => (
                           <li key={item} className="flex items-start gap-3">
                             <span className="font-body text-foreground/60">• {item}</span>
                           </li>
-                        ))}
+                        )) || <li className="text-foreground/70">Details coming soon.</li>}
                       </ul>
                     </div>
                   </div>
