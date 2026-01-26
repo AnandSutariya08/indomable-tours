@@ -52,23 +52,25 @@ const Header = () => {
             }`}
           >
             {/* Logo */}
-            <a href="/" className="flex-shrink-0 transition-all duration-300 hover:scale-105 active:scale-95">
-              <img 
-                src={logo} 
-                alt="Indomable Tours" 
-                className={`transition-all duration-500 object-contain ${
-                  isScrolled ? "h-6 md:h-8" : "h-8 md:h-12 lg:h-16"
-                } w-auto`}
-              />
-            </a>
+            <div className="flex-1 flex justify-start lg:w-1/4">
+              <a href="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
+                <img 
+                  src={logo} 
+                  alt="Indomable Tours" 
+                  className={`transition-all duration-500 object-contain ${
+                    isScrolled ? "h-5 md:h-6" : "h-6 md:h-8 lg:h-10"
+                  } w-auto`}
+                />
+              </a>
+            </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-4 xl:space-x-8">
+            <nav className="hidden lg:flex items-center justify-center flex-1 space-x-4 xl:space-x-8">
               {navItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-body font-bold text-[12px] xl:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 relative group ${
+                  className={`font-body font-bold text-[10px] xl:text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative group whitespace-nowrap ${
                     isScrolled ? "text-secondary hover:text-brand-blue" : "text-white hover:text-secondary"
                   }`}
                 >
@@ -81,16 +83,16 @@ const Header = () => {
             </nav>
 
             {/* CTA Button & Mobile Toggle Container */}
-            <div className="flex items-center space-x-4">
+            <div className="flex-1 flex items-center justify-end lg:w-1/4 space-x-4">
               {/* CTA Button - Hidden on mobile, shown in sidebar */}
               <div className="hidden lg:flex items-center">
                 <Button 
                   variant="gold" 
                   size={isScrolled ? "sm" : "lg"}
                   onClick={() => setIsQuoteOpen(true)}
-                  className={`transition-all duration-500 font-bold tracking-widest uppercase text-[10px] md:text-xs rounded-full ${
+                  className={`transition-all duration-500 font-bold tracking-widest uppercase text-[10px] rounded-full ${
                     !isScrolled 
-                      ? "px-6 py-4 shadow-xl" 
+                      ? "px-5 py-3 shadow-xl" 
                       : "bg-brand-blue text-white hover:bg-brand-blue/90"
                   }`}
                 >
