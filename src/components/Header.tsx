@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
@@ -17,18 +17,41 @@ const navItems = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled 
+            ? "py-4" 
+            : "py-6"
+        }`}
+      >
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between h-20">
+          <div 
+            className={`flex items-center justify-between transition-all duration-500 ${
+              isScrolled 
+                ? "bg-background/40 backdrop-blur-xl border border-white/10 rounded-full px-6 py-2 shadow-lg" 
+                : "bg-transparent py-2"
+            }`}
+          >
             {/* Logo */}
-            <a href="/" className="flex-shrink-0">
+            <a href="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105">
               <img 
                 src={logo} 
                 alt="Indomable Tours" 
-                className="h-12 md:h-14 w-auto"
+                className={`transition-all duration-500 ${
+                  isScrolled ? "h-12 md:h-14" : "h-16 md:h-20"
+                } w-auto`}
               />
             </a>
 
@@ -38,7 +61,9 @@ const Header = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-foreground font-body font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                  className={`font-body font-medium transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full ${
+                    isScrolled ? "text-foreground" : "text-white"
+                  } hover:text-primary`}
                 >
                   {item.label}
                 </a>
@@ -48,9 +73,10 @@ const Header = () => {
             {/* CTA Button */}
             <div className="hidden md:flex items-center">
               <Button 
-                variant="hero" 
-                size="lg"
+                variant={isScrolled ? "hero" : "heroOutline"} 
+                size={isScrolled ? "lg" : "xl"}
                 onClick={() => setIsQuoteOpen(true)}
+                className="transition-all duration-500"
               >
                 Get Quote
               </Button>
@@ -58,7 +84,7 @@ const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 text-foreground"
+              className={`lg:hidden p-2 transition-colors ${isScrolled ? "text-foreground" : "text-white"}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -69,8 +95,8 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-background border-t border-border animate-slide-up">
-            <nav className="container mx-auto px-4 py-6 flex flex-col space-y-4">
+          <div className="lg:hidden bg-background/95 backdrop-blur-md border-t border-border animate-slide-up mt-2 mx-4 rounded-2xl overflow-hidden shadow-2xl">
+            <nav className="px-4 py-6 flex flex-col space-y-4">
               {navItems.map((item) => (
                 <a
                   key={item.label}
