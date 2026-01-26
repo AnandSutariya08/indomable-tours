@@ -24,7 +24,6 @@ import AdminCities from "./pages/admin/AdminCities";
 import AdminTeam from "./pages/admin/AdminTeam";
 import AdminTravelInfo from "./pages/admin/AdminTravelInfo";
 import AdminHomeSections from "./pages/admin/AdminHomeSections";
-import AdminSeedUploader from "./pages/admin/AdminSeedUploader";
 
 const queryClient = new QueryClient();
 
@@ -56,7 +55,6 @@ const App = () => (
             <Route path="/admin/team" element={<AdminTeam />} />
             <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
             <Route path="/admin/home-sections" element={<AdminHomeSections />} />
-            <Route path="/admin/seed-uploader" element={<AdminSeedUploader />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
