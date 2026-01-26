@@ -34,24 +34,31 @@ const Tours = () => {
       />
 
       {/* Filter Section */}
-      <section className="py-8 md:py-12 bg-muted/50 border-y border-border/50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 md:px-6 py-1.5 md:py-2 rounded-full font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-secondary text-primary shadow-lg"
-                    : "text-secondary hover:text-secondary/80"
-                }`}
-              >
-                {category}
-              </motion.button>
-            ))}
+      <section className="py-12 bg-muted/50 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="flex flex-col items-center gap-6">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+              {categories.map((category) => (
+                <motion.button
+                  key={category}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                    selectedCategory === category
+                      ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                      : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                  }`}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -105,24 +112,24 @@ const Tours = () => {
                       </div>
 
                       {/* Content */}
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-foreground/70 mb-2">
+                      <div className="p-6 bg-muted/50">
+                        <div className="flex items-center gap-2 text-primary/70 mb-2">
                           <MapPin className="w-4 h-4" />
-                          <span className="font-body text-sm">{tour.location}</span>
+                          <span className="font-body text-sm font-medium">{tour.location}</span>
                         </div>
-                        <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-accent transition-colors">
+                        <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
                           {tour.title}
                         </h3>
-                        <p className="font-body text-sm text-foreground/80 mb-4 line-clamp-2">
+                        <p className="font-body text-sm text-foreground/70 mb-4 line-clamp-2 min-h-[40px]">
                           {tour.description}
                         </p>
 
                         {/* Highlights */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {tour.highlights.slice(0, 2).map((highlight) => (
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {tour.highlights.slice(0, 3).map((highlight) => (
                             <span
                               key={highlight}
-                              className="px-2 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
+                              className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
                             >
                               {highlight}
                             </span>
@@ -130,14 +137,14 @@ const Tours = () => {
                         </div>
 
                         {/* Footer */}
-                        <div className="flex items-center justify-between pt-4 border-t border-border">
+                        <div className="flex items-center justify-between pt-4 border-t border-primary/10">
                           <div>
-                            <span className="font-body text-xs text-foreground/60">From</span>
-                            <p className="font-heading text-2xl text-primary">{tour.price}</p>
+                            <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">From</span>
+                            <p className="font-heading text-2xl text-secondary">{tour.price}</p>
                           </div>
                           <Link to={`/tours/${tour.id}`}>
-                            <Button variant="hero" size="sm" className="group/btn">
-                              View Details
+                            <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
+                              Explore
                               <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                             </Button>
                           </Link>
