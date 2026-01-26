@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Search, X, Save, Upload, ArrowUpDown, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X, Save, Upload, ArrowUpDown, Loader2, Calendar } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +46,7 @@ const AdminTours = () => {
     highlights: "",
     included: "",
     notIncluded: "",
+    itinerary: [] as { day: number; title: string; description: string }[],
   });
 
   const fetchTours = async () => {
@@ -101,6 +102,7 @@ const AdminTours = () => {
         highlights: tour.highlights.join(", "),
         included: tour.included?.join(", ") || "",
         notIncluded: tour.notIncluded?.join(", ") || "",
+        itinerary: tour.itinerary || [],
       });
     } else {
       setEditingTour(null);
@@ -118,9 +120,31 @@ const AdminTours = () => {
         highlights: "",
         included: "",
         notIncluded: "",
+        itinerary: [],
       });
     }
     setIsModalOpen(true);
+  };
+
+  const addItineraryDay = () => {
+    const newDay = {
+      day: formData.itinerary.length + 1,
+      title: "",
+      description: "",
+    };
+    setFormData({ ...formData, itinerary: [...formData.itinerary, newDay] });
+  };
+
+  const updateItineraryDay = (index: number, field: "title" | "description", value: string) => {
+    const updated = [...formData.itinerary];
+    updated[index] = { ...updated[index], [field]: value };
+    setFormData({ ...formData, itinerary: updated });
+  };
+
+  const removeItineraryDay = (index: number) => {
+    const updated = formData.itinerary.filter((_, i) => i !== index);
+    const reordered = updated.map((item, i) => ({ ...item, day: i + 1 }));
+    setFormData({ ...formData, itinerary: reordered });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -142,7 +166,7 @@ const AdminTours = () => {
         highlights: formData.highlights.split(",").map(s => s.trim()).filter(Boolean),
         included: formData.included.split(",").map(s => s.trim()).filter(Boolean),
         notIncluded: formData.notIncluded.split(",").map(s => s.trim()).filter(Boolean),
-        itinerary: editingTour?.itinerary || [],
+        itinerary: formData.itinerary,
       };
 
       if (editingTour) {
@@ -412,6 +436,66 @@ const AdminTours = () => {
                 onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
                 placeholder="e.g., Sunrise at Taj Mahal, Camel safari, Royal Palace dinner"
               />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-semibold flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Day-by-Day Itinerary
+                </Label>
+                <Button type="button" variant="outline" size="sm" onClick={addItineraryDay}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Day
+                </Button>
+              </div>
+              {formData.itinerary.length === 0 ? (
+                <div className="text-center py-6 border border-dashed border-border rounded-lg bg-muted/30">
+                  <Calendar className="w-8 h-8 mx-auto mb-2 text-foreground/30" />
+                  <p className="text-sm text-foreground/50">No itinerary days added yet</p>
+                  <Button type="button" variant="ghost" size="sm" onClick={addItineraryDay} className="mt-2">
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add First Day
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+                  {formData.itinerary.map((day, index) => (
+                    <div key={index} className="p-4 bg-muted/30 rounded-lg border border-border/50 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 font-semibold text-primary">
+                          <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm">
+                            {day.day}
+                          </span>
+                          Day {day.day}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 text-destructive hover:bg-destructive/10"
+                          onClick={() => removeItineraryDay(index)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        value={day.title}
+                        onChange={(e) => updateItineraryDay(index, "title", e.target.value)}
+                        placeholder="Day title (e.g., Arrival in Delhi)"
+                        className="bg-background"
+                      />
+                      <Textarea
+                        value={day.description}
+                        onChange={(e) => updateItineraryDay(index, "description", e.target.value)}
+                        placeholder="Day activities and description..."
+                        rows={2}
+                        className="bg-background resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
