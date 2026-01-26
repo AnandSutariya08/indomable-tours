@@ -104,9 +104,9 @@ const Destinations = () => {
       />
 
       {/* Country Selector */}
-      <section className="py-4 md:py-6 sticky top-20 z-30 transition-all duration-500">
+      <section className="py-4 md:py-6 transition-all duration-500">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
             {countries.map((country) => (
               <motion.button
                 key={country.id}
@@ -116,7 +116,7 @@ const Destinations = () => {
                 className={`px-4 md:px-6 py-1.5 md:py-2 rounded-full font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-300 ${
                   activeCountry.id === country.id
                     ? "bg-secondary text-primary shadow-lg"
-                    : "text-white hover:text-secondary"
+                    : "text-secondary hover:text-secondary/80"
                 }`}
               >
                 {country.name}
