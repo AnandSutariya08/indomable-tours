@@ -1,11 +1,13 @@
 import { useRef } from "react";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useExploreTours } from "@/hooks/useFirestoreData";
+import { useNavigate } from "react-router-dom";
 
 const ExploreTours = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { data: tours, loading } = useExploreTours();
+  const navigate = useNavigate();
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -44,7 +46,11 @@ const ExploreTours = () => {
         ) : (
           <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
             {tours.map((tour) => (
-              <div key={tour.id} className="flex-shrink-0 w-[320px] md:w-[380px] group cursor-pointer">
+              <div 
+                key={tour.id} 
+                className="flex-shrink-0 w-[320px] md:w-[380px] group cursor-pointer"
+                onClick={() => navigate(`/tours/${tour.id}`)}
+              >
                 <div className="relative h-[420px] md:h-[480px] rounded-2xl overflow-hidden card-hover">
                   <img src={tour.image} alt={tour.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -53,10 +59,13 @@ const ExploreTours = () => {
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <p className="text-cream/80 font-body text-sm mb-2">{tour.location}</p>
-                    <h3 className="font-heading text-2xl md:text-3xl text-cream mb-2">{tour.title}</h3>
-                    <p className="text-cream/80 font-body text-sm leading-relaxed">{tour.description}</p>
-                    <div className="mt-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                      <Button variant="gold" size="sm">View Details</Button>
+                    <h3 className="font-heading text-2xl md:text-3xl text-cream mb-2 group-hover:text-secondary transition-colors">{tour.title}</h3>
+                    <p className="text-cream/80 font-body text-sm leading-relaxed line-clamp-2">{tour.description}</p>
+                    <div className="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                      <Button variant="gold" size="sm" className="rounded-full px-6 font-bold">
+                        View Details
+                      </Button>
+                      <ArrowRight className="w-6 h-6 text-cream group-hover:translate-x-2 transition-transform duration-300" />
                     </div>
                   </div>
                 </div>
