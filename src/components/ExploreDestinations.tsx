@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const ExploreDestinations = () => {
-  const { destinations: countries, loading } = useSelector((state: RootState) => state.firebase);
+  const { exploreDestinations: countries, loading } = useSelector((state: RootState) => state.firebase);
   const [activeCountry, setActiveCountry] = useState<any>(null);
 
   useEffect(() => {
@@ -12,6 +12,18 @@ const ExploreDestinations = () => {
       setActiveCountry(countries[0]);
     }
   }, [loading, countries, activeCountry]);
+
+  // Image prefetching
+  useEffect(() => {
+    if (countries.length > 0) {
+      countries.forEach((country: any) => {
+        if (country.image) {
+          const img = new Image();
+          img.src = country.image;
+        }
+      });
+    }
+  }, [countries]);
 
   const currentCountry = activeCountry || countries[0];
 

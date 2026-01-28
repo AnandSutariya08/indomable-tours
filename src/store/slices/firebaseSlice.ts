@@ -9,6 +9,7 @@ interface FirebaseState {
   blog: any[];
   testimonials: any[];
   travelInfo: any[];
+  exploreDestinations: any[];
   loading: boolean;
   error: string | null;
   lastFetched: number | null;
@@ -21,6 +22,7 @@ const initialState: FirebaseState = {
   blog: [],
   testimonials: [],
   travelInfo: [],
+  exploreDestinations: [],
   loading: false,
   error: null,
   lastFetched: null,
@@ -36,7 +38,8 @@ export const fetchAllData = createAsyncThunk(
         cities: 'cities',
         blog: 'blogPosts',
         testimonials: 'testimonials',
-        travelInfo: 'travelInfo'
+        travelInfo: 'travelInfo',
+        exploreDestinations: 'exploreDestinations'
       };
 
       const results = await Promise.all(
@@ -83,6 +86,7 @@ const firebaseSlice = createSlice({
         state.blog = action.payload.blog || [];
         state.testimonials = action.payload.testimonials || [];
         state.travelInfo = action.payload.travelInfo || [];
+        state.exploreDestinations = action.payload.exploreDestinations || [];
         state.lastFetched = Date.now();
       })
       .addCase(fetchAllData.rejected, (state, action) => {
