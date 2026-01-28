@@ -8,17 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  getCollection, 
-  addDocument, 
-  updateDocument, 
-  deleteDocument, 
-  setDocument,
-  COLLECTIONS 
+import {
+  getCollection,
+  addDocument,
+  updateDocument,
+  deleteDocument,
+  COLLECTIONS
 } from "@/services/firestoreService";
-import { uploadImage, getImagePath } from "@/services/storageService";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { Tour } from "@/hooks/useFirestoreData";
 
@@ -40,7 +37,6 @@ const AdminTours = () => {
     duration: "",
     groupSize: "",
     rating: 4.5,
-    price: "",
     description: "",
     fullDescription: "",
     highlights: "",
@@ -75,6 +71,11 @@ const AdminTours = () => {
     const aVal = a[key];
     const bVal = b[key];
     if (aVal === undefined || bVal === undefined) return 0;
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      return direction === 'asc'
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal);
+    }
     if (aVal < bVal) return direction === 'asc' ? -1 : 1;
     if (aVal > bVal) return direction === 'asc' ? 1 : -1;
     return 0;
@@ -97,7 +98,6 @@ const AdminTours = () => {
         duration: tour.duration,
         groupSize: tour.groupSize,
         rating: tour.rating,
-        price: tour.price,
         description: tour.description,
         fullDescription: tour.fullDescription || "",
         highlights: tour.highlights.join(", "),
@@ -116,7 +116,6 @@ const AdminTours = () => {
         duration: "",
         groupSize: "",
         rating: 4.5,
-        price: "",
         description: "",
         fullDescription: "",
         highlights: "",
@@ -171,7 +170,6 @@ const AdminTours = () => {
         duration: formData.duration,
         groupSize: formData.groupSize,
         rating: Number(formData.rating),
-        price: formData.price,
         description: formData.description,
         fullDescription: formData.fullDescription,
         highlights: formData.highlights.split(",").map(s => s.trim()).filter(Boolean),
@@ -200,7 +198,7 @@ const AdminTours = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this tour?")) return;
-    
+
     const success = await deleteDocument(COLLECTIONS.TOURS, id);
     if (success) {
       toast({ title: "Tour deleted successfully" });
@@ -259,38 +257,36 @@ const AdminTours = () => {
               <Table>
                 <TableHeader className="sticky top-0 bg-card z-10 border-b shadow-sm">
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-[80px]">Image</TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('title')}>
-                      <div className="flex items-center gap-2">
+                    <TableHead className="w-[80px]">Image</TableHead>           {/* fixed */}
+                    <TableHead className="w-[35%] min-w-[180px]">               {/* most space for title */}
+                      <div className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                        onClick={() => handleSort('title')}>
                         Title <ArrowUpDown className="w-3 h-3" />
                       </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('country')}>
-                      <div className="flex items-center gap-2">
+                    <TableHead className="w-[18%] min-w-[140px]">               {/* country + badge */}
+                      <div className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                        onClick={() => handleSort('country')}>
                         Country <ArrowUpDown className="w-3 h-3" />
                       </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('duration')}>
-                      <div className="flex items-center gap-2">
+                    <TableHead className="w-[14%] min-w-[110px]">               {/* duration – usually short */}
+                      <div className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                        onClick={() => handleSort('duration')}>
                         Duration <ArrowUpDown className="w-3 h-3" />
                       </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors text-right" onClick={() => handleSort('price')}>
-                      <div className="flex items-center justify-end gap-2">
-                        Price <ArrowUpDown className="w-3 h-3" />
-                      </div>
-                    </TableHead>
-                    <TableHead className="text-right pr-6">Actions</TableHead>
+                    <TableHead className="w-[120px] text-right pr-6">Actions</TableHead>  {/* fixed width for buttons */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   <AnimatePresence>
-                    {filteredTours.map((tour, index) => (
+                    {filteredTours.map((tour) => (
                       <TableRow key={tour.id} className="group hover:bg-muted/30 transition-colors">
                         <TableCell>
                           <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border/50">
                             {tour.image && (
-                              <img src={tour.image} alt="" className="w-full h-full object-cover" />
+                              <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
                             )}
                           </div>
                         </TableCell>
@@ -306,20 +302,19 @@ const AdminTours = () => {
                           </span>
                         </TableCell>
                         <TableCell className="text-foreground/70 font-medium">{tour.duration}</TableCell>
-                        <TableCell className="text-right font-heading font-bold text-primary">{tour.price}</TableCell>
                         <TableCell className="text-right pr-6">
                           <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => openModal(tour)}
                               className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
                             >
                               <Pencil className="w-4 h-4" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => handleDelete(tour.id)}
                               className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
                             >
@@ -381,13 +376,13 @@ const AdminTours = () => {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Duration</Label>
                 <Input
                   value={formData.duration}
                   onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                  placeholder="e.g., 7 Days"
+                  placeholder="e.g., 7 Days / 6 Nights"
                   required
                 />
               </div>
@@ -396,16 +391,18 @@ const AdminTours = () => {
                 <Input
                   value={formData.groupSize}
                   onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
-                  placeholder="e.g., 2-12 Guests"
+                  placeholder="e.g., 2–12 Guests"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-sm font-semibold">Starting Price</Label>
+                <Label className="text-sm font-semibold">Rating (display)</Label>
                 <Input
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  placeholder="e.g., $2,499"
-                  required
+                  type="number"
+                  step="0.1"
+                  min="1"
+                  max="5"
+                  value={formData.rating}
+                  onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) || 4.5 })}
                 />
               </div>
             </div>
@@ -455,7 +452,7 @@ const AdminTours = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 border rounded-xl bg-muted/20">
                 {formData.gallery.map((url, index) => (
                   <div key={index} className="relative aspect-video rounded-lg overflow-hidden border group shadow-sm">
-                    <img src={url} alt="" className="w-full h-full object-cover" />
+                    <img src={url} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => removeGalleryImage(index)}
@@ -485,6 +482,7 @@ const AdminTours = () => {
                   Add Day
                 </Button>
               </div>
+
               {formData.itinerary.length === 0 ? (
                 <div className="text-center py-6 border border-dashed border-border rounded-lg bg-muted/30">
                   <Calendar className="w-8 h-8 mx-auto mb-2 text-foreground/30" />
@@ -534,7 +532,7 @@ const AdminTours = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Inclusions (comma separated)</Label>
                 <Textarea

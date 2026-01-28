@@ -11,7 +11,7 @@ export interface Tour {
   duration: string;
   groupSize: string;
   rating: number;
-  price: string;
+  // price: string;
   description: string;
   fullDescription?: string;
   highlights: string[];

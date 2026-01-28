@@ -42,10 +42,6 @@ const Testimonials = () => {
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button variant="hero" size="xl">Explore Tours</Button>
-          <Button variant="gold" size="xl">Get a Custom Quote</Button>
-        </div>
       </div>
     </section>
   );

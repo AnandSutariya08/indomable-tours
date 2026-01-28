@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import luxuryHero from "@/assets/luxury-hero.jpg";
 import kerala from "@/assets/destinations/kerala.jpg";
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import video1 from "../assets/videos/withouttext.mp4"
+import video2 from "../assets/videos/withouttext.mp4"
+import video3 from "../assets/videos/withouttext.mp4";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 const LuxuryHero = () => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -29,12 +33,12 @@ const LuxuryHero = () => {
                 Travel Beyond the Ordinary
               </h2>
               <p className="body-display-md text-foreground mb-4">
-                Where every sunrise brings new wonders and every sunset whispers ancient tales. 
+                Where every sunrise brings new wonders and every sunset whispers ancient tales.
                 Our journeys are not just trips—they're transformations.
               </p>
               <p className="body-display-sm text-foreground/80">
-                From private palace stays to helicopter journeys over the Himalayas, 
-                we curate experiences that money can't simply buy—only create through 
+                From private palace stays to helicopter journeys over the Himalayas,
+                we curate experiences that money can't simply buy—only create through
                 years of relationships and deep cultural understanding.
               </p>
             </div>
@@ -57,8 +61,8 @@ const LuxuryHero = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                variant="gold" 
+              <Button
+                variant="gold"
                 size="xl"
                 asChild
               >
@@ -70,7 +74,7 @@ const LuxuryHero = () => {
           {/* Right - Image Section */}
           <div className="relative">
             {/* Main Image */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer" onClick={() => playVideo(dummyVideoUrl)}>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer" onClick={() => playVideo(video1)}>
               <img
                 src={luxuryHero}
                 alt="Luxury travel experience"
@@ -84,11 +88,11 @@ const LuxuryHero = () => {
             </div>
 
             {/* Floating Video Cards */}
-            <div 
+            <div
               className="absolute -bottom-8 -left-8 w-36 h-48 md:w-44 md:h-56 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer z-20"
               onClick={(e) => {
                 e.stopPropagation();
-                playVideo(dummyVideoUrl);
+                playVideo(video2);
               }}
             >
               <img
@@ -103,11 +107,11 @@ const LuxuryHero = () => {
               </div>
             </div>
 
-            <div 
+            <div
               className="absolute -top-6 -right-6 w-32 h-40 md:w-40 md:h-48 rounded-xl overflow-hidden shadow-xl border-4 border-background group cursor-pointer z-20"
               onClick={(e) => {
                 e.stopPropagation();
-                playVideo(dummyVideoUrl);
+                playVideo(video3);
               }}
             >
               <img
@@ -130,14 +134,19 @@ const LuxuryHero = () => {
 
       {/* Video Modal */}
       <Dialog open={!!videoUrl} onOpenChange={(open) => !open && setVideoUrl(null)}>
-        <DialogContent className="max-w-4xl p-0 bg-black overflow-hidden border-none">
-          <div className="relative aspect-video">
+        <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Our Story</DialogTitle>
+          </DialogHeader>
+          <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
             {videoUrl && (
               <video
                 src={videoUrl}
                 autoPlay
                 controls
-                className="w-full h-full"
+                playsInline
+                className="w-full h-full object-contain"
+                webkit-playsinline="true"
               />
             )}
           </div>
@@ -148,3 +157,5 @@ const LuxuryHero = () => {
 };
 
 export default LuxuryHero;
+
+
