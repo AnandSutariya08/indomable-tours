@@ -85,7 +85,7 @@ const HeroSection = () => {
 
       {/* Video Modal */}
       <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-        <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none">
+        <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none"style={{ zIndex: 9999 }}>
           <DialogHeader className="sr-only">
             <DialogTitle>Our Story</DialogTitle>
           </DialogHeader>
