@@ -80,6 +80,7 @@ const LuxuryHero = () => {
                 src={luxuryHero}
                 alt="Luxury travel experience"
                 className="w-full h-[500px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                 <div className="w-20 h-20 rounded-full bg-cream/90 flex items-center justify-center shadow-2xl transform transition-transform group-hover:scale-110">
@@ -100,6 +101,7 @@ const LuxuryHero = () => {
                 src={kerala}
                 alt="Kerala backwaters"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
                 <div className="w-12 h-12 rounded-full bg-cream/90 flex items-center justify-center">
@@ -119,6 +121,7 @@ const LuxuryHero = () => {
                 src={tajMahal}
                 alt="Taj Mahal"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
                 <div className="w-10 h-10 rounded-full bg-cream/90 flex items-center justify-center">
