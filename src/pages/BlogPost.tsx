@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, User, Calendar, Tag, Facebook, Twitter, Linkedin, Loader2 } from "lucide-react";
+import { ArrowLeft, Clock, User, Calendar, Tag, Facebook, Linkedin, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -129,13 +129,30 @@ const BlogPost = () => {
                 <div className="flex items-center gap-4">
                   <span className="font-body text-foreground/70">Share this article:</span>
                   <div className="flex gap-3">
-                    <a href="#" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a 
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
                       <Facebook className="w-5 h-5" />
                     </a>
-                    <a href="#" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors">
-                      <Twitter className="w-5 h-5" />
+                    <a 
+                      href={`https://x.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
                     </a>
-                    <a href="#" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a 
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
                       <Linkedin className="w-5 h-5" />
                     </a>
                   </div>
