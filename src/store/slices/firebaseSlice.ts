@@ -8,6 +8,7 @@ interface FirebaseState {
   cities: any[];
   blog: any[];
   testimonials: any[];
+  travelInfo: any[];
   loading: boolean;
   error: string | null;
   lastFetched: number | null;
@@ -19,6 +20,7 @@ const initialState: FirebaseState = {
   cities: [],
   blog: [],
   testimonials: [],
+  travelInfo: [],
   loading: false,
   error: null,
   lastFetched: null,
@@ -28,12 +30,20 @@ export const fetchAllData = createAsyncThunk(
   'firebase/fetchAllData',
   async (_, { rejectWithValue }) => {
     try {
-      const collections = ['tours', 'destinations', 'cities', 'blog', 'testimonials'];
+      const collectionMapping: Record<string, string> = {
+        tours: 'tours',
+        destinations: 'destinations',
+        cities: 'cities',
+        blog: 'blogPosts',
+        testimonials: 'testimonials',
+        travelInfo: 'travelInfo'
+      };
+
       const results = await Promise.all(
-        collections.map(async (col) => {
-          const snapshot = await getDocs(query(collection(db, col)));
+        Object.entries(collectionMapping).map(async ([key, colName]) => {
+          const snapshot = await getDocs(query(collection(db, colName)));
           return {
-            name: col,
+            key,
             data: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           };
         })
@@ -41,10 +51,11 @@ export const fetchAllData = createAsyncThunk(
       
       const data: any = {};
       results.forEach(res => {
-        data[res.name] = res.data;
+        data[res.key] = res.data;
       });
       return data;
     } catch (error: any) {
+      console.error("Redux fetch error:", error);
       return rejectWithValue(error.message);
     }
   }
@@ -66,11 +77,12 @@ const firebaseSlice = createSlice({
       })
       .addCase(fetchAllData.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.tours = action.payload.tours;
-        state.destinations = action.payload.destinations;
-        state.cities = action.payload.cities;
-        state.blog = action.payload.blog;
-        state.testimonials = action.payload.testimonials;
+        state.tours = action.payload.tours || [];
+        state.destinations = action.payload.destinations || [];
+        state.cities = action.payload.cities || [];
+        state.blog = action.payload.blog || [];
+        state.testimonials = action.payload.testimonials || [];
+        state.travelInfo = action.payload.travelInfo || [];
         state.lastFetched = Date.now();
       })
       .addCase(fetchAllData.rejected, (state, action) => {

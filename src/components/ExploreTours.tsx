@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useExploreTours } from "@/hooks/useFirestoreData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { useNavigate } from "react-router-dom";
 
 const ExploreTours = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { data: tours, loading } = useExploreTours();
+  const { tours, loading } = useSelector((state: RootState) => state.firebase);
   const navigate = useNavigate();
 
   const scroll = (direction: "left" | "right") => {
@@ -41,7 +42,7 @@ const ExploreTours = () => {
           </button>
         </div>
 
-        {loading ? (
+        {loading && tours.length === 0 ? (
           <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
         ) : (
           <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
