@@ -4,8 +4,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const ExploreDestinations = () => {
-  const { exploreDestinations: countries, loading } = useSelector((state: RootState) => state.firebase);
+  const { exploreDestinations: rawCountries, loading } = useSelector((state: RootState) => state.firebase);
   const [activeCountry, setActiveCountry] = useState<any>(null);
+
+  // Custom order: India, Sri Lanka, Bhutan, Nepal
+  const countries = [...rawCountries].sort((a: any, b: any) => {
+    const order = ["India", "Sri Lanka", "Bhutan", "Nepal"];
+    const indexA = order.indexOf(a.name);
+    const indexB = order.indexOf(b.name);
+    
+    // If name not in order list, put it at the end
+    const finalIndexA = indexA === -1 ? 99 : indexA;
+    const finalIndexB = indexB === -1 ? 99 : indexB;
+    
+    return finalIndexA - finalIndexB;
+  });
 
   useEffect(() => {
     if (!loading && countries.length > 0 && !activeCountry) {
