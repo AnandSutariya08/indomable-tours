@@ -37,7 +37,7 @@ const BlogHighlights = () => {
               blogPosts.slice(0, 3).map((post) => (
                 <Link key={post.id} to={`/blog/${post.id}`} className="flex gap-5 group cursor-pointer">
                   <div className="flex-shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden">
-                    <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
                   </div>
                   <div className="flex-1 py-1">
                     <div className="flex items-center gap-3 mb-2">
