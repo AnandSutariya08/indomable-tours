@@ -116,9 +116,10 @@ const ToursByCity = () => {
                           <img
                             src={city.image}
                             alt={city.name}
-                            className="w-full h-full object-cover transition-opacity duration-700 group-hover:scale-110 opacity-0"
+                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
                             loading="lazy"
                             onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                            style={{ opacity: 1 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 right-4">

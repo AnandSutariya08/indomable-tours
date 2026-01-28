@@ -117,9 +117,10 @@ const Tours = () => {
                           <img
                             src={tour.image}
                             alt={tour.title}
-                            className="w-full h-full object-cover transition-opacity duration-700 group-hover:scale-110 opacity-0"
+                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
                             loading="lazy"
                             onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                            style={{ opacity: 1 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 left-4 flex gap-2">
