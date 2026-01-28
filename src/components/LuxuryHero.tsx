@@ -9,6 +9,7 @@ import video2 from "../assets/videos/withouttext.mp4"
 import video3 from "../assets/videos/withouttext.mp4";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { Link } from "react-router-dom";
 
 const LuxuryHero = () => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -66,7 +67,7 @@ const LuxuryHero = () => {
                 size="xl"
                 asChild
               >
-                <a href="tel:+14165550199">Speak to an Expert</a>
+                <Link to="tel:+14165550199">Speak to an Expert</Link>
               </Button>
             </div>
           </div>

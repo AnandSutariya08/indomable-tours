@@ -3,7 +3,7 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import QuoteModal from "./QuoteModal";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
@@ -54,7 +54,7 @@ const Header = () => {
             <div className="flex items-center w-full relative h-12 md:h-14 lg:h-16 px-4 md:px-6">
               {/* Logo - Positioned left */}
               <div className="flex-1 flex justify-start items-center">
-                <a href="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
+                <Link to="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
                   <img 
                     src={logo} 
                     alt="Indomable Tours" 
@@ -62,16 +62,16 @@ const Header = () => {
                       isScrolled ? "h-5 md:h-6" : "h-6 md:h-7 lg:h-8"
                     } w-auto`}
                   />
-                </a>
+                </Link>
               </div>
 
               {/* Desktop Navigation - Absolute Centered in Header */}
               <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <nav className="flex items-center justify-center space-x-6 xl:space-x-8">
                   {navItems.map((item) => (
-                    <a
+                    <Link
                       key={item.label}
-                      href={item.href}
+                      to={item.href}
                       className={`font-body uppercase tracking-[0.2em] transition-all duration-300 relative group whitespace-nowrap ${
                         isScrolled 
                           ? "text-secondary hover:text-brand-blue text-[11px] xl:text-[12px] font-black" 
@@ -82,7 +82,7 @@ const Header = () => {
                       <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
                         isScrolled ? "bg-brand-blue" : "bg-secondary"
                       }`} />
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
@@ -151,20 +151,18 @@ const Header = () => {
 
               <nav className="flex flex-col space-y-1">
                 {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.label}
-                    href={item.href}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="text-white font-body font-bold text-base uppercase tracking-[0.15em] py-3.5 px-4 rounded-2xl hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                    <motion.div 
-                      className="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_10px_rgba(212,175,55,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
-                    />
-                  </motion.a>
+                  <motion.div key={item.label}>
+                    <Link
+                      to={item.href}
+                      className="text-white font-body font-bold text-base uppercase tracking-[0.15em] py-3.5 px-4 rounded-2xl hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                      <motion.div 
+                        className="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_10px_rgba(212,175,55,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
 
