@@ -57,10 +57,11 @@ const LuxuryHero = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="xl">
-                Plan Your Journey
-              </Button>
-              <Button variant="gold" size="xl">
+              <Button 
+                variant="gold" 
+                size="xl"
+                onClick={() => window.location.href = "tel:+14165550199"}
+              >
                 Speak to an Expert
               </Button>
             </div>
