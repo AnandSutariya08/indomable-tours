@@ -20,6 +20,16 @@ const Tours = () => {
   const { data: tours, loading } = useTours();
   const [searchParams] = useSearchParams();
   const cityFilter = searchParams.get("city");
+  const countryFilter = searchParams.get("country");
+
+  useEffect(() => {
+    if (countryFilter) {
+      const formattedCountry = countryFilter.charAt(0).toUpperCase() + countryFilter.slice(1).toLowerCase();
+      if (categories.includes(formattedCountry)) {
+        setSelectedCategory(formattedCountry);
+      }
+    }
+  }, [countryFilter]);
 
   const filteredTours = tours.filter(tour => {
     const matchesCategory = selectedCategory === "All Tours" || tour.country === selectedCategory;

@@ -209,7 +209,7 @@ const Destinations = () => {
                     whileHover={{ y: -10 }}
                     className="group cursor-pointer"
                   >
-                    <Link to={`/tours?country=${activeCountry.name}`}>
+                    <Link to={`/tours?country=${encodeURIComponent(activeCountry.name)}`}>
                       <div className="relative h-72 rounded-2xl overflow-hidden">
                         <img
                           src={dest.image}
@@ -252,7 +252,7 @@ const Destinations = () => {
               Let us help you plan your perfect journey to this incredible destination.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to={`/tours?country=${activeCountry.name}`}>
+              <Link to={`/tours?country=${encodeURIComponent(activeCountry.name)}`}>
                 <Button variant="gold" size="xl">
                   View {activeCountry.name} Tours
                 </Button>
