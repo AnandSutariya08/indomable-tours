@@ -17,7 +17,12 @@ const BlogHighlights = () => {
                 Dive into tales of adventure, culture, and discovery. Our travel experts share insider knowledge and destination guides.
               </p>
             </div>
-            <Button variant="hero" size="xl" className="group">
+            <Button 
+              variant="hero" 
+              size="xl" 
+              className="group"
+              onClick={() => window.location.href = "/blog"}
+            >
               Read Our Blog
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Button>
