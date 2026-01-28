@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Star, ArrowRight, Loader2 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import QuoteModal from "@/components/QuoteModal";
-import { useTours } from "@/hooks/useFirestoreData";
 
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 
@@ -17,7 +18,7 @@ const categories = ["All Tours", "India", "Nepal", "Bhutan", "Sri Lanka"];
 const Tours = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Tours");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
-  const { data: tours, loading } = useTours();
+  const { tours, loading } = useSelector((state: RootState) => state.firebase);
   const [searchParams] = useSearchParams();
   const cityFilter = searchParams.get("city");
   const countryFilter = searchParams.get("country");
@@ -53,11 +54,8 @@ const Tours = () => {
         backgroundImage={tajMahal}
       />
 
-      {/* Unified Background Wrapper */}
       <div className="bg-[#F5F1E9]">
-        {/* Filter Section */}
         <section className="py-12 relative overflow-hidden">
-          {/* Decorative background elements */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
           
@@ -90,10 +88,9 @@ const Tours = () => {
           </div>
         </section>
 
-        {/* Tours Grid */}
         <section className="pb-16 md:pb-24">
           <div className="container mx-auto px-4 md:px-6">
-            {loading ? (
+            {loading && tours.length === 0 ? (
               <div className="flex justify-center py-20">
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
               </div>
@@ -116,7 +113,6 @@ const Tours = () => {
                       className="group flex flex-col h-full"
                     >
                       <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
-                        {/* Image */}
                         <div className="relative h-64 overflow-hidden shrink-0">
                           <img
                             src={tour.image}
@@ -125,20 +121,19 @@ const Tours = () => {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 left-4 flex gap-2">
-                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
+                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
                               {tour.duration}
                             </span>
-                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-xs font-medium">
+                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
                               {tour.country}
                             </span>
                           </div>
                           <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
                             <Star className="w-4 h-4 text-secondary fill-secondary" />
-                            <span className="font-body text-sm font-medium text-foreground text-foreground">{tour.rating}</span>
+                            <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
                           </div>
                         </div>
 
-                        {/* Content */}
                         <div className="p-6 flex flex-col flex-grow">
                           <div className="flex items-center gap-2 text-primary/70 mb-2">
                             <MapPin className="w-4 h-4" />
@@ -151,9 +146,8 @@ const Tours = () => {
                             {tour.description}
                           </p>
 
-                          {/* Highlights */}
                           <div className="flex flex-wrap gap-2 mb-6">
-                            {tour.highlights.slice(0, 3).map((highlight) => (
+                            {tour.highlights?.slice(0, 3).map((highlight: string) => (
                               <span
                                 key={highlight}
                                 className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
@@ -163,7 +157,6 @@ const Tours = () => {
                             ))}
                           </div>
 
-                          {/* Footer */}
                           <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
                             <div>
                               <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">Experience</span>
@@ -194,7 +187,6 @@ const Tours = () => {
         </section>
       </div>
 
-      {/* CTA Section */}
       <AnimatedSection>
         <section className="py-20 bg-primary">
           <div className="container mx-auto px-4 md:px-6 text-center">

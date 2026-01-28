@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { useExploreDestinations } from "@/hooks/useFirestoreData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const ExploreDestinations = () => {
-  const { data: countries, loading } = useExploreDestinations();
-  const [activeCountry, setActiveCountry] = useState(countries[0]);
+  const { destinations: countries, loading } = useSelector((state: RootState) => state.firebase);
+  const [activeCountry, setActiveCountry] = useState<any>(null);
 
-  // Update active country when data loads
-  if (!loading && countries.length > 0 && !activeCountry) {
-    setActiveCountry(countries[0]);
-  }
+  useEffect(() => {
+    if (!loading && countries.length > 0 && !activeCountry) {
+      setActiveCountry(countries[0]);
+    }
+  }, [loading, countries, activeCountry]);
 
   const currentCountry = activeCountry || countries[0];
 
@@ -23,12 +25,12 @@ const ExploreDestinations = () => {
           </p>
         </div>
 
-        {loading ? (
+        {loading && countries.length === 0 ? (
           <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="space-y-4">
-              {countries.map((country) => (
+              {countries.map((country: any) => (
                 <button
                   key={country.id}
                   onClick={() => setActiveCountry(country)}
