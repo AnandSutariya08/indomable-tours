@@ -36,8 +36,8 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 md:px-6 text-center pt-12 md:pt-16">
-        <div className="max-w-4xl mx-auto space-y-8">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 text-center pt-24 md:pt-32 pb-12">
+        <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
           {/* Badge */}
           <div className="inline-block">
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-cream/20 backdrop-blur-sm border border-cream/30 text-cream font-body text-sm tracking-wide">
@@ -47,7 +47,7 @@ const HeroSection = () => {
 
           {/* Heading */}
           <h1 
-            className="heading-display-lg text-cream"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading text-cream leading-tight"
           >
             Where Ancient Wonders Meet <span className="text-secondary">Timeless Luxury</span>
           </h1>
