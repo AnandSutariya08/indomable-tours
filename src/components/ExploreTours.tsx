@@ -52,8 +52,14 @@ const ExploreTours = () => {
                 className="flex-shrink-0 w-[320px] md:w-[380px] group cursor-pointer"
                 onClick={() => navigate(`/tours/${tour.id}`)}
               >
-                <div className="relative h-[420px] md:h-[480px] rounded-2xl overflow-hidden card-hover">
-                  <img src={tour.image} alt={tour.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                <div className="relative h-[420px] md:h-[480px] rounded-2xl overflow-hidden card-hover bg-[#2D2D2D]">
+                  <img 
+                    src={tour.image} 
+                    alt={tour.title} 
+                    className="w-full h-full object-cover transition-opacity duration-700 group-hover:scale-110 opacity-0" 
+                    loading="lazy"
+                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">{tour.duration}</span>
