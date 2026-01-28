@@ -1,9 +1,11 @@
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useBlogPosts } from "@/hooks/useFirestoreData";
+import { Link, useNavigate } from "react-router-dom";
 
 const BlogHighlights = () => {
   const { data: blogPosts, loading } = useBlogPosts();
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 md:py-28 bg-background">
@@ -21,7 +23,7 @@ const BlogHighlights = () => {
               variant="hero" 
               size="xl" 
               className="group"
-              onClick={() => window.location.href = "/blog"}
+              onClick={() => navigate("/blog")}
             >
               Read Our Blog
               <ArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -33,7 +35,7 @@ const BlogHighlights = () => {
               <div className="flex justify-center py-12"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
             ) : (
               blogPosts.slice(0, 3).map((post) => (
-                <a key={post.id} href={`/blog/${post.id}`} className="flex gap-5 group cursor-pointer">
+                <Link key={post.id} to={`/blog/${post.id}`} className="flex gap-5 group cursor-pointer">
                   <div className="flex-shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden">
                     <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
@@ -48,7 +50,7 @@ const BlogHighlights = () => {
                       Read more <ArrowRight size={14} />
                     </span>
                   </div>
-                </a>
+                </Link>
               ))
             )}
           </div>
