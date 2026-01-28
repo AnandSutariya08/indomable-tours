@@ -4,8 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "./store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./store";
 import { fetchAllData } from "./store/slices/firebaseSlice";
 import { AdminProvider } from "@/contexts/AdminContext";
 import Index from "./pages/Index";
@@ -32,6 +32,25 @@ import AdminInquiries from "./pages/admin/AdminInquiries";
 
 const queryClient = new QueryClient();
 
+const ImagePrefetcher = () => {
+  const { tours, blog, destinations, cities, exploreDestinations } = useSelector((state: RootState) => state.firebase);
+  
+  useEffect(() => {
+    const allImages = new Set<string>();
+    [...tours, ...blog, ...destinations, ...cities, ...exploreDestinations].forEach(item => {
+      if (item.image) allImages.add(item.image);
+      if (item.gallery) item.gallery.forEach((img: string) => allImages.add(img));
+    });
+
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [tours, blog, destinations, cities, exploreDestinations]);
+
+  return null;
+};
+
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -45,6 +64,7 @@ const App = () => {
         <AdminProvider>
           <Toaster />
           <Sonner />
+          <ImagePrefetcher />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
