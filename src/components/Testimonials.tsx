@@ -21,7 +21,7 @@ const Testimonials = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {testimonials.slice(0, 3).map((testimonial: any) => (
               <div key={testimonial.id} className="bg-muted rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-500">
-                <div className="absolute top-6 right-6 text-6xl text-secondary/30 font-heading">"</div>
+                {/* <div className="absolute top-6 right-6 text-6xl text-secondary/30 font-heading">"</div> */}
                 <div className="flex gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} size={20} className="fill-secondary text-secondary" />
