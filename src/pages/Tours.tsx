@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Star, ArrowRight, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
@@ -18,18 +18,28 @@ const Tours = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Tours");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { data: tours, loading } = useTours();
+  const [searchParams] = useSearchParams();
+  const cityFilter = searchParams.get("city");
 
-  const filteredTours = selectedCategory === "All Tours" 
-    ? tours 
-    : tours.filter(tour => tour.country === selectedCategory);
+  const filteredTours = tours.filter(tour => {
+    const matchesCategory = selectedCategory === "All Tours" || tour.country === selectedCategory;
+    const matchesCity = !cityFilter || tour.location.toLowerCase().includes(cityFilter.toLowerCase()) || tour.title.toLowerCase().includes(cityFilter.toLowerCase());
+    return matchesCategory && matchesCity;
+  });
+
+  useEffect(() => {
+    if (cityFilter) {
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+  }, [cityFilter]);
 
   return (
     <main className="min-h-screen bg-[#F5F1E9]">
       <Header />
       <PageHeader
         badge="Curated Experiences"
-        title="Our Signature Tours"
-        subtitle="Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."
+        title={cityFilter ? `Tours in ${cityFilter}` : "Our Signature Tours"}
+        subtitle={cityFilter ? `Discover our hand-picked journeys through the magnificent city of ${cityFilter}.` : "Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."}
         backgroundImage={tajMahal}
       />
 
@@ -61,6 +71,11 @@ const Tours = () => {
                   </motion.button>
                 ))}
               </div>
+              {cityFilter && (
+                <Link to="/tours" className="text-secondary hover:underline text-sm font-bold uppercase tracking-widest mt-2">
+                  Clear City Filter: {cityFilter} ×
+                </Link>
+              )}
             </div>
           </div>
         </section>
@@ -75,7 +90,7 @@ const Tours = () => {
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedCategory}
+                  key={selectedCategory + (cityFilter || '')}
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
@@ -109,7 +124,7 @@ const Tours = () => {
                           </div>
                           <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
                             <Star className="w-4 h-4 text-secondary fill-secondary" />
-                            <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
+                            <span className="font-body text-sm font-medium text-foreground text-foreground">{tour.rating}</span>
                           </div>
                         </div>
 
@@ -117,7 +132,7 @@ const Tours = () => {
                         <div className="p-6 flex flex-col flex-grow">
                           <div className="flex items-center gap-2 text-primary/70 mb-2">
                             <MapPin className="w-4 h-4" />
-                            <span className="font-body text-sm font-medium">{tour.location}</span>
+                            <span className="font-body text-sm font-medium text-foreground">{tour.location}</span>
                           </div>
                           <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
                             {tour.title}
@@ -141,8 +156,8 @@ const Tours = () => {
                           {/* Footer */}
                           <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
                             <div>
-                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">From</span>
-                              <p className="font-heading text-2xl text-secondary">{tour.price}</p>
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">Experience</span>
+                              <p className="font-heading text-2xl text-secondary">View Details</p>
                             </div>
                             <Link to={`/tours/${tour.id}`}>
                               <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
