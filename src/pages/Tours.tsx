@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Star, ArrowRight, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import QuoteModal from "@/components/QuoteModal";
-import { useTours } from "@/hooks/useFirestoreData";
 
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 
@@ -17,27 +18,44 @@ const categories = ["All Tours", "India", "Nepal", "Bhutan", "Sri Lanka"];
 const Tours = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Tours");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
-  const { data: tours, loading } = useTours();
+  const { tours, loading } = useSelector((state: RootState) => state.firebase);
+  const [searchParams] = useSearchParams();
+  const cityFilter = searchParams.get("city");
+  const countryFilter = searchParams.get("country");
 
-  const filteredTours = selectedCategory === "All Tours" 
-    ? tours 
-    : tours.filter(tour => tour.country === selectedCategory);
+  useEffect(() => {
+    if (countryFilter) {
+      const formattedCountry = countryFilter.charAt(0).toUpperCase() + countryFilter.slice(1).toLowerCase();
+      if (categories.includes(formattedCountry)) {
+        setSelectedCategory(formattedCountry);
+      }
+    }
+  }, [countryFilter]);
+
+  const filteredTours = tours.filter(tour => {
+    const matchesCategory = selectedCategory === "All Tours" || tour.country === selectedCategory;
+    const matchesCity = !cityFilter || tour.location.toLowerCase().includes(cityFilter.toLowerCase()) || tour.title.toLowerCase().includes(cityFilter.toLowerCase());
+    return matchesCategory && matchesCity;
+  });
+
+  useEffect(() => {
+    if (cityFilter) {
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+  }, [cityFilter]);
 
   return (
     <main className="min-h-screen bg-[#F5F1E9]">
       <Header />
       <PageHeader
         badge="Curated Experiences"
-        title="Our Signature Tours"
-        subtitle="Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."
+        title={cityFilter ? `Tours in ${cityFilter}` : "Our Signature Tours"}
+        subtitle={cityFilter ? `Discover our hand-picked journeys through the magnificent city of ${cityFilter}.` : "Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."}
         backgroundImage={tajMahal}
       />
 
-      {/* Unified Background Wrapper */}
       <div className="bg-[#F5F1E9]">
-        {/* Filter Section */}
         <section className="py-12 relative overflow-hidden">
-          {/* Decorative background elements */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
           
@@ -61,21 +79,25 @@ const Tours = () => {
                   </motion.button>
                 ))}
               </div>
+              {cityFilter && (
+                <Link to="/tours" className="text-secondary hover:underline text-sm font-bold uppercase tracking-widest mt-2">
+                  Clear City Filter: {cityFilter} ×
+                </Link>
+              )}
             </div>
           </div>
         </section>
 
-        {/* Tours Grid */}
         <section className="pb-16 md:pb-24">
           <div className="container mx-auto px-4 md:px-6">
-            {loading ? (
+            {loading && tours.length === 0 ? (
               <div className="flex justify-center py-20">
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
               </div>
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedCategory}
+                  key={selectedCategory + (cityFilter || '')}
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
@@ -91,19 +113,21 @@ const Tours = () => {
                       className="group flex flex-col h-full"
                     >
                       <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
-                        {/* Image */}
-                        <div className="relative h-64 overflow-hidden shrink-0">
+                        <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
                           <img
                             src={tour.image}
                             alt={tour.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
+                            loading="lazy"
+                            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                            style={{ opacity: 1 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 left-4 flex gap-2">
-                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
+                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
                               {tour.duration}
                             </span>
-                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-xs font-medium">
+                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
                               {tour.country}
                             </span>
                           </div>
@@ -113,11 +137,10 @@ const Tours = () => {
                           </div>
                         </div>
 
-                        {/* Content */}
                         <div className="p-6 flex flex-col flex-grow">
                           <div className="flex items-center gap-2 text-primary/70 mb-2">
                             <MapPin className="w-4 h-4" />
-                            <span className="font-body text-sm font-medium">{tour.location}</span>
+                            <span className="font-body text-sm font-medium text-foreground">{tour.location}</span>
                           </div>
                           <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
                             {tour.title}
@@ -126,9 +149,8 @@ const Tours = () => {
                             {tour.description}
                           </p>
 
-                          {/* Highlights */}
                           <div className="flex flex-wrap gap-2 mb-6">
-                            {tour.highlights.slice(0, 3).map((highlight) => (
+                            {tour.highlights?.slice(0, 3).map((highlight: string) => (
                               <span
                                 key={highlight}
                                 className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
@@ -138,11 +160,14 @@ const Tours = () => {
                             ))}
                           </div>
 
-                          {/* Footer */}
-                          <div className="flex items-center justify-end pt-4 border-t border-primary/10 mt-auto">
+                          <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
+                            <div>
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">Experience</span>
+                              <p className="font-heading text-2xl text-secondary">View Details</p>
+                            </div>
                             <Link to={`/tours/${tour.id}`}>
                               <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
-                                View Details
+                                Explore
                                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                               </Button>
                             </Link>
@@ -165,7 +190,6 @@ const Tours = () => {
         </section>
       </div>
 
-      {/* CTA Section */}
       <AnimatedSection>
         <section className="py-20 bg-primary">
           <div className="container mx-auto px-4 md:px-6 text-center">
