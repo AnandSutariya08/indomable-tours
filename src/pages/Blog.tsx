@@ -92,7 +92,7 @@ const Blog = () => {
       )}
 
       {/* Filter Section */}
-      <section className="py-12 bg-background sticky top-20 z-30 border-b border-border">
+      <section className="py-12 bg-background border-b border-border">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
             {/* Categories */}
