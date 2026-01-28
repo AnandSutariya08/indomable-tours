@@ -47,7 +47,7 @@ const BlogPost = () => {
       <Header />
       
       {/* Hero Image */}
-      <div className="relative h-[50vh] md:h-[60vh]">
+      <div className="relative h-[60vh] md:h-[70vh]">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -56,36 +56,48 @@ const BlogPost = () => {
           alt={post.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        
+        {/* Back Button - Repositioned to top left with glass effect */}
+        <div className="absolute top-28 left-4 md:left-8 z-20">
+          <Link to="/blog">
+            <Button 
+              variant="outline" 
+              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all rounded-full px-6 py-2"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              <span className="font-body text-sm font-bold tracking-wider uppercase">Back to Blog</span>
+            </Button>
+          </Link>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 pt-32 md:pt-40">
           <div className="container mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Link to="/blog" className="inline-flex items-center gap-2 text-cream/80 hover:text-secondary transition-colors mb-6">
-                <ArrowLeft className="w-4 h-4" />
-                <span className="font-body text-sm">Back to Blog</span>
-              </Link>
-              <span className="inline-block px-4 py-2 rounded-full bg-secondary text-secondary-foreground font-body text-sm mb-4">
-                {post.category}
-              </span>
-              <h1 className="font-heading text-3xl md:text-5xl text-cream mb-6 max-w-4xl">
+              <div className="mb-6">
+                <span className="inline-block px-4 py-2 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-bold tracking-wide shadow-lg">
+                  {post.category}
+                </span>
+              </div>
+              <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl text-cream mb-8 max-w-4xl leading-tight">
                 {post.title}
               </h1>
-              <div className="flex flex-wrap items-center gap-6 text-cream/80">
-                <span className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  {post.author}
+              <div className="flex flex-wrap items-center gap-8 text-cream/80">
+                <span className="flex items-center gap-2.5">
+                  <User className="w-4 h-4 text-secondary" />
+                  <span className="font-body text-sm font-medium tracking-wide">{post.author}</span>
                 </span>
-                <span className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {post.date}
+                <span className="flex items-center gap-2.5">
+                  <Calendar className="w-4 h-4 text-secondary" />
+                  <span className="font-body text-sm font-medium tracking-wide">{post.date}</span>
                 </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  {post.readTime}
+                <span className="flex items-center gap-2.5">
+                  <Clock className="w-4 h-4 text-secondary" />
+                  <span className="font-body text-sm font-medium tracking-wide">{post.readTime}</span>
                 </span>
               </div>
             </motion.div>
