@@ -41,7 +41,7 @@ const Header = () => {
           isScrolled 
             ? "py-3" 
             : "py-2 md:py-3"
-        }`}
+        } ${isMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
       >
         <div className="container mx-auto px-4 md:px-6">
           <div 
