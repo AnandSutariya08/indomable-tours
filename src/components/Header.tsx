@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import QuoteModal from "./QuoteModal";
@@ -119,46 +119,73 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Menu - Dropdown with glass effect */}
+      {/* Mobile Menu - Dropdown with glassmorphism effect */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="lg:hidden fixed top-0 left-0 right-0 z-[90] pt-24 pb-8 px-6 bg-primary/90 backdrop-blur-2xl border-b border-white/10 shadow-2xl"
-          >
-            <nav className="flex flex-col space-y-1">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                  className="text-white/90 font-body font-bold text-base uppercase tracking-widest py-3 border-b border-white/5 hover:text-secondary transition-colors flex items-center justify-between group"
+          <>
+            {/* Overlay for depth */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="lg:hidden fixed inset-0 z-[80] bg-black/40 backdrop-blur-[2px]"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:hidden fixed top-4 left-4 right-4 z-[90] p-6 bg-white/10 backdrop-blur-[30px] border border-white/20 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] flex flex-col gap-6"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <img src={logo} alt="Indomable Tours" className="h-8 w-auto object-contain brightness-110" />
+                <button
+                  className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.label}
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.a>
-              ))}
-            </nav>
+                  <X size={20} />
+                </button>
+              </div>
 
-            <div className="mt-8">
-              <Button 
-                variant="gold" 
-                className="w-full text-white font-black tracking-widest uppercase py-6 rounded-full shadow-lg"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsQuoteOpen(true);
-                }}
-              >
-                Get Quote
-              </Button>
-            </div>
-          </motion.div>
+              <nav className="flex flex-col space-y-1">
+                {navItems.map((item, index) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="text-white font-body font-bold text-base uppercase tracking-[0.15em] py-3.5 px-4 rounded-2xl hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                    <motion.div 
+                      className="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_10px_rgba(212,175,55,0.8)] opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </motion.a>
+                ))}
+              </nav>
+
+              <div className="pt-2">
+                <Button 
+                  variant="gold" 
+                  className="w-full text-white font-black tracking-widest uppercase py-7 rounded-[2rem] shadow-2xl bg-gradient-to-r from-secondary to-yellow-600 border-none relative overflow-hidden group/btn"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsQuoteOpen(true);
+                  }}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    Get Free Quote
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-white/20 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                </Button>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
