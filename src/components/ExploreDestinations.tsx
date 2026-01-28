@@ -84,13 +84,14 @@ const ExploreDestinations = () => {
 
             {currentCountry && (
               <div className="relative">
-                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl bg-muted">
+                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl bg-[#2D2D2D]">
                   <img 
                     src={currentCountry.image} 
                     alt={currentCountry.landmark} 
-                    className="w-full h-full object-cover transition-all duration-700" 
+                    className="w-full h-full object-cover transition-opacity duration-700 opacity-0" 
                     loading="eager"
                     fetchPriority="high"
+                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
