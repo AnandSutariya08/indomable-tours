@@ -225,9 +225,8 @@ const TourDetails = () => {
             <aside>
               <div className="sticky top-28 bg-card p-8 rounded-2xl shadow-lg">
                 <div className="mb-6">
-                  <span className="font-body text-foreground/60">From</span>
-                  <p className="font-heading text-4xl text-primary">{tour.price}</p>
-                  <span className="font-body text-foreground/60">per person</span>
+                  <h3 className="font-heading text-2xl text-primary mb-2">Interested in this tour?</h3>
+                  <p className="font-body text-foreground/60 text-sm">Contact us for customized pricing and availability</p>
                 </div>
 
                 <div className="space-y-4 mb-8">
@@ -260,7 +259,7 @@ const TourDetails = () => {
                   className="w-full mb-4"
                   onClick={() => setIsQuoteOpen(true)}
                 >
-                  Book This Tour
+                  Request Quote
                 </Button>
                 <Button 
                   variant="outline" 
@@ -268,7 +267,7 @@ const TourDetails = () => {
                   className="w-full"
                   onClick={() => setIsQuoteOpen(true)}
                 >
-                  Request Custom Quote
+                  Contact Us
                 </Button>
               </div>
             </aside>
