@@ -80,13 +80,13 @@ const firebaseSlice = createSlice({
       })
       .addCase(fetchAllData.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.tours = action.payload.tours || [];
-        state.destinations = action.payload.destinations || [];
-        state.cities = action.payload.cities || [];
-        state.blog = action.payload.blog || [];
-        state.testimonials = action.payload.testimonials || [];
-        state.travelInfo = action.payload.travelInfo || [];
-        state.exploreDestinations = action.payload.exploreDestinations || [];
+        if (action.payload.tours) state.tours = action.payload.tours;
+        if (action.payload.destinations) state.destinations = action.payload.destinations;
+        if (action.payload.cities) state.cities = action.payload.cities;
+        if (action.payload.blog) state.blog = action.payload.blog;
+        if (action.payload.testimonials) state.testimonials = action.payload.testimonials;
+        if (action.payload.travelInfo) state.travelInfo = action.payload.travelInfo;
+        if (action.payload.exploreDestinations) state.exploreDestinations = action.payload.exploreDestinations;
         state.lastFetched = Date.now();
       })
       .addCase(fetchAllData.rejected, (state, action) => {

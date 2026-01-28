@@ -84,8 +84,14 @@ const ExploreDestinations = () => {
 
             {currentCountry && (
               <div className="relative">
-                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl">
-                  <img src={currentCountry.image} alt={currentCountry.landmark} className="w-full h-full object-cover transition-all duration-700" />
+                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl bg-muted">
+                  <img 
+                    src={currentCountry.image} 
+                    alt={currentCountry.landmark} 
+                    className="w-full h-full object-cover transition-all duration-700" 
+                    loading="eager"
+                    fetchPriority="high"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <span className="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm mb-4">{currentCountry.name}</span>
