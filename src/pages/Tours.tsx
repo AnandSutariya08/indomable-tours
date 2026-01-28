@@ -139,10 +139,14 @@ const Tours = () => {
                           </div>
 
                           {/* Footer */}
-                          <div className="flex items-center justify-end pt-4 border-t border-primary/10 mt-auto">
+                          <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
+                            <div>
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">From</span>
+                              <p className="font-heading text-2xl text-secondary">{tour.price}</p>
+                            </div>
                             <Link to={`/tours/${tour.id}`}>
                               <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
-                                View Details
+                                Explore
                                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                               </Button>
                             </Link>
