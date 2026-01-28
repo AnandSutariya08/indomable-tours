@@ -47,7 +47,7 @@ const BlogPost = () => {
       <Header />
       
       {/* Hero Image */}
-      <div className="relative h-[60vh] md:h-[70vh]">
+      <div className="relative h-[70vh] md:h-[75vh] lg:h-[80vh] min-h-[500px] md:min-h-[600px]">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -56,49 +56,51 @@ const BlogPost = () => {
           alt={post.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        {/* Stronger overlay for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent" />
         
-        {/* Back Button - Repositioned to top left with glass effect */}
-        <div className="absolute top-28 left-4 md:left-8 z-20">
+        {/* Back Button - Repositioned and responsive */}
+        <div className="absolute top-24 md:top-28 left-4 md:left-8 lg:left-12 z-20">
           <Link to="/blog">
             <Button 
               variant="outline" 
-              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all rounded-full px-6 py-2"
+              className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all rounded-full px-4 md:px-6 py-1.5 md:py-2 h-auto"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              <span className="font-body text-sm font-bold tracking-wider uppercase">Back to Blog</span>
+              <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4 mr-2" />
+              <span className="font-body text-[10px] md:text-xs font-bold tracking-widest uppercase">Back to Blog</span>
             </Button>
           </Link>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 pt-32 md:pt-40">
-          <div className="container mx-auto">
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 lg:p-16">
+          <div className="container mx-auto max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
+              className="space-y-4 md:space-y-6"
             >
-              <div className="mb-6">
-                <span className="inline-block px-4 py-2 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-bold tracking-wide shadow-lg">
+              <div>
+                <span className="inline-block px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-secondary text-secondary-foreground font-body text-[10px] md:text-xs font-bold tracking-widest uppercase shadow-lg">
                   {post.category}
                 </span>
               </div>
-              <h1 className="font-heading text-3xl md:text-5xl lg:text-6xl text-cream mb-8 max-w-4xl leading-tight">
+              <h1 className="font-heading text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-cream font-bold leading-[1.2] md:leading-tight max-w-4xl">
                 {post.title}
               </h1>
-              <div className="flex flex-wrap items-center gap-8 text-cream/80">
-                <span className="flex items-center gap-2.5">
-                  <User className="w-4 h-4 text-secondary" />
-                  <span className="font-body text-sm font-medium tracking-wide">{post.author}</span>
-                </span>
-                <span className="flex items-center gap-2.5">
-                  <Calendar className="w-4 h-4 text-secondary" />
-                  <span className="font-body text-sm font-medium tracking-wide">{post.date}</span>
-                </span>
-                <span className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-secondary" />
-                  <span className="font-body text-sm font-medium tracking-wide">{post.readTime}</span>
-                </span>
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 text-cream/90 border-t border-white/10 pt-4 md:pt-6">
+                <div className="flex items-center gap-2 md:gap-2.5">
+                  <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-secondary" />
+                  <span className="font-body text-[11px] md:text-sm font-medium tracking-wide">{post.author}</span>
+                </div>
+                <div className="flex items-center gap-2 md:gap-2.5">
+                  <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4 text-secondary" />
+                  <span className="font-body text-[11px] md:text-sm font-medium tracking-wide">{post.date}</span>
+                </div>
+                <div className="flex items-center gap-2 md:gap-2.5">
+                  <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-secondary" />
+                  <span className="font-body text-[11px] md:text-sm font-medium tracking-wide">{post.readTime}</span>
+                </div>
               </div>
             </motion.div>
           </div>
