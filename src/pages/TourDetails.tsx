@@ -256,18 +256,10 @@ const TourDetails = () => {
                 <Button 
                   variant="hero" 
                   size="xl" 
-                  className="w-full mb-4"
-                  onClick={() => setIsQuoteOpen(true)}
-                >
-                  Request Quote
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
                   className="w-full"
                   onClick={() => setIsQuoteOpen(true)}
                 >
-                  Contact Us
+                  Request Quote
                 </Button>
               </div>
             </aside>
