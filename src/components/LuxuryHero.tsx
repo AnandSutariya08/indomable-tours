@@ -60,9 +60,9 @@ const LuxuryHero = () => {
               <Button 
                 variant="gold" 
                 size="xl"
-                onClick={() => window.location.href = "tel:+14165550199"}
+                asChild
               >
-                Speak to an Expert
+                <a href="tel:+14165550199">Speak to an Expert</a>
               </Button>
             </div>
           </div>
