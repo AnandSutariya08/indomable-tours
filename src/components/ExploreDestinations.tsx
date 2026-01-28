@@ -1,15 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { useExploreDestinations } from "@/hooks/useFirestoreData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const ExploreDestinations = () => {
-  const { data: countries, loading } = useExploreDestinations();
-  const [activeCountry, setActiveCountry] = useState(countries[0]);
+  const { exploreDestinations: rawCountries, loading } = useSelector((state: RootState) => state.firebase);
+  const [activeCountry, setActiveCountry] = useState<any>(null);
 
-  // Update active country when data loads
-  if (!loading && countries.length > 0 && !activeCountry) {
-    setActiveCountry(countries[0]);
-  }
+  // Custom order: India, Sri Lanka, Bhutan, Nepal
+  const countries = [...rawCountries].sort((a: any, b: any) => {
+    const order = ["India", "Sri Lanka", "Bhutan", "Nepal"];
+    const indexA = order.indexOf(a.name);
+    const indexB = order.indexOf(b.name);
+    
+    // If name not in order list, put it at the end
+    const finalIndexA = indexA === -1 ? 99 : indexA;
+    const finalIndexB = indexB === -1 ? 99 : indexB;
+    
+    return finalIndexA - finalIndexB;
+  });
+
+  useEffect(() => {
+    if (!loading && countries.length > 0 && !activeCountry) {
+      setActiveCountry(countries[0]);
+    }
+  }, [loading, countries, activeCountry]);
+
+  // Image prefetching
+  useEffect(() => {
+    if (countries.length > 0) {
+      countries.forEach((country: any) => {
+        if (country.image) {
+          const img = new Image();
+          img.src = country.image;
+        }
+      });
+    }
+  }, [countries]);
 
   const currentCountry = activeCountry || countries[0];
 
@@ -23,12 +50,12 @@ const ExploreDestinations = () => {
           </p>
         </div>
 
-        {loading ? (
+        {loading && countries.length === 0 ? (
           <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="space-y-4">
-              {countries.map((country) => (
+              {countries.map((country: any) => (
                 <button
                   key={country.id}
                   onClick={() => setActiveCountry(country)}
@@ -57,8 +84,16 @@ const ExploreDestinations = () => {
 
             {currentCountry && (
               <div className="relative">
-                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl">
-                  <img src={currentCountry.image} alt={currentCountry.landmark} className="w-full h-full object-cover transition-all duration-700" />
+                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl bg-[#2D2D2D]">
+                  <img 
+                    src={currentCountry.image} 
+                    alt={currentCountry.landmark} 
+                    className="w-full h-full object-cover transition-opacity duration-300" 
+                    loading="eager"
+                    fetchPriority="high"
+                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                    style={{ opacity: 1 }}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <span className="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm mb-4">{currentCountry.name}</span>

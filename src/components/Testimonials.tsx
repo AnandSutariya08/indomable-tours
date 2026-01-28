@@ -1,9 +1,9 @@
 import { Star, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useTestimonials } from "@/hooks/useFirestoreData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const Testimonials = () => {
-  const { data: testimonials, loading } = useTestimonials();
+  const { testimonials, loading } = useSelector((state: RootState) => state.firebase);
 
   return (
     <section className="py-20 md:py-28 bg-background">
@@ -15,13 +15,13 @@ const Testimonials = () => {
           </p>
         </div>
 
-        {loading ? (
+        {loading && testimonials.length === 0 ? (
           <div className="flex justify-center py-12"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {testimonials.slice(0, 3).map((testimonial) => (
+            {testimonials.slice(0, 3).map((testimonial: any) => (
               <div key={testimonial.id} className="bg-muted rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-500">
-                <div className="absolute top-6 right-6 text-6xl text-secondary/30 font-heading">"</div>
+                {/* <div className="absolute top-6 right-6 text-6xl text-secondary/30 font-heading">"</div> */}
                 <div className="flex gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} size={20} className="fill-secondary text-secondary" />

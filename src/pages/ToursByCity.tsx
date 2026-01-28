@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, ArrowRight, Search, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -29,7 +29,7 @@ const ToursByCity = () => {
   });
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-[#F5F1E9]">
       <Header />
       <PageHeader
         badge="Explore by City"
@@ -38,136 +38,153 @@ const ToursByCity = () => {
         backgroundImage={jaipur}
       />
 
-      {/* Filter Section */}
-      <section className="py-12 bg-muted sticky top-20 z-30">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-            {/* Country Tabs */}
-            <div className="flex flex-wrap justify-center gap-3">
-              {countries.map((country) => (
-                <motion.button
-                  key={country}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCountry(country)}
-                  className={`px-6 py-3 rounded-full font-body font-medium transition-all duration-300 ${
-                    selectedCountry === country
-                      ? "bg-primary text-primary-foreground shadow-lg"
-                      : "bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground"
-                  }`}
-                >
-                  {country}
-                </motion.button>
-              ))}
-            </div>
+      {/* Unified Background Wrapper */}
+      <div className="bg-[#F5F1E9]">
+        {/* Filter Section */}
+        <section className="py-12 relative overflow-hidden">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
+          
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center gap-8">
+              {/* Country Tabs */}
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+                <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                  {countries.map((country) => (
+                    <motion.button
+                      key={country}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setSelectedCountry(country)}
+                      className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                        selectedCountry === country
+                          ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                          : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                      }`}
+                    >
+                      {country}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
 
-            {/* Search */}
-            <div className="relative w-full md:w-72">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
-              <Input
-                type="text"
-                placeholder="Search cities..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 bg-background border-border"
-              />
+              {/* Search */}
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Search cities..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 h-14 bg-white/50 backdrop-blur-sm border-black/5 rounded-2xl shadow-sm focus:bg-white transition-all duration-300"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Cities Grid */}
-      <section className="py-20 md:py-28">
-        <div className="container mx-auto px-4 md:px-6">
-          {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            </div>
-          ) : (
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {filteredCities.map((city, index) => (
+        {/* Cities Grid */}
+        <section className="pb-16 md:pb-24">
+          <div className="container mx-auto px-4 md:px-6">
+            {loading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              </div>
+            ) : (
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={city.id}
-                  variants={fadeInUp}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -10 }}
-                  className="group"
+                  key={selectedCountry + searchQuery}
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0 }}
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
                 >
-                  <Link to="/tours">
-                    <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
-                      {/* Image */}
-                      <div className="relative h-56 overflow-hidden">
-                        <img
-                          src={city.image}
-                          alt={city.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute top-4 right-4">
-                          <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
-                            {city.tours} Tours
-                          </span>
-                        </div>
-                        <div className="absolute bottom-4 left-4">
-                          <div className="flex items-center gap-2 text-cream/80 mb-1">
-                            <MapPin className="w-4 h-4" />
-                            <span className="font-body text-sm">{city.country}</span>
-                          </div>
-                          <h3 className="font-heading text-2xl text-cream">
-                            {city.name}
-                          </h3>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-6">
-                        <p className="font-body text-sm text-foreground/80 mb-4">
-                          {city.description}
-                        </p>
-                        
-                        {/* Popular Attractions */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {city.popular.map((attraction) => (
-                            <span
-                              key={attraction}
-                              className="px-3 py-1 rounded-full bg-muted text-foreground/70 font-body text-xs"
-                            >
-                              {attraction}
+                  {filteredCities.map((city, index) => (
+                    <motion.div
+                      key={city.id}
+                      variants={fadeInUp}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      whileHover={{ y: -10 }}
+                      className="group flex flex-col h-full"
+                    >
+                      <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
+                        {/* Image Section */}
+                        <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
+                          <img
+                            src={city.image}
+                            alt={city.name}
+                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
+                            loading="lazy"
+                            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                            style={{ opacity: 1 }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute top-4 right-4">
+                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium shadow-lg">
+                              {city.tours} Tours Available
                             </span>
-                          ))}
+                          </div>
+                          <div className="absolute bottom-4 left-4">
+                            <div className="flex items-center gap-2 text-white/80 mb-1">
+                              <MapPin className="w-4 h-4" />
+                              <span className="font-body text-xs font-bold uppercase tracking-widest">{city.country}</span>
+                            </div>
+                            <h3 className="font-heading text-2xl text-white">
+                              {city.name}
+                            </h3>
+                          </div>
                         </div>
 
-                        {/* CTA */}
-                        <div className="flex items-center justify-between pt-4 border-t border-border">
-                          <span className="font-body text-sm text-foreground/60">
-                            Explore {city.tours} tours
-                          </span>
-                          <span className="flex items-center gap-2 text-primary font-body font-medium group-hover:text-accent transition-colors">
-                            View Tours
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </span>
+                        {/* Content Section */}
+                        <div className="p-6 flex flex-col flex-grow">
+                          <p className="font-body text-sm text-foreground/70 mb-6 line-clamp-3 min-h-[60px]">
+                            {city.description}
+                          </p>
+                          
+                          {/* Popular Attractions */}
+                          <div className="flex flex-wrap gap-2 mb-8">
+                            {city.popular.map((attraction) => (
+                              <span
+                                key={attraction}
+                                className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
+                              >
+                                {attraction}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* CTA Footer */}
+                          <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
+                            <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">
+                              {city.tours} Experiences
+                            </span>
+                            <Link to={`/tours?city=${encodeURIComponent(city.name)}`}>
+                              <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
+                                View Tours
+                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
+                    </motion.div>
+                  ))}
                 </motion.div>
-              ))}
-            </motion.div>
-          )}
+              </AnimatePresence>
+            )}
 
-          {!loading && filteredCities.length === 0 && (
-            <div className="text-center py-20">
-              <h3 className="font-heading text-2xl text-primary mb-4">No cities found</h3>
-              <p className="font-body text-foreground/70">Try adjusting your search or filter criteria.</p>
-            </div>
-          )}
-        </div>
-      </section>
+            {!loading && filteredCities.length === 0 && (
+              <div className="text-center py-20">
+                <h3 className="font-heading text-2xl text-primary mb-4">No cities found</h3>
+                <p className="font-body text-foreground/70">Try adjusting your search or filter criteria.</p>
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
 
       {/* CTA Section */}
       <AnimatedSection>

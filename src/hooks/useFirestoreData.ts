@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { getCollection, COLLECTIONS } from "@/services/firestoreService";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 // Types
 export interface Tour {
@@ -11,7 +12,6 @@ export interface Tour {
   duration: string;
   groupSize: string;
   rating: number;
-  // price: string;
   description: string;
   fullDescription?: string;
   highlights: string[];
@@ -103,96 +103,64 @@ export interface FAQ {
   answer: string;
 }
 
-// Generic hook for fetching Firestore data without fallback
-function useFirestoreCollection<T>(
-  collectionName: string
-) {
-  const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+// Hooks using Redux State with useMemo for efficient data access
+export const useTours = () => {
+  const { tours, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedTours = useMemo(() => tours, [tours]);
+  return { data: memoizedTours, loading, error };
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const result = await getCollection<T>(collectionName);
-        setData(result);
-      } catch (err) {
-        console.error(`Error fetching ${collectionName}:`, err);
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [collectionName]);
+export const useDestinations = () => {
+  const { destinations, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedDestinations = useMemo(() => destinations, [destinations]);
+  return { data: memoizedDestinations, loading, error };
+};
 
-  return { data, loading, error, refetch: () => {} };
-}
+export const useBlogPosts = () => {
+  const { blog, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedBlog = useMemo(() => blog, [blog]);
+  return { data: memoizedBlog, loading, error };
+};
 
-// Hooks for each collection
-export const useTours = () => 
-  useFirestoreCollection<Tour>(COLLECTIONS.TOURS);
+export const useCities = () => {
+  const { cities, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedCities = useMemo(() => cities, [cities]);
+  return { data: memoizedCities, loading, error };
+};
 
-export const useDestinations = () => 
-  useFirestoreCollection<Destination>(COLLECTIONS.DESTINATIONS);
+export const useTestimonials = () => {
+  const { testimonials, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedTestimonials = useMemo(() => testimonials, [testimonials]);
+  return { data: memoizedTestimonials, loading, error };
+};
 
-export const useBlogPosts = () => 
-  useFirestoreCollection<BlogPost>(COLLECTIONS.BLOG_POSTS);
+export const useExploreDestinations = () => {
+  const { exploreDestinations, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedExploreDestinations = useMemo(() => exploreDestinations, [exploreDestinations]);
+  return { data: memoizedExploreDestinations, loading, error };
+};
 
-export const useCities = () => 
-  useFirestoreCollection<City>(COLLECTIONS.CITIES);
-
-export const useTestimonials = () => 
-  useFirestoreCollection<Testimonial>(COLLECTIONS.TESTIMONIALS);
-
-export const useExploreDestinations = () => 
-  useFirestoreCollection<ExploreDestination>(COLLECTIONS.EXPLORE_DESTINATIONS);
-
-export const useExploreTours = () => 
-  useFirestoreCollection<ExploreTour>(COLLECTIONS.EXPLORE_TOURS);
-
-export const useTeam = () => 
-  useFirestoreCollection<TeamMember>(COLLECTIONS.TEAM);
+export const useExploreTours = () => {
+  const { tours, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedExploreTours = useMemo(() => tours, [tours]);
+  return { data: memoizedExploreTours, loading, error };
+};
 
 export const useTravelEssentials = () => {
-  const [data, setData] = useState<TravelEssential[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getCollection<TravelEssential>("travelEssentials");
-        setData(result);
-      } catch (err) {
-        console.error("Error fetching travel essentials:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  return { data, loading };
+  const { travelInfo, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedTravelEssentials = useMemo(() => travelInfo, [travelInfo]);
+  return { data: memoizedTravelEssentials, loading, error };
 };
 
 export const useFaqs = () => {
-  const [data, setData] = useState<FAQ[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { travelInfo, loading, error } = useSelector((state: RootState) => state.firebase);
+  // Assuming FAQs might be part of travelInfo or a separate collection if needed
+  const memoizedFaqs = useMemo(() => travelInfo, [travelInfo]); 
+  return { data: memoizedFaqs, loading, error };
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getCollection<FAQ>("faqs");
-        setData(result);
-      } catch (err) {
-        console.error("Error fetching FAQs:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  return { data, loading };
+export const useTeam = () => {
+  // Team is not currently in the slice, but we can add it if needed. 
+  // For now, returning empty to maintain hook interface
+  return { data: [], loading: false, error: null };
 };

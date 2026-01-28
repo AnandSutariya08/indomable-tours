@@ -104,24 +104,31 @@ const Destinations = () => {
       />
 
       {/* Country Selector */}
-      <section className="py-4 md:py-6 transition-all duration-500">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-8 py-2 md:py-3 max-w-fit mx-auto shadow-2xl">
-            {countries.map((country) => (
-              <motion.button
-                key={country.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveCountry(country)}
-                className={`px-4 md:px-6 py-1.5 md:py-2 rounded-full font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-300 ${
-                  activeCountry.id === country.id
-                    ? "bg-secondary text-primary shadow-lg"
-                    : "text-secondary hover:text-secondary/80"
-                }`}
-              >
-                {country.name}
-              </motion.button>
-            ))}
+      <section className="py-12 relative overflow-hidden bg-[#F5F1E9]">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="flex flex-col items-center gap-6">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+              {countries.map((country) => (
+                <motion.button
+                  key={country.id}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveCountry(country)}
+                  className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                    activeCountry.id === country.id
+                      ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                      : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                  }`}
+                >
+                  {country.name}
+                </motion.button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -134,7 +141,7 @@ const Destinations = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
-          className="py-20 md:py-28"
+          className="py-20 md:py-28 bg-[#F5F1E9]"
         >
           <div className="container mx-auto px-4 md:px-6">
             {/* Hero Image */}
@@ -202,12 +209,15 @@ const Destinations = () => {
                     whileHover={{ y: -10 }}
                     className="group cursor-pointer"
                   >
-                    <Link to="/tours">
-                      <div className="relative h-72 rounded-2xl overflow-hidden">
+                    <Link to={`/tours?country=${encodeURIComponent(activeCountry.name)}`}>
+                      <div className="relative h-72 rounded-2xl overflow-hidden bg-[#2D2D2D]">
                         <img
                           src={dest.image}
                           alt={dest.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
+                          loading="lazy"
+                          onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                          style={{ opacity: 1 }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -245,9 +255,9 @@ const Destinations = () => {
               Let us help you plan your perfect journey to this incredible destination.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/tours">
+              <Link to={`/tours?country=${encodeURIComponent(activeCountry.name)}`}>
                 <Button variant="gold" size="xl">
-                  View All Tours
+                  View {activeCountry.name} Tours
                 </Button>
               </Link>
               <Button 
