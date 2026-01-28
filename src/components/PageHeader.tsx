@@ -56,12 +56,20 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-6"
+              className="mb-6 flex justify-center"
             >
-              <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/20 backdrop-blur-sm border border-secondary/30 text-secondary font-body text-sm font-medium tracking-wide">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                {badge}
-              </span>
+              <div className="relative group">
+                <div className="absolute inset-0 bg-secondary blur-md opacity-20 group-hover:opacity-40 transition-opacity" />
+                <span 
+                  className="relative inline-flex items-center gap-2 px-8 py-2.5 bg-secondary/20 backdrop-blur-sm border border-secondary/30 text-secondary font-body text-sm font-bold tracking-[0.2em] uppercase"
+                  style={{
+                    clipPath: "polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%)"
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                  {badge}
+                </span>
+              </div>
             </motion.div>
           )}
           
