@@ -112,11 +112,13 @@ const ToursByCity = () => {
                     >
                       <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
                         {/* Image Section */}
-                        <div className="relative h-64 overflow-hidden shrink-0">
+                        <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
                           <img
                             src={city.image}
                             alt={city.name}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-opacity duration-700 group-hover:scale-110 opacity-0"
+                            loading="lazy"
+                            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 right-4">
