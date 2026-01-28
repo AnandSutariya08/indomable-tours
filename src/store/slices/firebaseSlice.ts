@@ -75,7 +75,10 @@ const firebaseSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllData.pending, (state) => {
-        state.loading = true;
+        // Only show loading on initial fetch, not background refreshes
+        if (state.lastFetched === null) {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(fetchAllData.fulfilled, (state, action: PayloadAction<any>) => {
