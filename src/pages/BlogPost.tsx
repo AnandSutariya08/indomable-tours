@@ -47,7 +47,7 @@ const BlogPost = () => {
       <Header />
       
       {/* Hero Image */}
-      <div className="relative h-[50vh] md:h-[60vh] pt-20">
+      <div className="relative h-[50vh] md:h-[60vh]">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
