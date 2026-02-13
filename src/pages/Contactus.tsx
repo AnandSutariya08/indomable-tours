@@ -24,7 +24,7 @@ const Contact = () => {
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
-      organization: formData.get("organization"),
+      organization: formData.get("organization") || "N/A",
       message: formData.get("message"),
     };
 
