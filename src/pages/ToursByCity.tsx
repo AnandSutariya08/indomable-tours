@@ -214,16 +214,21 @@ const ToursByCity = () => {
                           </p>
 
                           {/* Tags/Categories */}
-                          <div className="flex flex-wrap gap-2 mb-8">
-                            {tour.tags?.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          {tour.tags && tour.tags.length > 0 && (
+                            <div className="mb-8">
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold block mb-2">Categories</span>
+                              <div className="flex flex-wrap gap-2">
+                                {tour.tags.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-body text-[10px] font-bold uppercase tracking-wider"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
 
                           {/* CTA Footer */}
                           <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">

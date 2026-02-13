@@ -64,15 +64,24 @@ const ExploreTours = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                     <span className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">{tour.duration}</span>
-                    {tour.tags?.map((tag: string) => (
-                      <span key={tag} className="px-3 py-1.5 rounded-full bg-accent/90 text-accent-foreground font-body text-xs font-bold uppercase tracking-wider">
-                        {tag}
-                      </span>
-                    ))}
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <p className="text-cream/80 font-body text-sm mb-2">{tour.location}</p>
                     <h3 className="font-heading text-2xl md:text-3xl text-cream mb-2 group-hover:text-secondary transition-colors">{tour.title}</h3>
+                    
+                    {tour.tags && tour.tags.length > 0 && (
+                      <div className="mb-4">
+                        <span className="text-cream/50 font-body text-[10px] uppercase tracking-widest font-bold block mb-2">Categories</span>
+                        <div className="flex flex-wrap gap-2">
+                          {tour.tags.map((tag: string) => (
+                            <span key={tag} className="px-2.5 py-1 rounded-full bg-secondary/20 border border-secondary/30 text-secondary font-body text-[10px] font-bold uppercase tracking-wider">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <p className="text-cream/80 font-body text-sm leading-relaxed line-clamp-2">{tour.description}</p>
                     <div className="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                       <Button variant="gold" size="sm" className="rounded-full px-6 font-bold">

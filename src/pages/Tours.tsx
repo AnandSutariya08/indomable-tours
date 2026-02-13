@@ -159,11 +159,6 @@ const Tours = () => {
                             <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
                               {tour.country}
                             </span>
-                            {tour.tags?.map((tag: string) => (
-                              <span key={tag} className="px-3 py-1 rounded-full bg-accent/90 text-accent-foreground font-body text-xs font-bold uppercase tracking-wider">
-                                {tag}
-                              </span>
-                            ))}
                           </div>
                           <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
                             <Star className="w-4 h-4 text-secondary fill-secondary" />
@@ -183,7 +178,7 @@ const Tours = () => {
                             {tour.description}
                           </p>
 
-                          <div className="flex flex-wrap gap-2 mb-6">
+                          <div className="flex flex-wrap gap-2 mb-4">
                             {tour.highlights?.slice(0, 3).map((highlight: string) => (
                               <span
                                 key={highlight}
@@ -193,6 +188,19 @@ const Tours = () => {
                               </span>
                             ))}
                           </div>
+
+                          {tour.tags && tour.tags.length > 0 && (
+                            <div className="mb-6">
+                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold block mb-2">Categories</span>
+                              <div className="flex flex-wrap gap-2">
+                                {tour.tags.map((tag: string) => (
+                                  <span key={tag} className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-body text-[10px] font-bold uppercase tracking-wider">
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
 
                           <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
                             <div>
