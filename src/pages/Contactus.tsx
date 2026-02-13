@@ -15,41 +15,40 @@ import luxuryHero from "@/assets/luxury-hero.jpg";
 const Contact = () => {
   const [loading, setLoading] = useState(false);
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget);
 
-  const data = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    organization: formData.get("organization"),
-    message: formData.get("message"),
-  };
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      organization: formData.get("organization"),
+      message: formData.get("message"),
+    };
 
-  try {
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (response.ok) {
-      alert("Message sent successfully!");
-      e.currentTarget.reset();
-    } else {
-      alert("Something went wrong.");
+      if (response.ok) {
+        alert("Message sent successfully!");
+        e.currentTarget.reset();
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Network error. Please try again.");
     }
-  } catch (error) {
-    alert("Network error.");
-  }
 
-  setLoading(false);
-};
-
+    setLoading(false);
+  };
 
   const contactDetails = [
     {
@@ -76,7 +75,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <main className="min-h-screen bg-background">
       <Header />
 
-      {/* Page Hero */}
+      {/* Hero */}
       <PageHeader
         badge="Get In Touch"
         title="Contact IndoMaple Tours"
@@ -84,7 +83,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         backgroundImage={luxuryHero}
       />
 
-      {/* Contact Info Section */}
+      {/* Contact Info */}
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4 md:px-6">
           <AnimatedSection>
@@ -93,7 +92,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 Connect With Us
               </h2>
               <p className="body-display-md text-foreground max-w-2xl mx-auto">
-                Whether you're a travel agency, university, corporate partner, or individual traveler — we’re here to help.
+                Whether you're a travel agency, university, corporate partner,
+                or individual traveler — we’re here to help.
               </p>
             </div>
           </AnimatedSection>
@@ -133,23 +133,25 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         </div>
       </section>
 
-      {/* Contact Form Section */}
+      {/* Form Section */}
       <section className="py-20 md:py-28 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {/* Form */}
+            {/* Contact Form */}
             <AnimatedSection>
               <h2 className="heading-display-sm text-primary mb-6">
                 Send Us A Message
               </h2>
 
               <p className="font-body text-foreground/80 mb-8">
-                Tell us about your travel goals and preferences. Our team will respond within 24 hours.
+                Tell us about your travel goals and preferences. Our team will
+                respond within 24 hours.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <input
                   type="text"
+                  name="name"
                   placeholder="Full Name"
                   required
                   className="w-full p-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
@@ -157,6 +159,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
                 <input
                   type="email"
+                  name="email"
                   placeholder="Email Address"
                   required
                   className="w-full p-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
@@ -164,11 +167,13 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
                 <input
                   type="text"
+                  name="organization"
                   placeholder="Organization (Optional)"
                   className="w-full p-4 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 />
 
                 <textarea
+                  name="message"
                   placeholder="Tell us about your travel plans..."
                   rows={5}
                   required
@@ -188,7 +193,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               </form>
             </AnimatedSection>
 
-            {/* Business Info Card */}
+            {/* Business Hours */}
             <AnimatedSection delay={0.2}>
               <div className="bg-card p-10 rounded-2xl shadow-xl">
                 <h3 className="font-heading text-2xl text-primary mb-6">
@@ -225,23 +230,6 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <AnimatedSection>
-        <section className="py-20 bg-primary">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h2 className="heading-display-sm text-primary-foreground mb-6">
-              Let’s Curate Something Extraordinary
-            </h2>
-            <p className="body-display-md text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Authentic destinations. Thoughtful design. Seamless execution.
-            </p>
-            <Button variant="gold" size="xl">
-              Explore Our Tours
-            </Button>
-          </div>
-        </section>
-      </AnimatedSection>
 
       <Footer />
     </main>
