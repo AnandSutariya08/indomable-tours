@@ -19,6 +19,7 @@ export interface Tour {
   itinerary?: { day: number; title: string; description: string }[];
   included?: string[];
   notIncluded?: string[];
+  tags?: string[];
 }
 
 export interface Destination {
@@ -79,6 +80,7 @@ export interface ExploreTour {
   image: string;
   duration: string;
   description: string;
+  tags?: string[];
 }
 
 export interface TeamMember {
