@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import luxuryHero from "@/assets/luxury-hero.jpg";
 import kerala from "@/assets/destinations/kerala.jpg";
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
-import video1 from "../assets/videos/withouttext.mp4"
-import video2 from "../assets/videos/withouttext2.mp4"
-import video3 from "../assets/videos/withouttext.mp4";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Link } from "react-router-dom";
 
 const LuxuryHero = () => {
+  
+  
+  const video2 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext2.mp4?alt=media&token=b1a148ef-30c7-445c-bb98-f28de0f3d53a"
+  const video1 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638"
+  const video3 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638";
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   const playVideo = (url: string) => {

@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import QuoteModal from "./QuoteModal";
-import dummyVideoUrl from "../assets/videos/withouttext.mp4"
+ 
 import heroVideo from "../assets/videos/herovideo.mp4";
 
 const HeroSection = () => {
@@ -97,7 +97,7 @@ const HeroSection = () => {
           <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
             {isVideoOpen && (
               <video
-                src={dummyVideoUrl}
+                src={"https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638"}
                 autoPlay
                 controls
                 playsInline
