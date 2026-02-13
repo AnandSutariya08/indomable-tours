@@ -1,112 +1,90 @@
-import { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { fadeInUp, staggerContainer } from "./AnimatedSection";
+
+const destinations = [
+  {
+    id: "india",
+    name: "India",
+    tagline: "A Continent in One Country",
+    description: "Few countries offer deserts, rainforests, Himalayas, spirituality, wildlife & luxury palaces — all in one journey. Where ancient civilization meets vibrant modern energy.",
+    image: "https://images.unsplash.com/photo-1524491991033-7253507d9b9d?auto=format&fit=crop&q=80",
+  },
+  {
+    id: "nepal",
+    name: "Nepal",
+    tagline: "Where Earth Touches the Sky",
+    description: "The only place where you can have breakfast facing Mount Everest and safari with rhinos in the same trip.",
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80",
+  },
+  {
+    id: "bhutan",
+    name: "Bhutan",
+    tagline: "Exclusive. Peaceful. Profound.",
+    description: "A carbon-negative kingdom that measures success by Gross National Happiness",
+    image: "https://images.unsplash.com/photo-1578593139803-1620c027429d?auto=format&fit=crop&q=80",
+  },
+  {
+    id: "sri-lanka",
+    name: "Sri Lanka",
+    tagline: "The Pearl of the Indian Ocean",
+    description: "A complete Asia experience packed into a compact island. Wildlife, culture & coast — seamlessly combined.",
+    image: "https://images.unsplash.com/photo-1529154036614-a60975f5c760?auto=format&fit=crop&q=80",
+  },
+];
 
 const ExploreDestinations = () => {
-  const { exploreDestinations: rawCountries, loading } = useSelector((state: RootState) => state.firebase);
-  const [activeCountry, setActiveCountry] = useState<any>(null);
-
-  // Custom order: India, Sri Lanka, Bhutan, Nepal
-  const countries = [...rawCountries].sort((a: any, b: any) => {
-    const order = ["India", "Sri Lanka", "Bhutan", "Nepal"];
-    const indexA = order.indexOf(a.name);
-    const indexB = order.indexOf(b.name);
-    
-    // If name not in order list, put it at the end
-    const finalIndexA = indexA === -1 ? 99 : indexA;
-    const finalIndexB = indexB === -1 ? 99 : indexB;
-    
-    return finalIndexA - finalIndexB;
-  });
-
-  useEffect(() => {
-    if (!loading && countries.length > 0 && !activeCountry) {
-      setActiveCountry(countries[0]);
-    }
-  }, [loading, countries, activeCountry]);
-
-  // Image prefetching
-  useEffect(() => {
-    if (countries.length > 0) {
-      countries.forEach((country: any) => {
-        if (country.image) {
-          const img = new Image();
-          img.src = country.image;
-        }
-      });
-    }
-  }, [countries]);
-
-  const currentCountry = activeCountry || countries[0];
-
   return (
-    <section className="py-20 md:py-28 bg-muted">
+    <section className="py-20 md:py-28 bg-[#F5F1E9]">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-16">
           <h2 className="heading-display-md text-primary mb-4">Explore Destinations</h2>
-          <p className="body-display-md text-foreground max-w-2xl mx-auto">
-            Select a country to discover its most iconic landmarks and hidden treasures.
+          <p className="body-display-md text-foreground/70 max-w-2xl mx-auto">
+            Discover the most iconic landmarks and hidden treasures across our featured destinations.
           </p>
         </div>
 
-        {loading && countries.length === 0 ? (
-          <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="space-y-4">
-              {countries.map((country: any) => (
-                <button
-                  key={country.id}
-                  onClick={() => setActiveCountry(country)}
-                  className={`w-full text-left p-6 rounded-xl transition-all duration-500 group ${
-                    currentCountry?.id === country.id
-                      ? "bg-primary text-primary-foreground shadow-lg"
-                      : "bg-background hover:bg-background/80 text-foreground"
-                  }`}
+        <motion.div 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {destinations.map((dest) => (
+            <motion.div
+              key={dest.id}
+              variants={fadeInUp}
+              className="group relative h-[500px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+            >
+              <img 
+                src={dest.image} 
+                alt={dest.name} 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              
+              <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                <h3 className="font-heading text-3xl text-cream mb-2">{dest.name}</h3>
+                <p className="font-body text-secondary font-bold text-sm uppercase tracking-wider mb-3">
+                  {dest.tagline}
+                </p>
+                <p className="font-body text-cream/80 text-sm leading-relaxed mb-6 line-clamp-4">
+                  {dest.description}
+                </p>
+                
+                <Link 
+                  to={`/tours?country=${dest.id}`}
+                  className="inline-flex items-center gap-2 text-secondary hover:text-white transition-colors font-body font-bold text-xs uppercase tracking-[0.2em]"
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className={`font-heading text-2xl md:text-3xl mb-1 ${currentCountry?.id === country.id ? "text-primary-foreground" : "text-primary"}`}>
-                        {country.name}
-                      </h3>
-                      <p className={`font-body text-sm ${currentCountry?.id === country.id ? "text-primary-foreground/80" : "text-foreground/70"}`}>
-                        Featured: {country.landmark}
-                      </p>
-                    </div>
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${currentCountry?.id === country.id ? "bg-primary-foreground/20" : "bg-secondary/20 group-hover:bg-secondary/40"}`}>
-                      <span className="text-2xl">→</span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {currentCountry && (
-              <div className="relative">
-                <div className="relative h-[400px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl bg-[#2D2D2D]">
-                  <img 
-                    src={currentCountry.image} 
-                    alt={currentCountry.landmark} 
-                    className="w-full h-full object-cover transition-opacity duration-300" 
-                    loading="eager"
-                    fetchPriority="high"
-                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                    style={{ opacity: 1 }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <span className="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm mb-4">{currentCountry.name}</span>
-                    <h3 className="font-heading text-3xl md:text-4xl text-cream mb-3">{currentCountry.landmark}</h3>
-                    <p className="font-body text-cream/90 leading-relaxed max-w-lg">{currentCountry.description}</p>
-                  </div>
-                </div>
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/20 rounded-full blur-3xl" />
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+                  Go to Tours
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </div>
-            )}
-          </div>
-        )}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
