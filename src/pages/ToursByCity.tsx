@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuoteModal from "@/components/QuoteModal";
 
+import jaipur from "@/assets/destinations/jaipur.jpg";
+
 const categories = ["All", "Heritage & Culture", "Wildlife Safaris", "Wellness & Spiritual", "Luxury & Palace", "Adventure & Himalayas", "Islands & Coastal Escapes", "Nature"];
 
 const ToursByCity = () => {
