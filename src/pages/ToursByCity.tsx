@@ -67,31 +67,26 @@ const ToursByCity = () => {
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="flex flex-col items-center gap-8">
-              {/* Category Tabs */}
-              <div className="flex flex-col items-center gap-4 w-full">
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
-                  Select Category
-                </span>
-                <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
-                  <div className="flex justify-start md:justify-center gap-3 min-w-max px-4">
-                    {categories.map((category) => (
-                      <motion.button
-                        key={category}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setSelectedCategory(category)}
-                        className={`px-6 py-3 rounded-2xl font-body font-bold text-xs uppercase tracking-widest transition-all duration-300 whitespace-nowrap border ${
-                          selectedCategory === category
-                            ? "bg-secondary text-primary border-secondary shadow-[0_10px_20px_rgba(212,175,55,0.2)]"
-                            : "bg-white/50 text-primary/60 border-black/5 hover:border-secondary/30 hover:bg-white"
-                        }`}
-                      >
-                        {category}
-                      </motion.button>
-                    ))}
-                  </div>
-                </div>
+            <div className="flex flex-col items-center gap-6">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
+                Select Category
+              </span>
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                      selectedCategory === category
+                        ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                        : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                    }`}
+                  >
+                    {category}
+                  </motion.button>
+                ))}
               </div>
 
               {/* Search */}
