@@ -45,7 +45,7 @@ const ExploreTours = () => {
         {loading && tours.length === 0 ? (
           <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
         ) : (
-          <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
+          <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4" style={{paddingTop:'1rem'}}>
             {tours.map((tour) => (
               <div 
                 key={tour.id} 
