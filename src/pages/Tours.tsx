@@ -13,10 +13,10 @@ import QuoteModal from "@/components/QuoteModal";
 
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 
-const categories = ["All", "Heritage & Culture", "Wildlife Safaris", "Wellness & Spiritual", "Luxury & Palace", "Adventure & Himalayas", "Islands & Coastal Escapes", "Nature"];
+const countryList = ["All", "India", "Nepal", "Bhutan", "Sri Lanka"];
 
 const Tours = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCountry, setSelectedCountry] = useState("All");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
   const [searchParams] = useSearchParams();
@@ -25,17 +25,17 @@ const Tours = () => {
 
   useEffect(() => {
     if (countryFilter) {
-      const formattedCategory = countryFilter.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      if (categories.includes(formattedCategory)) {
-        setSelectedCategory(formattedCategory);
+      const formattedCountry = countryFilter.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      if (countryList.includes(formattedCountry)) {
+        setSelectedCountry(formattedCountry);
       }
     }
   }, [countryFilter]);
 
   const filteredTours = tours.filter(tour => {
-    const matchesCategory = selectedCategory === "All" || (tour.tags && tour.tags.includes(selectedCategory));
+    const matchesCountry = selectedCountry === "All" || (tour.country && tour.country.toLowerCase() === selectedCountry.toLowerCase());
     const matchesCity = !cityFilter || tour.location.toLowerCase().includes(cityFilter.toLowerCase()) || tour.title.toLowerCase().includes(cityFilter.toLowerCase());
-    return matchesCategory && matchesCity;
+    return matchesCountry && matchesCity;
   });
 
   useEffect(() => {
@@ -61,22 +61,22 @@ const Tours = () => {
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center gap-6">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Category</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
               <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
                 <div className="flex justify-start md:justify-center gap-3 min-w-max px-4">
-                  {categories.map((category) => (
+                  {countryList.map((country) => (
                     <motion.button
-                      key={category}
+                      key={country}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => setSelectedCountry(country)}
                       className={`px-6 py-3 rounded-2xl font-body font-bold text-xs uppercase tracking-widest transition-all duration-300 whitespace-nowrap border ${
-                        selectedCategory === category
+                        selectedCountry === country
                           ? "bg-secondary text-primary border-secondary shadow-[0_10px_20px_rgba(212,175,55,0.2)]"
                           : "bg-white/50 text-primary/60 border-black/5 hover:border-secondary/30 hover:bg-white"
                       }`}
                     >
-                      {category}
+                      {country}
                     </motion.button>
                   ))}
                 </div>
@@ -99,7 +99,7 @@ const Tours = () => {
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedCategory + (cityFilter || '')}
+                  key={selectedCountry + (cityFilter || '')}
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
