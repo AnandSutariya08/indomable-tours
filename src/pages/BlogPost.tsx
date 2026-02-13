@@ -46,7 +46,7 @@ const BlogPost = () => {
   return (
     <main className="min-h-screen bg-background">
       <Helmet>
-        <title>{post.title} | Indomable Tours Blog</title>
+        <title>{post.title} | Indomaple Tours Blog</title>
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />

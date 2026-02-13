@@ -1,8 +1,8 @@
-# Indomable Tours - Luxury Travel Website
+# Indomaple Tours - Luxury Travel Website
 
 ## Overview
 
-Indomable Tours is a luxury travel agency website specializing in curated travel experiences across India, Nepal, Bhutan, and Sri Lanka. The platform features a customer-facing marketing site with tour listings, destination guides, blog content, and testimonials, along with a full admin panel for content management. Data is stored in Firebase Firestore with local JSON seed data as fallback.
+Indomaple Tours is a luxury travel agency website specializing in curated travel experiences across India, Nepal, Bhutan, and Sri Lanka. The platform features a customer-facing marketing site with tour listings, destination guides, blog content, and testimonials, along with a full admin panel for content management. Data is stored in Firebase Firestore with local JSON seed data as fallback.
 
 ## User Preferences
 

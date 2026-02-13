@@ -58,7 +58,7 @@ const About = () => {
       <Header />
       <PageHeader
         badge="Our Story"
-        title="About Indomable Tours"
+        title="About Indomaple Tours"
         subtitle="India Expertise. Canadian Standards. Creating transformative travel experiences since 2010."
         backgroundImage={luxuryHero}
       />
@@ -80,7 +80,7 @@ const About = () => {
                 that last a lifetime.
               </p>
               <p className="font-body text-foreground/80 mb-8">
-                Founded by travelers who fell deeply in love with Asia, Indomable Tours 
+                Founded by travelers who fell deeply in love with Asia, Indomaple Tours 
                 combines insider knowledge with meticulous planning to create journeys 
                 that reveal the soul of each destination. From the spiritual banks of the 
                 Ganges to the remote monasteries of Bhutan, we open doors that remain 

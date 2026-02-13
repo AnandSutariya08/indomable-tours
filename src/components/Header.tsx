@@ -57,7 +57,7 @@ const Header = () => {
                 <Link to="/" className="transition-all duration-300 hover:scale-105 active:scale-95">
                   <img 
                     src={logo} 
-                    alt="Indomable Tours" 
+                    alt="Indomaple Tours" 
                     className={`transition-all duration-500 object-contain ${
                       isScrolled ? "h-5 md:h-6" : "h-6 md:h-7 lg:h-8"
                     } w-auto`}
@@ -140,7 +140,7 @@ const Header = () => {
               className="lg:hidden fixed top-4 left-4 right-4 z-[90] p-6 bg-white/10 backdrop-blur-[30px] border border-white/20 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] flex flex-col gap-6"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <img src={logo} alt="Indomable Tours" className="h-8 w-auto object-contain brightness-110" />
+                <img src={logo} alt="Indomaple Tours" className="h-8 w-auto object-contain brightness-110" />
                 <button
                   className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
