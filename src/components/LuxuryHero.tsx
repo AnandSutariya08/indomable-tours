@@ -5,7 +5,7 @@ import luxuryHero from "@/assets/luxury-hero.jpg";
 import kerala from "@/assets/destinations/kerala.jpg";
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 import video1 from "../assets/videos/withouttext.mp4"
-import video2 from "../assets/videos/withouttext.mp4"
+import video2 from "../assets/videos/withouttext2.mp4"
 import video3 from "../assets/videos/withouttext.mp4";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
@@ -18,7 +18,6 @@ const LuxuryHero = () => {
     setVideoUrl(url);
   };
 
-  const dummyVideoUrl = "https://player.vimeo.com/external/370467553.hd.mp4?s=ce49c8c6d8e28a89298ffb4c53a2e842bdb11546&profile_id=175";
 
   return (
     <section className="py-20 md:py-28 bg-muted overflow-hidden">

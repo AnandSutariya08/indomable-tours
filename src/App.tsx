@@ -29,6 +29,7 @@ import AdminTeam from "./pages/admin/AdminTeam";
 import AdminTravelInfo from "./pages/admin/AdminTravelInfo";
 import AdminHomeSections from "./pages/admin/AdminHomeSections";
 import AdminInquiries from "./pages/admin/AdminInquiries";
+import Contact from "./pages/Contactus";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<BlogPost />} />
               <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />

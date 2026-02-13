@@ -8,25 +8,30 @@ import {
 } from "@/components/ui/dialog";
 import QuoteModal from "./QuoteModal";
 import dummyVideoUrl from "../assets/videos/withouttext.mp4"
+import heroVideo from "../assets/videos/herovideo.mp4";
 
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
-    
+
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0">
         {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2071)",
-          }}
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            src={heroVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        </div>
+
 
         {/* Cinematic Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/50 via-black/40 to-black/70" />
@@ -85,7 +90,7 @@ const HeroSection = () => {
 
       {/* Video Modal */}
       <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-        <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none"style={{ zIndex: 9999 }}>
+        <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none" style={{ zIndex: 9999 }}>
           <DialogHeader className="sr-only">
             <DialogTitle>Our Story</DialogTitle>
           </DialogHeader>

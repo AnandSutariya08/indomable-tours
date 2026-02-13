@@ -42,7 +42,7 @@ const values = [
 ];
 
 const milestones = [
-  { year: "2010", event: "Founded in Toronto with a mission to share authentic Asian travel" },
+  { year: "2016", event: "Founded in Toronto with a mission to share authentic Asian travel" },
   { year: "2012", event: "Expanded to Nepal and established local partnerships" },
   { year: "2015", event: "Became licensed Bhutan tour operator" },
   { year: "2017", event: "Added Sri Lanka to our destination portfolio" },
@@ -59,7 +59,7 @@ const About = () => {
       <PageHeader
         badge="Our Story"
         title="About Indomaple Tours"
-        subtitle="India Expertise. Canadian Standards. Creating transformative travel experiences since 2010."
+        subtitle="India Expertise. Canadian Standards. Creating transformative travel experiences since 2016."
         backgroundImage={luxuryHero}
       />
 
@@ -181,97 +181,110 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 md:py-28 bg-muted">
-        <div className="container mx-auto px-4 md:px-6">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block px-4 py-2 rounded-full bg-secondary/20 text-secondary font-body text-sm font-medium mb-6">
-                Our Journey
-              </span>
-              <h2 className="heading-display-sm text-primary mb-4">
-                Milestones Along the Way
-              </h2>
-            </div>
-          </AnimatedSection>
-
-          <div className="max-w-3xl mx-auto">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={milestone.year}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex gap-6 mb-8 last:mb-0"
-              >
-                <div className="flex-shrink-0 w-20">
-                  <span className="font-heading text-2xl text-primary">{milestone.year}</span>
-                </div>
-                <div className="relative flex-1 pb-8 border-l-2 border-secondary/30 pl-6">
-                  <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-secondary" />
-                  <p className="font-body text-foreground">{milestone.event}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+   
 
       {/* Team Section */}
-      <section className="py-20 md:py-28">
-        <div className="container mx-auto px-4 md:px-6">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block px-4 py-2 rounded-full bg-secondary/20 text-secondary font-body text-sm font-medium mb-6">
-                The People Behind the Magic
-              </span>
-              <h2 className="heading-display-sm text-primary mb-4">
-                Meet Our Team
-              </h2>
-              <p className="body-display-md text-foreground max-w-2xl mx-auto">
-                Passionate travelers dedicated to creating your perfect journey.
-              </p>
-            </div>
-          </AnimatedSection>
+    {/* Founder Section */}
+<section className="py-20 md:py-28 bg-muted/30">
+  <div className="container mx-auto px-4 md:px-6">
+    <AnimatedSection>
+      <div className="text-center mb-16">
+        <span className="inline-block px-4 py-2 rounded-full bg-secondary/20 text-secondary font-body text-sm font-medium mb-6">
+          About Our Founder
+        </span>
+        <h2 className="heading-display-sm text-primary mb-4">
+          Gagandeep Makkar
+        </h2>
+        <p className="body-display-md text-foreground max-w-3xl mx-auto">
+          Founder, IndoMaple Tours — Indian Expertise. Canadian Standards.
+        </p>
+      </div>
+    </AnimatedSection>
 
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            </div>
-          ) : (
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            >
-              {team.map((member, index) => (
-                <motion.div
-                  key={member.id}
-                  variants={fadeInUp}
-                  transition={{ delay: index * 0.15 }}
-                  whileHover={{ y: -10 }}
-                  className="group"
-                >
-                  <div className="relative h-80 rounded-2xl overflow-hidden mb-6">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  </div>
-                  <h3 className="font-heading text-xl text-primary mb-1">{member.name}</h3>
-                  <p className="font-body text-secondary font-medium mb-3">{member.role}</p>
-                  <p className="font-body text-foreground/80 text-sm">{member.bio}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start"
+    >
+      {/* Founder Image */}
+      <motion.div
+        variants={fadeInUp}
+        className="relative"
+      >
+        <div className="relative h-[520px] rounded-2xl overflow-hidden shadow-2xl group">
+          <img
+            src={"/src/assets/5c1e39358ecf2d5a.jpeg"}  // 🔁 Change this path as needed
+            alt="Gagandeep Makkar"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         </div>
-      </section>
+
+        <div className="absolute -bottom-8 -right-8 bg-primary text-primary-foreground p-6 rounded-2xl shadow-xl hidden md:block">
+          <p className="font-heading text-3xl mb-1">Since 2016</p>
+          <p className="font-body text-primary-foreground/80 text-sm">
+            A Decade of Travel Excellence
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Founder Content */}
+      <motion.div
+        variants={fadeInUp}
+        transition={{ delay: 0.2 }}
+      >
+        <p className="font-body text-foreground/80 mb-6 leading-relaxed">
+          Gagandeep’s journey in tourism did not begin in a boardroom; it began 
+          in the vibrant town of <strong>Alwar, Rajasthan</strong> — a culturally rich destination 
+          surrounded by majestic landscapes and the wilderness of Sariska.
+        </p>
+
+        <p className="font-body text-foreground/80 mb-6 leading-relaxed">
+          Born and raised in Alwar, weekends were spent exploring forts, boating 
+          across serene lakes, and guiding visiting friends through hidden corners 
+          of his hometown. Tourism was never just an industry for him — it was a lived experience.
+        </p>
+
+        <p className="font-body text-foreground/80 mb-6 leading-relaxed">
+          During college, that passion turned entrepreneurial. What began as 
+          weekend explorations evolved into organizing winter and spring group 
+          tours for students from multiple colleges. While completing his graduation, 
+          he guided over 100 groups to Alwar — building deep hands-on experience 
+          in logistics, operations, and guest engagement.
+        </p>
+
+        <p className="font-body text-foreground/80 mb-6 leading-relaxed">
+          Since 2016, he has professionally curated exclusive itineraries across 
+          India and Asia including Nepal, Bhutan, Sri Lanka, Japan, and Indonesia. 
+          His expertise spans wildlife expeditions, spiritual retreats, cultural 
+          heritage circuits, culinary journeys, photography tours, and immersive 
+          local experiences.
+        </p>
+
+        <div className="space-y-3 mb-8">
+          <p className="font-body text-foreground font-medium">Today, IndoMaple Tours is built on:</p>
+
+          <ul className="space-y-2 text-foreground/80 font-body">
+            <li>• Deep-rooted Indian destination knowledge</li>
+            <li>• A decade of professional travel curation experience</li>
+            <li>• Strong supplier networks across India & neighboring countries</li>
+            <li>• Indian expertise delivered with Canadian service standards</li>
+          </ul>
+        </div>
+
+        <p className="font-body text-foreground/80 leading-relaxed">
+          Now based in Canada, his mission is simple: to showcase the India he has 
+          lived and curated — beyond clichés and tourist stereotypes. He believes 
+          India is not just a destination, but a layered experience of heritage, 
+          wildlife, wellness, cuisine, craftsmanship, and living culture.
+        </p>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <AnimatedSection>
