@@ -62,8 +62,13 @@ const ExploreTours = () => {
                     style={{ opacity: 1 }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                     <span className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">{tour.duration}</span>
+                    {tour.tags?.map((tag: string) => (
+                      <span key={tag} className="px-3 py-1.5 rounded-full bg-accent/90 text-accent-foreground font-body text-xs font-bold uppercase tracking-wider">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <p className="text-cream/80 font-body text-sm mb-2">{tour.location}</p>

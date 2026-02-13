@@ -123,13 +123,18 @@ const Tours = () => {
                             style={{ opacity: 1 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          <div className="absolute top-4 left-4 flex gap-2">
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                             <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
                               {tour.duration}
                             </span>
                             <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
                               {tour.country}
                             </span>
+                            {tour.tags?.map((tag: string) => (
+                              <span key={tag} className="px-3 py-1 rounded-full bg-accent/90 text-accent-foreground font-body text-xs font-bold uppercase tracking-wider">
+                                {tag}
+                              </span>
+                            ))}
                           </div>
                           <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
                             <Star className="w-4 h-4 text-secondary fill-secondary" />

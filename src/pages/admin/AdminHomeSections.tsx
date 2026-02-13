@@ -32,7 +32,7 @@ const AdminHomeSections = () => {
 
   // Form data
   const [destFormData, setDestFormData] = useState({ name: "", landmark: "", image: "", description: "" });
-  const [tourFormData, setTourFormData] = useState({ title: "", location: "", image: "", duration: "", description: "" });
+  const [tourFormData, setTourFormData] = useState({ title: "", location: "", image: "", duration: "", description: "", tags: "" });
   const [testFormData, setTestFormData] = useState({ name: "", location: "", quote: "", rating: 5, avatar: "" });
 
   const { toast } = useToast();
@@ -90,20 +90,31 @@ const AdminHomeSections = () => {
   const handleOpenTourDialog = (item?: ExploreTour) => {
     if (item) {
       setEditingTour(item);
-      setTourFormData({ title: item.title, location: item.location, image: item.image, duration: item.duration, description: item.description });
+      setTourFormData({ 
+        title: item.title, 
+        location: item.location, 
+        image: item.image, 
+        duration: item.duration, 
+        description: item.description,
+        tags: item.tags?.join(", ") || "" 
+      });
     } else {
       setEditingTour(null);
-      setTourFormData({ title: "", location: "", image: "", duration: "", description: "" });
+      setTourFormData({ title: "", location: "", image: "", duration: "", description: "", tags: "" });
     }
     setIsTourDialogOpen(true);
   };
 
   const handleSubmitTour = async () => {
+    const formattedData = {
+      ...tourFormData,
+      tags: tourFormData.tags.split(",").map(t => t.trim()).filter(Boolean)
+    };
     if (editingTour) {
-      await updateDocument(COLLECTIONS.EXPLORE_TOURS, editingTour.id, tourFormData);
+      await updateDocument(COLLECTIONS.EXPLORE_TOURS, editingTour.id, formattedData);
       toast({ title: "Tour updated" });
     } else {
-      await addDocument(COLLECTIONS.EXPLORE_TOURS, tourFormData);
+      await addDocument(COLLECTIONS.EXPLORE_TOURS, formattedData);
       toast({ title: "Tour added" });
     }
     setIsTourDialogOpen(false);
@@ -401,6 +412,10 @@ const AdminHomeSections = () => {
                   <label className="text-sm font-semibold">Duration</label>
                   <Input value={tourFormData.duration} onChange={(e) => setTourFormData({ ...tourFormData, duration: e.target.value })} placeholder="e.g., 7 Days" />
                 </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold">Tags (comma separated)</label>
+                <Input value={tourFormData.tags} onChange={(e) => setTourFormData({ ...tourFormData, tags: e.target.value })} placeholder="e.g., Best Seller, Trending" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-semibold">Home Page Tagline</label>

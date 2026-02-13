@@ -40,6 +40,7 @@ const AdminTours = () => {
     description: "",
     fullDescription: "",
     highlights: "",
+    tags: "",
     included: "",
     notIncluded: "",
     gallery: [] as string[],
@@ -101,6 +102,7 @@ const AdminTours = () => {
         description: tour.description,
         fullDescription: tour.fullDescription || "",
         highlights: tour.highlights.join(", "),
+        tags: tour.tags?.join(", ") || "",
         included: tour.included?.join(", ") || "",
         notIncluded: tour.notIncluded?.join(", ") || "",
         gallery: tour.gallery || [],
@@ -173,6 +175,7 @@ const AdminTours = () => {
         description: formData.description,
         fullDescription: formData.fullDescription,
         highlights: formData.highlights.split(",").map(s => s.trim()).filter(Boolean),
+        tags: formData.tags.split(",").map(s => s.trim()).filter(Boolean),
         included: formData.included.split(",").map(s => s.trim()).filter(Boolean),
         notIncluded: formData.notIncluded.split(",").map(s => s.trim()).filter(Boolean),
         itinerary: formData.itinerary,
@@ -444,6 +447,15 @@ const AdminTours = () => {
                 value={formData.highlights}
                 onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
                 placeholder="e.g., Sunrise at Taj Mahal, Camel safari, Royal Palace dinner"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Tags (comma separated)</Label>
+              <Input
+                value={formData.tags}
+                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                placeholder="e.g., Best Seller, Luxury, New"
               />
             </div>
 
