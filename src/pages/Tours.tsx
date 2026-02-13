@@ -55,7 +55,7 @@ const Tours = () => {
       />
 
       <div className="bg-[#F5F1E9]">
-        <section className="py-12 relative overflow-hidden">
+        {/* <section className="py-12 relative overflow-hidden">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
           
@@ -88,8 +88,35 @@ const Tours = () => {
               )}
             </div>
           </div>
-        </section>
+        </section> */}
+        <section className="py-12 relative overflow-hidden bg-[#F5F1E9]">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
 
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center gap-6">
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                {countryList.map((country) => (
+                  <motion.button
+                    key={country}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedCountry(country)}
+                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                       selectedCountry === country
+                        ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                        : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                    }`}
+                  >
+                    {country}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
         <section className="pb-16 md:pb-24">
           <div className="container mx-auto px-4 md:px-6">
             {loading && tours.length === 0 ? (
