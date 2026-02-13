@@ -121,6 +121,7 @@ const AdminTours = () => {
         description: "",
         fullDescription: "",
         highlights: "",
+        tags: "",
         included: "",
         notIncluded: "",
         gallery: [],
