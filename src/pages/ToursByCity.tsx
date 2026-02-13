@@ -7,14 +7,26 @@ import { RootState } from "@/store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
-import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
+import AnimatedSection, {
+  staggerContainer,
+  fadeInUp,
+} from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuoteModal from "@/components/QuoteModal";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
 
-const categories = ["All", "Heritage & Culture", "Wildlife Safaris", "Wellness & Spiritual", "Luxury & Palace", "Adventure & Himalayas", "Islands & Coastal Escapes", "Nature"];
+const categories = [
+  "All",
+  "Heritage & Culture",
+  "Wildlife Safaris",
+  "Wellness & Spiritual",
+  "Luxury & Palace",
+  "Adventure & Himalayas",
+  "Islands & Coastal Escapes",
+  "Nature",
+];
 
 const ToursByCity = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -23,10 +35,16 @@ const ToursByCity = () => {
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
 
   const filteredTours = tours.filter((tour) => {
-    const matchesCategory = selectedCategory === "All" || (tour.tags && tour.tags.includes(selectedCategory));
-    const matchesSearch = tour.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         (tour.tags && tour.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) ||
-                         tour.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" ||
+      (tour.tags && tour.tags.includes(selectedCategory));
+    const matchesSearch =
+      tour.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (tour.tags &&
+        tour.tags.some((tag) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase()),
+        )) ||
+      tour.location.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -47,28 +65,32 @@ const ToursByCity = () => {
           {/* Decorative background elements */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
-          
+
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center gap-8">
               {/* Category Tabs */}
-              <div className="flex flex-col items-center gap-4">
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Category</span>
-                <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                  {categories.map((category) => (
-                    <motion.button
-                      key={category}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
-                        selectedCategory === category
-                          ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
-                          : "text-cream/60 hover:text-secondary hover:bg-white/5"
-                      }`}
-                    >
-                      {category}
-                    </motion.button>
-                  ))}
+              <div className="flex flex-col items-center gap-4 w-full">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
+                  Select Category
+                </span>
+                <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
+                  <div className="flex justify-start md:justify-center gap-3 min-w-max px-4">
+                    {categories.map((category) => (
+                      <motion.button
+                        key={category}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedCategory(category)}
+                        className={`px-6 py-3 rounded-2xl font-body font-bold text-xs uppercase tracking-widest transition-all duration-300 whitespace-nowrap border ${
+                          selectedCategory === category
+                            ? "bg-secondary text-primary border-secondary shadow-[0_10px_20px_rgba(212,175,55,0.2)]"
+                            : "bg-white/50 text-primary/60 border-black/5 hover:border-secondary/30 hover:bg-white"
+                        }`}
+                      >
+                        {category}
+                      </motion.button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -120,7 +142,9 @@ const ToursByCity = () => {
                             alt={tour.title}
                             className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
                             loading="lazy"
-                            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                            onLoad={(e) =>
+                              (e.currentTarget.style.opacity = "1")
+                            }
                             style={{ opacity: 1 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -132,7 +156,9 @@ const ToursByCity = () => {
                           <div className="absolute bottom-4 left-4">
                             <div className="flex items-center gap-2 text-white/80 mb-1">
                               <MapPin className="w-4 h-4" />
-                              <span className="font-body text-xs font-bold uppercase tracking-widest">{tour.location}</span>
+                              <span className="font-body text-xs font-bold uppercase tracking-widest">
+                                {tour.location}
+                              </span>
                             </div>
                             <h3 className="font-heading text-2xl text-white">
                               {tour.title}
@@ -145,7 +171,7 @@ const ToursByCity = () => {
                           <p className="font-body text-sm text-foreground/70 mb-6 line-clamp-3 min-h-[60px]">
                             {tour.description}
                           </p>
-                          
+
                           {/* Tags/Categories */}
                           <div className="flex flex-wrap gap-2 mb-8">
                             {tour.tags?.map((tag) => (
@@ -164,7 +190,11 @@ const ToursByCity = () => {
                               {tour.country}
                             </span>
                             <Link to={`/tours/${tour.id}`}>
-                              <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
+                              <Button
+                                variant="gold"
+                                size="sm"
+                                className="group/btn rounded-full px-5"
+                              >
                                 View Details
                                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                               </Button>
@@ -180,8 +210,12 @@ const ToursByCity = () => {
 
             {!loading && filteredTours.length === 0 && (
               <div className="text-center py-20">
-                <h3 className="font-heading text-2xl text-primary mb-4">No tours found</h3>
-                <p className="font-body text-foreground/70">Try adjusting your search or category selection.</p>
+                <h3 className="font-heading text-2xl text-primary mb-4">
+                  No tours found
+                </h3>
+                <p className="font-body text-foreground/70">
+                  Try adjusting your search or category selection.
+                </p>
               </div>
             )}
           </div>
@@ -196,10 +230,11 @@ const ToursByCity = () => {
               Don't See Your Dream Destination?
             </h2>
             <p className="body-display-md text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              We offer custom tours to hundreds of destinations across Asia. Tell us where you want to go!
+              We offer custom tours to hundreds of destinations across Asia.
+              Tell us where you want to go!
             </p>
-            <Button 
-              variant="gold" 
+            <Button
+              variant="gold"
               size="xl"
               onClick={() => setIsQuoteOpen(true)}
             >

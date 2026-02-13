@@ -10,8 +10,8 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "Tours", href: "/tours" },
   { label: "Destinations", href: "/destinations" },
-  { label: "Travel Info", href: "/travel-info" },
-  { label: "Tours by City", href: "/tours-by-city" },
+  // { label: "Travel Info", href: "/travel-info" },
+  { label: "Catagories", href: "/catagories" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
 ];
