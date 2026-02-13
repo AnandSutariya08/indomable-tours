@@ -4,5 +4,10 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/contact.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

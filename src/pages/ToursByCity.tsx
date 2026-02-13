@@ -106,7 +106,7 @@ const ToursByCity = () => {
                       className="w-full h-14 bg-black/80 backdrop-blur-2xl border-white/10 text-cream/90 flex justify-between items-center px-6 rounded-2xl shadow-lg"
                     >
                       <div className="flex items-center gap-3">
-                        <Menu className="w-5 h-5 text-secondary" />
+                        {/* <Menu className="w-5 h-5 text-secondary" /> */}
                         <span className="font-body font-bold text-xs uppercase tracking-widest">
                           {selectedCategory}
                         </span>
@@ -137,7 +137,7 @@ const ToursByCity = () => {
 
               {/* Search */}
               <div className="relative w-full max-w-md">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 w-5 h-5" />
+              <Search style={{zIndex:999}} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
                 <Input
                   type="text"
                   placeholder="Search categories..."

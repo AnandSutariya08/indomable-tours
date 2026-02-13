@@ -119,13 +119,13 @@ const Blog = () => {
 
             {/* Search */}
             <div className="relative w-full md:w-72">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
+              <Search style={{zIndex:999}} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
               <Input
                 type="text"
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 bg-muted border-border"
+                  className="pl-12 h-14 bg-white/50 backdrop-blur-sm border-black/5 rounded-2xl shadow-sm focus:bg-white transition-all duration-300"
               />
             </div>
           </div>
