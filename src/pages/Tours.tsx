@@ -13,10 +13,10 @@ import QuoteModal from "@/components/QuoteModal";
 
 import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 
-const categories = ["All Tours", "India", "Nepal", "Bhutan", "Sri Lanka"];
+const categories = ["All", "Heritage & Culture", "Wildlife Safaris", "Wellness & Spiritual", "Luxury & Palace", "Adventure & Himalayas", "Islands & Coastal Escapes", "Nature"];
 
 const Tours = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All Tours");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
   const [searchParams] = useSearchParams();
@@ -25,15 +25,15 @@ const Tours = () => {
 
   useEffect(() => {
     if (countryFilter) {
-      const formattedCountry = countryFilter.charAt(0).toUpperCase() + countryFilter.slice(1).toLowerCase();
-      if (categories.includes(formattedCountry)) {
-        setSelectedCategory(formattedCountry);
+      const formattedCategory = countryFilter.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      if (categories.includes(formattedCategory)) {
+        setSelectedCategory(formattedCategory);
       }
     }
   }, [countryFilter]);
 
   const filteredTours = tours.filter(tour => {
-    const matchesCategory = selectedCategory === "All Tours" || tour.country === selectedCategory;
+    const matchesCategory = selectedCategory === "All" || (tour.tags && tour.tags.includes(selectedCategory));
     const matchesCity = !cityFilter || tour.location.toLowerCase().includes(cityFilter.toLowerCase()) || tour.title.toLowerCase().includes(cityFilter.toLowerCase());
     return matchesCategory && matchesCity;
   });
