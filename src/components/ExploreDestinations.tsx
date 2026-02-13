@@ -9,8 +9,7 @@ const destinations = [
     name: "India",
     tagline: "A Continent in One Country",
     description: "Few countries offer deserts, rainforests, Himalayas, spirituality, wildlife & luxury palaces — all in one journey. Where ancient civilization meets vibrant modern energy.",
-    image: "https://images.unsplash.com/photo-1524491991033-7253507d9b9d?auto=format&fit=crop&q=80",
-  },
+image:"https://images.unsplash.com/photo-1514222134-b57cbb8ce073?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  },
   {
     id: "nepal",
     name: "Nepal",
@@ -23,7 +22,7 @@ const destinations = [
     name: "Bhutan",
     tagline: "Exclusive. Peaceful. Profound.",
     description: "A carbon-negative kingdom that measures success by Gross National Happiness",
-    image: "https://images.unsplash.com/photo-1578593139803-1620c027429d?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1555821108-3fb2763b226a?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "sri-lanka",

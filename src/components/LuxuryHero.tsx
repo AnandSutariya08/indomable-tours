@@ -9,8 +9,8 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { Link } from "react-router-dom";
 
 const LuxuryHero = () => {
-  
-  
+
+
   const video2 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext2.mp4?alt=media&token=b1a148ef-30c7-445c-bb98-f28de0f3d53a"
   const video1 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638"
   const video3 = "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638";
@@ -78,7 +78,7 @@ const LuxuryHero = () => {
             {/* Main Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer" onClick={() => playVideo(video1)}>
               <img
-                src={luxuryHero}
+                src={"https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/b8/51/35/3e/1f/v1_E10/E105V3J9.jpg?w=1600&cf_fit=scale-down&q=85&format=auto&s=af0fb018f43cfe3ea05ccacc9c7bf696ae5b17a7dc76b5891f33595322c45714"}
                 alt="Luxury travel experience"
                 className="w-full h-[500px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
@@ -99,7 +99,7 @@ const LuxuryHero = () => {
               }}
             >
               <img
-                src={kerala}
+                src={"https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/bf/a3/22/0a/f1/v1_E10/E107AJNA.jpg?w=1600&cf_fit=scale-down&q=85&format=auto&s=5a8ffdf0d4658bf870809367c9a4275d31258f02e598ca68e44c63ff2f5b8652"}
                 alt="Kerala backwaters"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
@@ -119,7 +119,7 @@ const LuxuryHero = () => {
               }}
             >
               <img
-                src={tajMahal}
+                src={"https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/23/c4/b4/61/da/v1_E10/E1083AQT.jpg?w=1600&cf_fit=scale-down&q=85&format=auto&s=0b5bdd67dc6770b7d3122ab17e5b40a22f4fd7fd7f7c824ea473d552df07a1a7"}
                 alt="Taj Mahal"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 loading="lazy"
@@ -140,7 +140,7 @@ const LuxuryHero = () => {
       {/* Video Modal */}
       <Dialog open={!!videoUrl} onOpenChange={(open) => !open && setVideoUrl(null)}>
         <DialogContent className="w-[95vw] sm:max-w-4xl p-3 sm:p-0 bg-black overflow-hidden border-none"
-        style={{ zIndex: 9999 }}
+          style={{ zIndex: 9999 }}
         >
           <DialogHeader className="sr-only">
             <DialogTitle>Our Story</DialogTitle>
