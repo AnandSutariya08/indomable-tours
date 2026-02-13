@@ -68,7 +68,7 @@ const LuxuryHero = () => {
                 size="xl"
                 asChild
               >
-                <Link to="tel:+14165550199">Speak to an Expert</Link>
+                <Link to="tel:+17828992178">Speak to an Expert</Link>
               </Button>
             </div>
           </div>
