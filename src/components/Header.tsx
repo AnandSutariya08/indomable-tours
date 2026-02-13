@@ -13,7 +13,8 @@ const navItems = [
   // { label: "Travel Info", href: "/travel-info" },
   { label: "Catagories", href: "/catagories" },
   { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/about" },  { label: "Contact", href: "/contact" },
+
 ];
 
 const Header = () => {

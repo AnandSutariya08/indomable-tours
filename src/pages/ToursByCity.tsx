@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowRight, Search, Loader2 } from "lucide-react";
+import { MapPin, ArrowRight, Search, Loader2, Menu, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -14,6 +14,12 @@ import AnimatedSection, {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuoteModal from "@/components/QuoteModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
 
@@ -71,7 +77,9 @@ const ToursByCity = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
                 Select Category
               </span>
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+              
+              {/* Desktop Tabs */}
+              <div className="hidden md:flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
                 {categories.map((category) => (
                   <motion.button
                     key={category}
@@ -87,6 +95,44 @@ const ToursByCity = () => {
                     {category}
                   </motion.button>
                 ))}
+              </div>
+
+              {/* Mobile Burger Menu */}
+              <div className="md:hidden w-full px-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      className="w-full h-14 bg-black/80 backdrop-blur-2xl border-white/10 text-cream/90 flex justify-between items-center px-6 rounded-2xl shadow-lg"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Menu className="w-5 h-5 text-secondary" />
+                        <span className="font-body font-bold text-xs uppercase tracking-widest">
+                          {selectedCategory}
+                        </span>
+                      </div>
+                      <ChevronDown className="w-4 h-4 text-secondary/60" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    className="w-[calc(100vw-2rem)] bg-black/95 backdrop-blur-xl border-white/10 p-2 rounded-2xl shadow-2xl"
+                    align="center"
+                  >
+                    {categories.map((category) => (
+                      <DropdownMenuItem
+                        key={category}
+                        onClick={() => setSelectedCategory(category)}
+                        className={`px-6 py-4 rounded-xl font-body font-bold text-xs uppercase tracking-widest transition-all duration-300 mb-1 last:mb-0 focus:bg-secondary focus:text-primary ${
+                          selectedCategory === category
+                            ? "bg-secondary text-primary"
+                            : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                        }`}
+                      >
+                        {category}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               {/* Search */}
