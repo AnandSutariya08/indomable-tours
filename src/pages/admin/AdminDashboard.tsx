@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { 
   Map, 
   Compass, 
@@ -13,17 +14,51 @@ import {
   ArrowRight
 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
-
-const stats = [
-  { icon: Map, label: "Tours", count: 8, href: "/admin/tours", color: "bg-blue-500" },
-  { icon: Compass, label: "Destinations", count: 4, href: "/admin/destinations", color: "bg-green-500" },
-  { icon: Newspaper, label: "Blog Posts", count: 8, href: "/admin/blog", color: "bg-purple-500" },
-  { icon: Building2, label: "Cities", count: 15, href: "/admin/cities", color: "bg-orange-500" },
-  { icon: MessageSquare, label: "Testimonials", count: 3, href: "/admin/testimonials", color: "bg-pink-500" },
-  { icon: Users, label: "Team Members", count: 3, href: "/admin/team", color: "bg-indigo-500" },
-];
+import { getCollection, COLLECTIONS } from "@/services/firestoreService";
 
 const AdminDashboard = () => {
+  const [counts, setCounts] = useState({
+    tours: 0,
+    destinations: 0,
+    blog: 0,
+    cities: 0,
+    testimonials: 0,
+    team: 0
+  });
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const [tours, destinations, blog, cities, testimonials, team] = await Promise.all([
+        getCollection(COLLECTIONS.TOURS),
+        getCollection(COLLECTIONS.DESTINATIONS),
+        getCollection(COLLECTIONS.BLOG_POSTS),
+        getCollection(COLLECTIONS.CITIES),
+        getCollection(COLLECTIONS.TESTIMONIALS),
+        getCollection(COLLECTIONS.TEAM)
+      ]);
+
+      setCounts({
+        tours: tours.length,
+        destinations: destinations.length,
+        blog: blog.length,
+        cities: cities.length,
+        testimonials: testimonials.length,
+        team: team.length
+      });
+    };
+
+    fetchCounts();
+  }, []);
+
+  const stats = [
+    { icon: Map, label: "Tours", count: counts.tours, href: "/admin/tours", color: "bg-blue-500" },
+    { icon: Compass, label: "Destinations", count: counts.destinations, href: "/admin/destinations", color: "bg-green-500" },
+    { icon: Newspaper, label: "Blog Posts", count: counts.blog, href: "/admin/blog", color: "bg-purple-500" },
+    { icon: Building2, label: "Cities", count: counts.cities, href: "/admin/cities", color: "bg-orange-500" },
+    { icon: MessageSquare, label: "Testimonials", count: counts.testimonials, href: "/admin/testimonials", color: "bg-pink-500" },
+    { icon: Users, label: "Team Members", count: counts.team, href: "/admin/team", color: "bg-indigo-500" },
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-8">

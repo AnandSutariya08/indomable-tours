@@ -116,7 +116,7 @@ const AdminBlog = () => {
     setSaving(true);
 
     try {
-      const postData: Omit<BlogPost, "id"> = {
+      const postData = {
         title: formData.title,
         excerpt: formData.excerpt,
         content: formData.content,
@@ -130,16 +130,26 @@ const AdminBlog = () => {
       };
 
       if (editingPost) {
-        await updateDocument(COLLECTIONS.BLOG_POSTS, editingPost.id, postData);
-        toast({ title: "Blog post updated successfully" });
+        // Use setDocument to ensure we update the existing ID correctly or updateDocument
+        const success = await updateDocument(COLLECTIONS.BLOG_POSTS, editingPost.id, postData);
+        if (success) {
+          toast({ title: "Blog post updated successfully" });
+        } else {
+          throw new Error("Update failed");
+        }
       } else {
-        await addDocument(COLLECTIONS.BLOG_POSTS, postData);
-        toast({ title: "Blog post created successfully" });
+        const id = await addDocument(COLLECTIONS.BLOG_POSTS, postData);
+        if (id) {
+          toast({ title: "Blog post created successfully" });
+        } else {
+          throw new Error("Creation failed");
+        }
       }
 
       setIsModalOpen(false);
-      fetchPosts();
+      await fetchPosts();
     } catch (error) {
+      console.error("Error saving blog post:", error);
       toast({ title: "Error saving blog post", variant: "destructive" });
     } finally {
       setSaving(false);
