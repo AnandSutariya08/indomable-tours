@@ -215,7 +215,7 @@ const About = () => {
       >
         <div className="relative h-[520px] rounded-2xl overflow-hidden shadow-2xl group">
           <img
-            src={"/src/assets/5c1e39358ecf2d5a.jpeg"}  // 🔁 Change this path as needed
+            src="/5c1e39358ecf2d5a.jpeg"
             alt="Gagandeep Makkar"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
