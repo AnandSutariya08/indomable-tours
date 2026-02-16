@@ -117,16 +117,16 @@ const AdminBlog = () => {
 
     try {
       const postData = {
-        title: formData.title,
-        excerpt: formData.excerpt,
-        content: formData.content,
-        image: formData.image,
-        category: formData.category,
-        author: formData.author,
-        readTime: formData.readTime,
-        date: formData.date,
-        featured: formData.featured,
-        tags: formData.tags.split(",").map(s => s.trim()).filter(Boolean),
+        title: formData.title || "",
+        excerpt: formData.excerpt || "",
+        content: formData.content || "",
+        image: formData.image || "",
+        category: formData.category || "Culture",
+        author: formData.author || "",
+        readTime: formData.readTime || "",
+        date: formData.date || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+        featured: !!formData.featured,
+        tags: formData.tags ? formData.tags.split(",").map(s => s.trim()).filter(Boolean) : [],
       };
 
       if (editingPost) {
