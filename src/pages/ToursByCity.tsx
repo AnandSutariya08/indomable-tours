@@ -25,14 +25,25 @@ import jaipur from "@/assets/destinations/jaipur.jpg";
 
 const categories = [
   "All",
-  "Heritage & Culture",
-  "Wildlife Safaris",
+  "Culture & Heritage",
+  "Wildlife",
   "Wellness & Spiritual",
-  "Luxury & Palace",
+  "Luxury",
   "Adventure & Himalayas",
   "Islands & Coastal Escapes",
   "Nature",
 ];
+
+// const categories = [
+//   "All",
+//   "Culture & Heritage",
+//   "Wildlife Safaris",
+//   "Wellness & Spiritual",
+//   "Luxury & Palace",
+//   "Adventure & Himalayas",
+//   "Islands & Coastal Escapes",
+//   "Nature",
+// ];
 
 const ToursByCity = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
