@@ -12,7 +12,7 @@ import { useBlogPosts } from "@/hooks/useFirestoreData";
 
 import blog1 from "@/assets/blog/blog-1.jpg";
 
-const categories = ["All", "Luxury Stays", "Food & Culture", "Adventure", "Culture", "Photography", "Wellness"];
+const categories = ["All"];
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
