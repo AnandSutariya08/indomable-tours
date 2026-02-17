@@ -79,7 +79,7 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
             <Button variant="hero" size="xl" onClick={() => setIsQuoteModalOpen(true)}>
-              Start Your Journey With Us
+              Partner with us
             </Button>
             <Button variant="heroOutline" size="xl" onClick={() => setIsVideoOpen(true)}>
               Watch Our Story

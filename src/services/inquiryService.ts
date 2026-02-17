@@ -3,6 +3,8 @@ import { db } from "@/lib/firebase";
 
 export interface Inquiry {
   id?: string;
+  category: string;
+  companyName?: string;
   fullName: string;
   email: string;
   phone?: string;

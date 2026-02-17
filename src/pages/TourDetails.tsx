@@ -304,7 +304,7 @@ const TourDetails = () => {
                   className="w-full"
                   onClick={() => setIsQuoteOpen(true)}
                 >
-                  Request Quote
+                  Partner with us
                 </Button>
               </div>
             </aside>

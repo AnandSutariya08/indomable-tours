@@ -295,7 +295,7 @@ const ToursByCity = () => {
               size="xl"
               onClick={() => setIsQuoteOpen(true)}
             >
-              Request Custom Tour
+              Partner with us
             </Button>
           </div>
         </section>

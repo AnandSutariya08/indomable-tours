@@ -52,6 +52,7 @@ const AdminInquiries = () => {
                 <TableRow>
                   <TableHead>Date</TableHead>
                   <TableHead>Customer</TableHead>
+                  <TableHead>Category/Company</TableHead>
                   <TableHead>Destination</TableHead>
                   <TableHead>Dates</TableHead>
                   <TableHead>Status</TableHead>
@@ -60,11 +61,11 @@ const AdminInquiries = () => {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-10">Loading inquiries...</TableCell>
+                    <TableCell colSpan={6} className="text-center py-10">Loading inquiries...</TableCell>
                   </TableRow>
                 ) : inquiries.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-10">No inquiries found.</TableCell>
+                    <TableCell colSpan={6} className="text-center py-10">No inquiries found.</TableCell>
                   </TableRow>
                 ) : (
                   inquiries.map((inquiry) => (
@@ -76,6 +77,12 @@ const AdminInquiries = () => {
                         <div className="font-medium">{inquiry.fullName}</div>
                         <div className="text-sm text-muted-foreground">{inquiry.email}</div>
                         {inquiry.phone && <div className="text-sm text-muted-foreground">{inquiry.phone}</div>}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{inquiry.category}</div>
+                        {inquiry.companyName && (
+                          <div className="text-xs text-muted-foreground">{inquiry.companyName}</div>
+                        )}
                       </TableCell>
                       <TableCell>{inquiry.destination}</TableCell>
                       <TableCell>{inquiry.travelDates}</TableCell>
