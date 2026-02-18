@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, Phone, Clock, ArrowRight, MapPin, Globe } from "lucide-react";
+import { Mail, Phone, Clock, ArrowRight, MapPin, Globe, Loader2 } from "lucide-react";
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,40 +9,53 @@ import AnimatedSection, {
   fadeInUp,
 } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { saveInquiry } from "@/services/inquiryService";
+import { toast } from "sonner";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    category: "Individual",
+    companyName: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    destination: "India",
+    travelDates: "",
+    travelTime: "",
+    message: "",
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.fullName || !formData.email) {
+      toast.error("Name and Email are mandatory.");
+      return;
+    }
+
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
+    const result = await saveInquiry(formData);
 
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      organization: formData.get("organization") || "N/A",
-      message: formData.get("message"),
-    };
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    if (result.success) {
+      toast.success("Message sent successfully! We'll contact you soon.");
+      setFormData({
+        category: "Individual",
+        companyName: "",
+        fullName: "",
+        email: "",
+        phone: "",
+        destination: "India",
+        travelDates: "",
+        travelTime: "",
+        message: "",
       });
-
-      if (response.ok) {
-        alert("Message sent successfully!");
-        e.currentTarget.reset();
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      alert("Network error. Please try again.");
+    } else {
+      toast.error("Failed to send message. Please try again.");
     }
 
     setLoading(false);
@@ -130,79 +143,132 @@ const Contact = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-foreground/80 mb-2"
+                  <div className="space-y-2">
+                    <Label htmlFor="category">You are</Label>
+                    <select
+                      id="category"
+                      className="flex h-12 w-full rounded-xl border-2 border-border bg-background px-4 py-2 text-base font-body focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     >
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      placeholder="John Doe"
+                      <option value="Travel Agent">Travel Agent</option>
+                      <option value="Education Institute">Education Institute</option>
+                      <option value="Corporate">Corporate</option>
+                      <option value="Individual">Individual</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="companyName">Company Name</Label>
+                    <Input
+                      id="companyName"
+                      className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                      value={formData.companyName}
+                      onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Input
+                      id="fullName"
                       required
-                      className="w-full px-4 py-3.5 md:py-4 rounded-xl border-2 border-border bg-background 
-                               focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 
-                               transition-all duration-300 font-body text-base"
+                      className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                      value={formData.fullName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, fullName: e.target.value })
+                      }
                     />
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-foreground/80 mb-2"
-                    >
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="john@example.com"
-                      required
-                      className="w-full px-4 py-3.5 md:py-4 rounded-xl border-2 border-border bg-background 
-                               focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 
-                               transition-all duration-300 font-body text-base"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email ID *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        required
+                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone No</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="organization"
-                      className="block text-sm font-medium text-foreground/80 mb-2"
+                  <div className="space-y-2">
+                    <Label htmlFor="destination">Destination</Label>
+                    <select
+                      id="destination"
+                      className="flex h-12 w-full rounded-xl border-2 border-border bg-background px-4 py-2 text-base font-body focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+                      value={formData.destination}
+                      onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                     >
-                      Organization
-                      <span className="text-foreground/50 ml-1">(Optional)</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="organization"
-                      name="organization"
-                      placeholder="Your Company or University"
-                      className="w-full px-4 py-3.5 md:py-4 rounded-xl border-2 border-border bg-background 
-                               focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 
-                               transition-all duration-300 font-body text-base"
-                    />
+                      <option value="India">India</option>
+                      <option value="Nepal">Nepal</option>
+                      <option value="Bhutan">Bhutan</option>
+                      <option value="Sri Lanka">Sri Lanka</option>
+                      <option value="Others">Others</option>
+                    </select>
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-foreground/80 mb-2"
-                    >
-                      Your Message *
-                    </label>
-                    <textarea
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="travelDates">Dates</Label>
+                      <Input
+                        id="travelDates"
+                        type="date"
+                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                        value={formData.travelDates}
+                        onChange={(e) =>
+                          setFormData({ ...formData, travelDates: e.target.value })
+                        }
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="travelTime">Time</Label>
+                      <Input
+                        id="travelTime"
+                        type="time"
+                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
+                        value={formData.travelTime}
+                        onChange={(e) =>
+                          setFormData({ ...formData, travelTime: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label htmlFor="message">Your Message *</Label>
+                      <span className="text-xs text-muted-foreground">{formData.message.length}/200</span>
+                    </div>
+                    <Textarea
                       id="message"
-                      name="message"
-                      placeholder="Tell us about your travel plans, group size, preferred dates, or any special requirements..."
-                      rows={6}
                       required
-                      className="w-full px-4 py-3.5 md:py-4 rounded-xl border-2 border-border bg-background 
-                               focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 
-                               transition-all duration-300 font-body text-base resize-none"
+                      rows={6}
+                      maxLength={200}
+                      className="rounded-xl border-2 border-border px-4 py-3 font-body text-base resize-none"
+                      value={formData.message}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                     />
                   </div>
 
@@ -215,7 +281,7 @@ const Contact = () => {
                   >
                     {loading ? (
                       <span className="flex items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <Loader2 className="w-5 h-5 animate-spin" />
                         Sending...
                       </span>
                     ) : (
