@@ -577,25 +577,6 @@ const AdminTours = () => {
                 />
               </div>
             </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </AdminLayout>
-  );
-};
-
-export default AdminTours;
-              </div>
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold">Exclusions (comma separated)</Label>
-                <Textarea
-                  value={formData.notIncluded}
-                  onChange={(e) => setFormData({ ...formData, notIncluded: e.target.value })}
-                  placeholder="e.g., International airfare, Personal insurance, Tipping"
-                  rows={4}
-                />
-              </div>
-            </div>
 
             <div className="flex justify-end gap-3 pt-6 border-t">
               <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>

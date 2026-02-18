@@ -1,0 +1,100 @@
+                          <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm">
+                            {day.day}
+                          </span>
+                          Day {day.day}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 text-destructive hover:bg-destructive/10"
+                          onClick={() => removeItineraryDay(index)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <Input
+                        value={day.title}
+                        onChange={(e) => updateItineraryDay(index, "title", e.target.value)}
+                        placeholder="Day title (e.g., Arrival in Delhi)"
+                        className="bg-background"
+                      />
+                      <Textarea
+                        value={day.description}
+                        onChange={(e) => updateItineraryDay(index, "description", e.target.value)}
+                        placeholder="Day activities and description..."
+                        rows={2}
+                        className="bg-background resize-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">What's Included (comma separated)</Label>
+                <Textarea
+                  value={formData.included}
+                  onChange={(e) => setFormData({ ...formData, included: e.target.value })}
+                  placeholder="e.g., Breakfast, Sightseeing, Airport transfers"
+                  className="resize-none h-32"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Not Included (comma separated)</Label>
+                <Textarea
+                  value={formData.notIncluded}
+                  onChange={(e) => setFormData({ ...formData, notIncluded: e.target.value })}
+                  placeholder="e.g., International Flights, Visa Fees, Personal expenses"
+                  className="resize-none h-32"
+                />
+              </div>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </AdminLayout>
+  );
+};
+
+export default AdminTours;
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Exclusions (comma separated)</Label>
+                <Textarea
+                  value={formData.notIncluded}
+                  onChange={(e) => setFormData({ ...formData, notIncluded: e.target.value })}
+                  placeholder="e.g., International airfare, Personal insurance, Tipping"
+                  rows={4}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-6 border-t">
+              <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="hero" disabled={saving}>
+                {saving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving Package...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    {editingTour ? "Update Package" : "Create Package"}
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </AdminLayout>
+  );
+};
+
+export default AdminTours;
