@@ -28,66 +28,114 @@ const ExploreTours = () => {
             Explore Our Signature Tours
           </h2>
           <p className="body-display-md text-foreground">
-            Each journey is carefully crafted to immerse you in the authentic spirit 
+            Each journey is carefully crafted to immerse you in the authentic spirit
             of these magnificent destinations.
           </p>
         </div>
 
         <div className="flex justify-end gap-3 mb-8">
-          <button onClick={() => scroll("left")} className="p-3 rounded-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300" aria-label="Scroll left">
+          <button
+            onClick={() => scroll("left")}
+            className="p-3 rounded-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300"
+            aria-label="Scroll left"
+          >
             <ChevronLeft size={24} />
           </button>
-          <button onClick={() => scroll("right")} className="p-3 rounded-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300" aria-label="Scroll right">
+          <button
+            onClick={() => scroll("right")}
+            className="p-3 rounded-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300"
+            aria-label="Scroll right"
+          >
             <ChevronRight size={24} />
           </button>
         </div>
 
         {loading && tours.length === 0 ? (
-          <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          </div>
         ) : (
-          <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4" style={{paddingTop:'1rem'}}>
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4"
+          >
             {tours.map((tour) => (
-              <div 
-                key={tour.id} 
-                className="flex-shrink-0 w-[320px] md:w-[380px] group cursor-pointer"
+              <div
+                key={tour.id}
+                className="flex-shrink-0 w-[300px] md:w-[380px] group cursor-pointer"
                 onClick={() => navigate(`/tours/${tour.id}`)}
               >
-                <div className="relative h-[420px] md:h-[480px] rounded-2xl overflow-hidden card-hover bg-[#2D2D2D]">
-                  <img 
-                    src={tour.image} 
-                    alt={tour.title} 
-                    className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110" 
-                    loading="lazy"
-                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                    style={{ opacity: 1 }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                    <span className="px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">{tour.duration}</span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <p className="text-cream/80 font-body text-sm mb-2">{tour.location}</p>
-                    <h3 className="font-heading text-2xl md:text-3xl text-cream mb-2 group-hover:text-secondary transition-colors">{tour.title}</h3>
-                    
-                    {tour.tags && tour.tags.length > 0 && (
-                      <div className="mb-4">
-                        <span className="text-cream/50 font-body text-[10px] uppercase tracking-widest font-bold block mb-2">Categories</span>
-                        <div className="flex flex-wrap gap-2">
-                          {tour.tags.map((tag: string) => (
-                            <span key={tag} className="px-2.5 py-1 rounded-full bg-secondary/20 border border-secondary/30 text-secondary font-body text-[10px] font-bold uppercase tracking-wider">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                {/* Card */}
+                <div className="relative rounded-2xl overflow-hidden card-hover bg-[#2D2D2D] flex flex-col h-[480px] md:h-[520px] mt-2">
 
-                    <p className="text-cream/80 font-body text-sm leading-relaxed line-clamp-2">{tour.description}</p>
-                    <div className="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                      <Button variant="gold" size="sm" className="rounded-full px-6 font-bold">
-                        View Details
-                      </Button>
-                      <ArrowRight className="w-6 h-6 text-cream group-hover:translate-x-2 transition-transform duration-300" />
+                  {/* Background image — fills entire card */}
+                  <img
+                    src={tour.image}
+                    alt={tour.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                  />
+
+                  {/* Gradient overlay — stronger at bottom so text is always readable */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+
+                  {/* Content — flex column so items stack, no overlap */}
+                  <div className="relative z-10 flex flex-col h-full p-5">
+
+                    {/* TOP: duration badge only */}
+                    <div className="flex-shrink-0">
+                      <span className="inline-block px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-semibold">
+                        {tour.duration}
+                      </span>
+                    </div>
+
+                    {/* SPACER: pushes bottom content down */}
+                    <div className="flex-1" />
+
+                    {/* BOTTOM: all text content stacked cleanly */}
+                    <div className="flex-shrink-0 space-y-2">
+
+                      {/* Location */}
+                      <p className="text-cream/75 font-body text-xs leading-snug">
+                        {tour.location}
+                      </p>
+
+                      {/* Title */}
+                      <h3 className="font-heading text-xl md:text-2xl text-cream leading-tight group-hover:text-secondary transition-colors duration-300">
+                        {tour.title}
+                      </h3>
+
+                      {/* Tags */}
+                      {tour.tags && tour.tags.length > 0 && (
+                        <div>
+                          <span className="text-cream/50 font-body text-[9px] uppercase tracking-widest font-bold block mb-1.5">
+                            Categories
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {tour.tags.map((tag: string) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-0.5 rounded-full bg-secondary/20 border border-secondary/30 text-secondary font-body text-[9px] font-bold uppercase tracking-wider"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Description */}
+                      <p className="text-cream/70 font-body text-xs leading-relaxed line-clamp-2">
+                        {tour.description}
+                      </p>
+
+                      {/* CTA — slides up on hover */}
+                      <div className="pt-2 flex items-center justify-between opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400">
+                        <Button variant="gold" size="sm" className="rounded-full px-5 text-xs font-bold">
+                          View Details
+                        </Button>
+                        <ArrowRight className="w-5 h-5 text-cream group-hover:translate-x-1 transition-transform duration-300" />
+                      </div>
                     </div>
                   </div>
                 </div>
