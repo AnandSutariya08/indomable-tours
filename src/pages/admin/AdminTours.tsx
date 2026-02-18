@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Search, X, Save, Upload, ArrowUpDown, Loader2, Calendar } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X, Save, Upload, ArrowUpDown, Loader2, Calendar, Database } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,67 @@ const AdminTours = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTour, setEditingTour] = useState<Tour | null>(null);
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState<string | null>(null);
+
+  const fetchTours = async () => {
+    setLoading(true);
+    const result = await getCollection<Tour>(COLLECTIONS.TOURS);
+    setTours(result);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTours();
+  }, []);
+
+  const handleImportSeed = async (country: string) => {
+    setImporting(country);
+    try {
+      let seedData;
+      const countryKey = country.toLowerCase().replace(" ", "");
+      
+      switch(countryKey) {
+        case 'nepal':
+          seedData = (await import("@/data/seeds/nepalSeeds")).default;
+          break;
+        case 'srilanka':
+          seedData = (await import("@/data/seeds/srilankaSeeds")).default;
+          break;
+        case 'bhutan':
+          seedData = (await import("@/data/seeds/bhutanSeeds")).default;
+          break;
+        case 'india':
+          seedData = (await import("@/data/seeds/indiaSeeds")).default;
+          break;
+        case 'wellness':
+          seedData = (await import("@/data/seeds/wellnessSeeds")).default;
+          break;
+        default:
+          throw new Error("Invalid country");
+      }
+      
+      let count = 0;
+      for (const tour of seedData) {
+        const exists = tours.find(t => t.title === tour.title);
+        if (!exists) {
+          await addDocument(COLLECTIONS.TOURS, tour);
+          count++;
+        }
+      }
+      
+      if (count > 0) {
+        toast({ title: `Imported ${count} ${country} tours successfully` });
+        fetchTours();
+      } else {
+        toast({ title: `No new tours to import for ${country}` });
+      }
+    } catch (error) {
+      console.error("Import error:", error);
+      toast({ title: `Error importing ${country} seeds`, variant: "destructive" });
+    } finally {
+      setImporting(null);
+    }
+  };
 
   const [formData, setFormData] = useState({
     title: "",
@@ -231,8 +292,8 @@ const AdminTours = () => {
         </div>
 
         {/* Search and Filters */}
-        <div className="flex items-center gap-4 shrink-0 bg-card p-4 rounded-xl border border-border/50 shadow-sm">
-          <div className="relative flex-1 max-w-md">
+        <div className="flex flex-wrap items-center gap-4 shrink-0 bg-card p-4 rounded-xl border border-border/50 shadow-sm">
+          <div className="relative flex-1 min-w-[300px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <Input
               placeholder="Search by title, country or location..."
@@ -240,6 +301,35 @@ const AdminTours = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-10 border-border/60 focus:border-primary"
             />
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-foreground/60 mr-2 flex items-center gap-1">
+              <Database className="w-4 h-4" />
+              Quick Import:
+            </span>
+            {[
+              { name: "India", key: "India" },
+              { name: "Nepal", key: "Nepal" },
+              { name: "Bhutan", key: "Bhutan" },
+              { name: "Sri Lanka", key: "Sri Lanka" },
+              { name: "Wellness", key: "Wellness" }
+            ].map((btn) => (
+              <Button
+                key={btn.key}
+                variant="outline"
+                size="sm"
+                disabled={!!importing}
+                onClick={() => handleImportSeed(btn.key)}
+                className="h-8 text-xs bg-background/50 border-primary/20 hover:bg-primary/5 hover:text-primary hover:border-primary/40 transition-all"
+              >
+                {importing === btn.key ? (
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                ) : (
+                  <Plus className="w-3 h-3 mr-1" />
+                )}
+                {btn.name}
+              </Button>
+            ))}
           </div>
         </div>
 
