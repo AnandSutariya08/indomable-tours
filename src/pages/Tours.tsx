@@ -7,7 +7,10 @@ import { RootState } from "@/store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
-import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
+import AnimatedSection, {
+  staggerContainer,
+  fadeInUp,
+} from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import QuoteModal from "@/components/QuoteModal";
 
@@ -25,22 +28,31 @@ const Tours = () => {
 
   useEffect(() => {
     if (countryFilter) {
-      const formattedCountry = countryFilter.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      const formattedCountry = countryFilter
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
       if (countryList.includes(formattedCountry)) {
         setSelectedCountry(formattedCountry);
       }
     }
   }, [countryFilter]);
 
-  const filteredTours = tours.filter(tour => {
-    const matchesCountry = selectedCountry === "All" || (tour.country && tour.country.toLowerCase() === selectedCountry.toLowerCase());
-    const matchesCity = !cityFilter || tour.location.toLowerCase().includes(cityFilter.toLowerCase()) || tour.title.toLowerCase().includes(cityFilter.toLowerCase());
+  const filteredTours = tours.filter((tour) => {
+    const matchesCountry =
+      selectedCountry === "All" ||
+      (tour.country &&
+        tour.country.toLowerCase() === selectedCountry.toLowerCase());
+    const matchesCity =
+      !cityFilter ||
+      tour.location.toLowerCase().includes(cityFilter.toLowerCase()) ||
+      tour.title.toLowerCase().includes(cityFilter.toLowerCase());
     return matchesCountry && matchesCity;
   });
 
   useEffect(() => {
     if (cityFilter) {
-      window.scrollTo({ top: 400, behavior: 'smooth' });
+      window.scrollTo({ top: 400, behavior: "smooth" });
     }
   }, [cityFilter]);
 
@@ -50,7 +62,11 @@ const Tours = () => {
       <PageHeader
         badge="Curated Experiences"
         title={cityFilter ? `Tours in ${cityFilter}` : "Our Signature Tours"}
-        subtitle={cityFilter ? `Discover our hand-picked journeys through the magnificent city of ${cityFilter}.` : "Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."}
+        subtitle={
+          cityFilter
+            ? `Discover our hand-picked journeys through the magnificent city of ${cityFilter}.`
+            : "Each journey is meticulously crafted to offer authentic, immersive experiences that go beyond ordinary travel."
+        }
         backgroundImage={tajMahal}
       />
 
@@ -96,7 +112,9 @@ const Tours = () => {
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center gap-6">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Select Destination</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
+                Select Destination
+              </span>
               <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
                 {countryList.map((country) => (
                   <motion.button
@@ -105,7 +123,7 @@ const Tours = () => {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedCountry(country)}
                     className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
-                       selectedCountry === country
+                      selectedCountry === country
                         ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
                         : "text-cream/60 hover:text-secondary hover:bg-white/5"
                     }`}
@@ -126,7 +144,7 @@ const Tours = () => {
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedCountry + (cityFilter || '')}
+                  key={selectedCountry + (cityFilter || "")}
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
@@ -141,91 +159,129 @@ const Tours = () => {
                       whileHover={{ y: -10 }}
                       className="group flex flex-col h-full"
                     >
-                      <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
-                        <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
-                          <img
-                            src={tour.image}
-                            alt={tour.title}
-                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
-                            loading="lazy"
-                            onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                            style={{ opacity: 1 }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                            <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
-                              {tour.duration}
-                            </span>
-                            <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
-                              {tour.country}
-                            </span>
-                          </div>
-                          <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
-                            <Star className="w-4 h-4 text-secondary fill-secondary" />
-                            <span className="font-body text-sm font-medium text-foreground">{tour.rating}</span>
-                          </div>
-                        </div>
+                      {/* FULL CARD LINK */}
+                      <Link
+                        to={`/tours/${tour.id}`}
+                        className="flex flex-col h-full focus:outline-none"
+                      >
+                        <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full cursor-pointer">
+                          {/* IMAGE SECTION */}
+                          <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
+                            <img
+                              src={tour.image}
+                              alt={tour.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-                        <div className="p-6 flex flex-col flex-grow">
-                          <div className="flex items-center gap-2 text-primary/70 mb-2">
-                            <MapPin className="w-4 h-4" />
-                            <span className="font-body text-sm font-medium text-foreground">{tour.location}</span>
-                          </div>
-                          <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
-                            {tour.title}
-                          </h3>
-                          <p className="font-body text-sm text-foreground/70 mb-4 line-clamp-2 min-h-[40px]">
-                            {tour.description}
-                          </p>
-
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {tour.highlights?.slice(0, 3).map((highlight: string) => (
-                              <span
-                                key={highlight}
-                                className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
-                              >
-                                {highlight}
+                            {/* BADGES */}
+                            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                              <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-sm font-medium">
+                                {tour.duration}
                               </span>
-                            ))}
+                              <span className="px-3 py-1 rounded-full bg-primary/90 text-primary-foreground font-body text-sm font-medium">
+                                {tour.country}
+                              </span>
+                            </div>
+
+                            {/* RATING */}
+                            <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-background/90">
+                              <Star className="w-4 h-4 text-secondary fill-secondary" />
+                              <span className="font-body text-sm font-medium text-foreground">
+                                {tour.rating}
+                              </span>
+                            </div>
                           </div>
 
-                          {tour.tags && tour.tags.length > 0 && (
-                            <div className="mb-6">
-                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold block mb-2">Categories</span>
-                              <div className="flex flex-wrap gap-2">
-                                {tour.tags.map((tag: string) => (
-                                  <span key={tag} className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-body text-[10px] font-bold uppercase tracking-wider">
-                                    {tag}
+                          {/* CONTENT */}
+                          <div className="p-6 flex flex-col flex-grow">
+                            <div className="flex items-center gap-2 text-primary/70 mb-2">
+                              <MapPin className="w-4 h-4" />
+                              <span className="font-body text-sm font-medium text-foreground">
+                                {tour.location}
+                              </span>
+                            </div>
+
+                            <h3 className="font-heading text-xl text-primary mb-3 group-hover:text-secondary transition-colors line-clamp-1">
+                              {tour.title}
+                            </h3>
+
+                            <p className="font-body text-sm text-foreground/70 mb-4 line-clamp-2 min-h-[40px]">
+                              {tour.description}
+                            </p>
+
+                            {/* HIGHLIGHTS */}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {tour.highlights
+                                ?.slice(0, 3)
+                                .map((highlight: string) => (
+                                  <span
+                                    key={highlight}
+                                    className="px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-primary/70 font-body text-[10px] font-bold uppercase tracking-wider"
+                                  >
+                                    {highlight}
                                   </span>
                                 ))}
-                              </div>
                             </div>
-                          )}
 
-                          <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
-                            <div>
-                              <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">Experience</span>
-                              <p className="font-heading text-2xl text-secondary">View Details</p>
-                            </div>
-                            <Link to={`/tours/${tour.id}`}>
-                              <Button variant="gold" size="sm" className="group/btn rounded-full px-5">
+                            {/* TAGS */}
+                            {tour.tags && tour.tags.length > 0 && (
+                              <div className="mb-6">
+                                <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold block mb-2">
+                                  Categories
+                                </span>
+                                <div className="flex flex-wrap gap-2">
+                                  {tour.tags.map((tag: string) => (
+                                    <span
+                                      key={tag}
+                                      className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-body text-[10px] font-bold uppercase tracking-wider"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* FOOTER */}
+                            <div className="flex items-center justify-between pt-4 border-t border-primary/10 mt-auto">
+                              <div>
+                                <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold">
+                                  Experience
+                                </span>
+                                <p className="font-heading text-2xl text-secondary">
+                                  View Details
+                                </p>
+                              </div>
+
+                              {/* Button is visual only (no nested link) */}
+                              <Button
+                                variant="gold"
+                                size="sm"
+                                className="rounded-full px-5 pointer-events-none"
+                              >
                                 Explore
-                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                               </Button>
-                            </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     </motion.div>
                   ))}
                 </motion.div>
               </AnimatePresence>
             )}
-            
+
             {!loading && filteredTours.length === 0 && (
               <div className="text-center py-16">
-                <h3 className="font-heading text-2xl text-primary mb-4">No tours found</h3>
-                <p className="font-body text-foreground/70">Try selecting a different destination.</p>
+                <h3 className="font-heading text-2xl text-primary mb-4">
+                  No tours found
+                </h3>
+                <p className="font-body text-foreground/70">
+                  Try selecting a different destination.
+                </p>
               </div>
             )}
           </div>
@@ -239,10 +295,11 @@ const Tours = () => {
               Can't Find Your Perfect Tour?
             </h2>
             <p className="body-display-md text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Let our travel experts craft a bespoke journey tailored to your dreams and preferences.
+              Let our travel experts craft a bespoke journey tailored to your
+              dreams and preferences.
             </p>
-            <Button 
-              variant="gold" 
+            <Button
+              variant="gold"
               size="xl"
               onClick={() => setIsQuoteOpen(true)}
             >
