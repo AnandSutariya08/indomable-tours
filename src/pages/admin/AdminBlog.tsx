@@ -19,6 +19,9 @@ import {
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BlogPost } from "@/hooks/useFirestoreData";
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 const AdminBlog = () => {
   const { toast } = useToast();
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -396,12 +399,23 @@ const AdminBlog = () => {
 
               <div className="space-y-2">
                 <Label className="font-semibold text-sm">Story Content</Label>
-                <Textarea
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="Write your story here (HTML tags supported for formatting)..."
-                  rows={10}
-                />
+                <div className="bg-background min-h-[400px]">
+                  <ReactQuill
+                    theme="snow"
+                    value={formData.content}
+                    onChange={(content) => setFormData({ ...formData, content })}
+                    className="h-[350px] mb-12"
+                    modules={{
+                      toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                      ],
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">

@@ -129,33 +129,9 @@ const BlogPost = () => {
             <div className="lg:col-span-8">
               <AnimatedSection>
                 <div
-                  className="prose prose-lg max-w-none font-body text-foreground/90 mb-12"
+                  className="prose prose-lg max-w-none font-body text-foreground/90 mb-12 blog-content"
                   dangerouslySetInnerHTML={{ __html: post.content }}
-                  style={{
-                    lineHeight: '1.8',
-                  }}
                 />
-
-                {/* Additional Images Gallery */}
-                {post.additionalImages && post.additionalImages.length > 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
-                    {post.additionalImages.map((img, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg"
-                      >
-                        <img
-                          src={img}
-                          alt={`${post.title} gallery ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
               </AnimatedSection>
 
               {/* Tags */}
