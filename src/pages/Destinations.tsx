@@ -210,14 +210,11 @@ const Destinations = () => {
                     className="group cursor-pointer"
                   >
                     <Link to={`/tours?country=${encodeURIComponent(activeCountry.name)}`}>
-                      <div className="relative h-72 rounded-2xl overflow-hidden bg-[#2D2D2D]">
+                      <div className="relative h-72 rounded-2xl overflow-hidden">
                         <img
                           src={dest.image}
                           alt={dest.name}
-                          className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
-                          loading="lazy"
-                          onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                          style={{ opacity: 1 }}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-6">

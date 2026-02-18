@@ -66,14 +66,13 @@ const ExploreTours = () => {
                 onClick={() => navigate(`/tours/${tour.id}`)}
               >
                 {/* Card */}
-                <div className="relative rounded-2xl overflow-hidden card-hover bg-[#2D2D2D] flex flex-col h-[480px] md:h-[520px] mt-2">
+                <div className="relative rounded-2xl overflow-hidden card-hover flex flex-col h-[480px] md:h-[520px] mt-2">
 
                   {/* Background image — fills entire card */}
                   <img
                     src={tour.image}
                     alt={tour.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
                   />
 
                   {/* Gradient overlay — stronger at bottom so text is always readable */}

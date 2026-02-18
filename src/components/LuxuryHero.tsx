@@ -97,7 +97,6 @@ const LuxuryHero = () => {
                 src="https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/b8/51/35/3e/1f/v1_E10/E105V3J9.jpg?w=1600&cf_fit=scale-down&q=85&format=auto&s=af0fb018f43cfe3ea05ccacc9c7bf696ae5b17a7dc76b5891f33595322c45714"
                 alt="Luxury travel experience"
                 className="w-full h-[500px] md:h-[600px] object-cover"
-                loading="lazy"
               />
             </div>
 

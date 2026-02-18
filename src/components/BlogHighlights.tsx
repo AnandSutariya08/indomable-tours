@@ -36,13 +36,11 @@ const BlogHighlights = () => {
             ) : (
               blogPosts.slice(0, 3).map((post) => (
                 <Link key={post.id} to={`/blog/${post.id}`} className="flex gap-5 group cursor-pointer">
-                  <div className="flex-shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden bg-[#2D2D2D]">
+                  <div className="flex-shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden">
                     <img 
                       src={post.image} 
                       alt={post.title} 
-                      className="w-full h-full object-cover transition-opacity duration-500 group-hover:scale-110 opacity-0" 
-                      loading="lazy"
-                      onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                     />
                   </div>
                   <div className="flex-1 py-1">

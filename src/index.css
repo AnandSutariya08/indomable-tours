@@ -215,6 +215,11 @@
   }
 }
 
+/* Base styles for all images to prevent flickering/dark state */
+img {
+  background-color: transparent !important;
+}
+
 /* Keyframes */
 @keyframes fadeIn {
   from {

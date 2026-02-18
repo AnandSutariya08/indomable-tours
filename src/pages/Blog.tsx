@@ -57,14 +57,11 @@ const Blog = () => {
                   className={`group cursor-pointer ${index === 0 ? "lg:col-span-2 lg:row-span-2" : ""}`}
                 >
                   <Link to={`/blog/${post.id}`}>
-                    <div className={`relative rounded-2xl overflow-hidden bg-[#2D2D2D] ${index === 0 ? "h-full min-h-[400px]" : "h-64"}`}>
+                    <div className={`relative rounded-2xl overflow-hidden ${index === 0 ? "h-full min-h-[400px]" : "h-64"}`}>
                       <img
                         src={post.image}
                         alt={post.title}
-                        className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
-                        loading="lazy"
-                        onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                        style={{ opacity: 1 }}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -157,14 +154,11 @@ const Blog = () => {
                   <Link to={`/blog/${post.id}`}>
                     <div className="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
                       {/* Image */}
-                      <div className="relative h-56 overflow-hidden bg-[#2D2D2D]">
+                      <div className="relative h-56 overflow-hidden">
                         <img
                           src={post.image}
                           alt={post.title}
-                          className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
-                          loading="lazy"
-                          onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                          style={{ opacity: 1 }}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute top-4 left-4">
                           <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">
