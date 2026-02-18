@@ -270,6 +270,13 @@ const TourDetails = () => {
             <aside>
               <div className="sticky top-28 bg-card p-8 rounded-2xl shadow-lg">
                 <div className="mb-6">
+                  {tour.price && (
+                    <div className="mb-4">
+                      <p className="font-body text-sm text-foreground/60">Starting from</p>
+                      <p className="font-heading text-3xl text-primary font-bold">{tour.price}</p>
+                      <p className="font-body text-xs text-foreground/50 mt-1">*Final price depends on group size & hotel category</p>
+                    </div>
+                  )}
                   <h3 className="font-heading text-2xl text-primary mb-2">Interested in this tour?</h3>
                   <p className="font-body text-foreground/60 text-sm">Contact us for customized pricing and availability</p>
                 </div>

@@ -36,6 +36,7 @@ const AdminTours = () => {
     image: "",
     duration: "",
     groupSize: "",
+    price: "",
     rating: 4.5,
     description: "",
     fullDescription: "",
@@ -98,6 +99,7 @@ const AdminTours = () => {
         image: tour.image,
         duration: tour.duration,
         groupSize: tour.groupSize,
+        price: tour.price || "",
         rating: tour.rating,
         description: tour.description,
         fullDescription: tour.fullDescription || "",
@@ -117,6 +119,7 @@ const AdminTours = () => {
         image: "",
         duration: "",
         groupSize: "",
+        price: "",
         rating: 4.5,
         description: "",
         fullDescription: "",
@@ -172,6 +175,7 @@ const AdminTours = () => {
         image: formData.image,
         duration: formData.duration,
         groupSize: formData.groupSize,
+        price: formData.price,
         rating: Number(formData.rating),
         description: formData.description,
         fullDescription: formData.fullDescription,
@@ -380,7 +384,7 @@ const AdminTours = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Duration</Label>
                 <Input
@@ -396,6 +400,14 @@ const AdminTours = () => {
                   value={formData.groupSize}
                   onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
                   placeholder="e.g., 2–12 Guests"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Price (per person)</Label>
+                <Input
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  placeholder="e.g., From 1899 CAD"
                 />
               </div>
               <div className="space-y-2">
@@ -547,9 +559,25 @@ const AdminTours = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-sm font-semibold">Inclusions (comma separated)</Label>
+                <Label className="text-sm font-semibold">What's Included (comma separated)</Label>
                 <Textarea
                   value={formData.included}
+                  onChange={(e) => setFormData({ ...formData, included: e.target.value })}
+                  placeholder="e.g., Breakfast, Sightseeing, Airport transfers"
+                  className="resize-none h-32"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">Not Included (comma separated)</Label>
+                <Textarea
+                  value={formData.notIncluded}
+                  onChange={(e) => setFormData({ ...formData, notIncluded: e.target.value })}
+                  placeholder="e.g., International Flights, Visa Fees, Personal expenses"
+                  className="resize-none h-32"
+                />
+              </div>
+            </div>
+            {/* Gallery Section */}
                   onChange={(e) => setFormData({ ...formData, included: e.target.value })}
                   placeholder="e.g., 5-star accommodation, Private guide, Domestic flights"
                   rows={4}
