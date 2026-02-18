@@ -38,6 +38,7 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   image: string;
+  additionalImages?: string[];
   category: string;
   author: string;
   readTime: string;

@@ -34,6 +34,7 @@ const AdminBlog = () => {
     excerpt: "",
     content: "",
     image: "",
+    additionalImages: [] as string[],
     category: "Culture",
     author: "",
     readTime: "",
@@ -86,6 +87,7 @@ const AdminBlog = () => {
         excerpt: post.excerpt,
         content: post.content,
         image: post.image,
+        additionalImages: post.additionalImages || [],
         category: post.category,
         author: post.author,
         readTime: post.readTime,
@@ -100,6 +102,7 @@ const AdminBlog = () => {
         excerpt: "",
         content: "",
         image: "",
+        additionalImages: [],
         category: "Culture",
         author: "",
         readTime: "",
@@ -121,6 +124,7 @@ const AdminBlog = () => {
         excerpt: formData.excerpt || "",
         content: formData.content || "",
         image: formData.image || "",
+        additionalImages: formData.additionalImages || [],
         category: formData.category || "Culture",
         author: formData.author || "",
         readTime: formData.readTime || "",
@@ -340,6 +344,43 @@ const AdminBlog = () => {
                   folder="blog"
                   label="Story Cover"
                 />
+              </div>
+
+              <div className="space-y-4">
+                <Label className="font-semibold text-sm">Gallery Images (Multiple)</Label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {formData.additionalImages.map((img, index) => (
+                    <div key={index} className="relative group">
+                      <img src={img} alt="" className="w-full h-24 object-cover rounded-lg border" />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newImages = [...formData.additionalImages];
+                          newImages.splice(index, 1);
+                          setFormData({ ...formData, additionalImages: newImages });
+                        }}
+                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  <div className="h-24">
+                    <ImageUploader
+                      value=""
+                      onChange={(url) => {
+                        if (url) {
+                          setFormData({
+                            ...formData,
+                            additionalImages: [...formData.additionalImages, url]
+                          });
+                        }
+                      }}
+                      folder="blog"
+                      label="Add Image"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2">
