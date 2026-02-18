@@ -11,7 +11,7 @@ const navItems = [
   { label: "Tours", href: "/tours" },
   { label: "Destinations", href: "/destinations" },
   // { label: "Travel Info", href: "/travel-info" },
-  { label: "Catagories", href: "/catagories" },
+  { label: "Category", href: "/catagories" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -119,7 +119,7 @@ const Header = () => {
                         : "bg-brand-blue text-white hover:bg-brand-blue/90 px-4 py-1.5 text-[9px]"
                     }`}
                   >
-                    Get Quote
+                    Partner with us
                   </Button>
                 </div>
 

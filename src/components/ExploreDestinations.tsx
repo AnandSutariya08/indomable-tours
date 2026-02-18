@@ -52,37 +52,41 @@ const ExploreDestinations = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {destinations.map((dest) => (
-            <motion.div
-              key={dest.id}
-              variants={fadeInUp}
-              className="group relative h-[500px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
-            >
-              <img 
-                src={dest.image} 
-                alt={dest.name} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-              
-              <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                <h3 className="font-heading text-3xl text-cream mb-2">{dest.name}</h3>
-                <p className="font-body text-secondary font-bold text-sm uppercase tracking-wider mb-3">
-                  {dest.tagline}
-                </p>
-                <p className="font-body text-cream/80 text-sm leading-relaxed mb-6 line-clamp-4">
-                  {dest.description}
-                </p>
-                
-                <Link 
-                  to={`/tours?country=${dest.id}`}
-                  className="inline-flex items-center gap-2 text-secondary hover:text-white transition-colors font-body font-bold text-xs uppercase tracking-[0.2em]"
-                >
-                  Go to Tours
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
+            <motion.div key={dest.id} variants={fadeInUp}>
+              <Link
+                to={`/tours?country=${dest.id}`}
+                className="group relative block h-[500px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+              >
+                <img
+                  src={dest.image}
+                  alt={dest.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <h3 className="font-heading text-3xl text-cream mb-2">
+                    {dest.name}
+                  </h3>
+
+                  <p className="font-body text-secondary font-bold text-sm uppercase tracking-wider mb-3">
+                    {dest.tagline}
+                  </p>
+
+                  <p className="font-body text-cream/80 text-sm leading-relaxed mb-6 line-clamp-4">
+                    {dest.description}
+                  </p>
+
+                  <div className="inline-flex items-center gap-2 text-secondary group-hover:text-white transition-colors font-body font-bold text-xs uppercase tracking-[0.2em]">
+                    Go to Tours
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           ))}
+
         </motion.div>
       </div>
     </section>
