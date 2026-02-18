@@ -577,11 +577,14 @@ const AdminTours = () => {
                 />
               </div>
             </div>
-            {/* Gallery Section */}
-                  onChange={(e) => setFormData({ ...formData, included: e.target.value })}
-                  placeholder="e.g., 5-star accommodation, Private guide, Domestic flights"
-                  rows={4}
-                />
+          </form>
+        </DialogContent>
+      </Dialog>
+    </AdminLayout>
+  );
+};
+
+export default AdminTours;
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Exclusions (comma separated)</Label>
