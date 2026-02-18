@@ -397,14 +397,16 @@ const AdminBlog = () => {
                 />
               </div>
 
+// Story Content Section with Rich Text Editor
               <div className="space-y-2">
                 <Label className="font-semibold text-sm">Story Content</Label>
-                <div className="bg-background min-h-[400px]">
+                <div className="bg-background rounded-md border border-input min-h-[450px] flex flex-col">
                   <ReactQuill
                     theme="snow"
                     value={formData.content}
                     onChange={(content) => setFormData({ ...formData, content })}
-                    className="h-[350px] mb-12"
+                    className="flex-1"
+                    style={{ height: '350px' }}
                     modules={{
                       toolbar: [
                         [{ 'header': [1, 2, 3, false] }],
@@ -415,7 +417,11 @@ const AdminBlog = () => {
                       ],
                     }}
                   />
+                  <div className="h-10 shrink-0" /> {/* Spacer for Quill toolbar overlap if needed */}
                 </div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Tip: Use the editor to add headings, lists, and images directly into your story.
+                </p>
               </div>
 
               <div className="space-y-2">
