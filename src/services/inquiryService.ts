@@ -10,6 +10,7 @@ export interface Inquiry {
   phone?: string;
   destination: string;
   travelDates: string;
+  travelTime?: string;
   message: string;
   createdAt: any;
   status: 'new' | 'contacted' | 'resolved';

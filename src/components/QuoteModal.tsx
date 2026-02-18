@@ -22,6 +22,7 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
     phone: "",
     destination: "India",
     travelDates: "",
+    travelTime: "",
     message: "",
   });
 
@@ -47,6 +48,7 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
         phone: "",
         destination: "India",
         travelDates: "",
+        travelTime: "",
         message: "",
       });
       onClose();
@@ -170,16 +172,30 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
             </select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="travelDates">Dates</Label>
-            <Input
-              id="travelDates"
-              type="date"
-              value={formData.travelDates}
-              onChange={(e) =>
-                setFormData({ ...formData, travelDates: e.target.value })
-              }
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="travelDates">Dates</Label>
+              <Input
+                id="travelDates"
+                type="date"
+                value={formData.travelDates}
+                onChange={(e) =>
+                  setFormData({ ...formData, travelDates: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="travelTime">Time</Label>
+              <Input
+                id="travelTime"
+                type="time"
+                value={formData.travelTime}
+                onChange={(e) =>
+                  setFormData({ ...formData, travelTime: e.target.value })
+                }
+              />
+            </div>
           </div>
 
           <div className="space-y-2">

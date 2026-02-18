@@ -54,7 +54,7 @@ const AdminInquiries = () => {
                   <TableHead>Customer</TableHead>
                   <TableHead>Category/Company</TableHead>
                   <TableHead>Destination</TableHead>
-                  <TableHead>Dates</TableHead>
+                  <TableHead>Date & Time</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -85,7 +85,12 @@ const AdminInquiries = () => {
                         )}
                       </TableCell>
                       <TableCell>{inquiry.destination}</TableCell>
-                      <TableCell>{inquiry.travelDates}</TableCell>
+                      <TableCell>
+                        <div className="font-medium">{inquiry.travelDates}</div>
+                        {inquiry.travelTime && (
+                          <div className="text-xs text-muted-foreground">{inquiry.travelTime}</div>
+                        )}
+                      </TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(inquiry.status)}>
                           {inquiry.status.toUpperCase()}
