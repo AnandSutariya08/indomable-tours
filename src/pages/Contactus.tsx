@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { saveInquiry } from "@/services/inquiryService";
+import { saveInquiry, sendEmailNotification } from "@/services/inquiryService";
 import { toast } from "sonner";
 
 const Contact = () => {
@@ -42,6 +42,9 @@ const Contact = () => {
     const result = await saveInquiry(formData);
 
     if (result.success) {
+      // Send email notification
+      sendEmailNotification(formData, 'inquiry');
+      
       toast.success("Message sent successfully! We'll contact you soon.");
       setFormData({
         category: "Individual",

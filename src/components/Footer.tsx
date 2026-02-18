@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "@/assets/logo.png";
 import { Link } from "react-router-dom";
+import { sendEmailNotification } from "@/services/inquiryService";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const footerLinks = {
   destinations: [
@@ -25,11 +28,22 @@ const footerLinks = {
 
 const Footer = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Subscribing:", email);
-    setEmail("");
+    if (!email) return;
+    
+    setLoading(true);
+    const success = await sendEmailNotification({ email }, 'subscription');
+    
+    if (success) {
+      toast.success("Thank you for subscribing!");
+      setEmail("");
+    } else {
+      toast.error("Subscription failed. Please try again.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -63,8 +77,8 @@ const Footer = () => {
                     className="pl-10 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-secondary"
                   />
                 </div>
-                <Button type="submit" variant="gold" size="default">
-                  Subscribe
+                <Button type="submit" variant="gold" size="default" disabled={loading}>
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe"}
                 </Button>
               </form>
             </div>
