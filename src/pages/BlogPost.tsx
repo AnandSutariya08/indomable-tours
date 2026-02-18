@@ -122,37 +122,39 @@ const BlogPost = () => {
       </div>
 
       {/* Article Content */}
-      <article className="py-16 md:py-24">
+      <div className="bg-muted/30 py-12 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-8">
-              <AnimatedSection>
-                <div
-                  className="prose prose-lg max-w-none font-body text-foreground/90 mb-12 blog-content"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
-                />
-              </AnimatedSection>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Main Content Area - Fixed height scrollable on desktop */}
+            <div className="lg:col-span-8 bg-card rounded-3xl shadow-xl border border-border/50 overflow-hidden flex flex-col lg:h-[800px]">
+              <div className="p-8 md:p-12 overflow-y-auto custom-scrollbar flex-1">
+                <AnimatedSection>
+                  <div
+                    className="prose prose-lg max-w-none font-body text-foreground/90 mb-12 blog-content prose-headings:font-heading prose-headings:text-primary prose-p:leading-relaxed prose-img:rounded-2xl prose-blockquote:border-l-secondary prose-blockquote:bg-secondary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-xl"
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                  />
+                </AnimatedSection>
 
-              {/* Tags */}
-              <div className="mt-12 pt-8 border-t border-border">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Tag className="w-5 h-5 text-foreground/60" />
-                  {post.tags?.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-muted text-foreground/70 font-body text-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                {/* Tags */}
+                <div className="mt-12 pt-8 border-t border-border/50">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Tag className="w-5 h-5 text-secondary" />
+                    {post.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-4 py-1.5 rounded-full bg-secondary/10 text-secondary font-body text-sm font-medium border border-secondary/20 hover:bg-secondary/20 transition-colors cursor-default"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Share */}
-              <div className="mt-8 pt-8 border-t border-border">
+              {/* Sticky Share Bar at bottom of scroll area */}
+              <div className="p-6 bg-muted/50 border-t border-border/50 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <span className="font-body text-foreground/70">Share this article:</span>
+                  <span className="font-heading text-sm text-foreground/70 font-semibold uppercase tracking-wider">Share:</span>
                   <div className="flex gap-3">
                     <a
                       href={`https://wa.me/?text=${encodeURIComponent(
@@ -160,7 +162,7 @@ const BlogPost = () => {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-muted hover:bg-green-500 hover:text-white transition-colors"
+                      className="p-2.5 rounded-xl bg-white shadow-sm hover:shadow-md hover:bg-green-500 hover:text-white transition-all duration-300"
                       aria-label="Share on WhatsApp"
                     >
                       <MessageCircle className="w-5 h-5" />
@@ -170,7 +172,7 @@ const BlogPost = () => {
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="p-2.5 rounded-xl bg-white shadow-sm hover:shadow-md hover:bg-[#1877F2] hover:text-white transition-all duration-300"
                     >
                       <Facebook className="w-5 h-5" />
                     </a>
@@ -178,7 +180,7 @@ const BlogPost = () => {
                       href={`https://x.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="p-2.5 rounded-xl bg-white shadow-sm hover:shadow-md hover:bg-black hover:text-white transition-all duration-300"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -188,64 +190,100 @@ const BlogPost = () => {
                       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="p-2.5 rounded-xl bg-white shadow-sm hover:shadow-md hover:bg-[#0A66C2] hover:text-white transition-all duration-300"
                     >
                       <Linkedin className="w-5 h-5" />
                     </a>
                   </div>
                 </div>
+                <div className="hidden sm:block">
+                  <Button variant="hero" size="sm" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                    Top of Page
+                  </Button>
+                </div>
               </div>
             </div>
 
             {/* Sidebar */}
-            <aside className="lg:col-span-4">
-              <div className="sticky top-28 space-y-8">
-                {/* Author */}
-                <div className="bg-card p-6 rounded-2xl">
-                  <h3 className="font-heading text-lg text-primary mb-4">About the Author</h3>
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center">
-                      <User className="w-8 h-8 text-secondary" />
+            <aside className="lg:col-span-4 space-y-8 sticky top-28">
+              {/* Author Card - Enhanced */}
+              <div className="bg-card p-8 rounded-3xl shadow-lg border border-border/50 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-110" />
+                <h3 className="font-heading text-xl text-primary mb-6 flex items-center gap-2">
+                  <span className="w-8 h-1 bg-secondary rounded-full" />
+                  About Author
+                </h3>
+                <div className="flex items-center gap-5">
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/40 flex items-center justify-center border border-secondary/20 rotate-3 group-hover:rotate-0 transition-transform">
+                      <User className="w-10 h-10 text-secondary" />
                     </div>
-                    <div>
-                      <p className="font-heading text-foreground">{post.author}</p>
-                      <p className="font-body text-sm text-foreground/70">Travel Writer</p>
-                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 border-2 border-white rounded-full" />
+                  </div>
+                  <div>
+                    <p className="font-heading text-lg text-foreground font-bold">{post.author}</p>
+                    <p className="font-body text-sm text-secondary font-medium uppercase tracking-tighter">Verified Travel Expert</p>
                   </div>
                 </div>
+                <p className="mt-6 font-body text-sm text-foreground/70 leading-relaxed italic">
+                  "Passionate about uncovering hidden gems and sharing authentic travel experiences across the Asian continent."
+                </p>
+              </div>
 
-                {/* Related Posts */}
-                {relatedPosts.length > 0 && (
-                  <div className="bg-card p-6 rounded-2xl">
-                    <h3 className="font-heading text-lg text-primary mb-4">Related Articles</h3>
-                    <div className="space-y-4">
-                      {relatedPosts.map((related) => (
-                        <Link
-                          key={related.id}
-                          to={`/blog/${related.id}`}
-                          className="flex gap-4 group"
-                        >
+              {/* Related Posts - Enhanced */}
+              {relatedPosts.length > 0 && (
+                <div className="bg-card p-8 rounded-3xl shadow-lg border border-border/50">
+                  <h3 className="font-heading text-xl text-primary mb-6 flex items-center gap-2">
+                    <span className="w-8 h-1 bg-secondary rounded-full" />
+                    Keep Reading
+                  </h3>
+                  <div className="space-y-6">
+                    {relatedPosts.map((related) => (
+                      <Link
+                        key={related.id}
+                        to={`/blog/${related.id}`}
+                        className="flex gap-4 group items-center"
+                      >
+                        <div className="relative w-24 h-20 shrink-0 overflow-hidden rounded-xl">
                           <img
                             src={related.image}
                             alt={related.title}
-                            className="w-20 h-20 rounded-lg object-cover"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           />
-                          <div className="flex-1">
-                            <h4 className="font-heading text-sm text-primary group-hover:text-accent transition-colors line-clamp-2">
-                              {related.title}
-                            </h4>
-                            <span className="font-body text-xs text-foreground/60">{related.readTime}</span>
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-heading text-sm text-foreground group-hover:text-secondary transition-colors line-clamp-2 leading-snug font-bold">
+                            {related.title}
+                          </h4>
+                          <div className="flex items-center gap-2 mt-2">
+                             <Clock className="w-3 h-3 text-secondary" />
+                             <span className="font-body text-[10px] text-foreground/60 font-semibold uppercase tracking-widest">{related.readTime}</span>
                           </div>
-                        </Link>
-                      ))}
-                    </div>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* Booking CTA in Sidebar */}
+              <div className="bg-primary p-8 rounded-3xl shadow-xl text-primary-foreground relative overflow-hidden">
+                <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+                <h4 className="font-heading text-2xl mb-4 relative z-10">Plan Your Own Adventure</h4>
+                <p className="font-body text-sm text-primary-foreground/80 mb-6 relative z-10 leading-relaxed">
+                  Inspired by this story? Let us help you create your own unforgettable journey.
+                </p>
+                <Link to="/contact" className="relative z-10 block">
+                  <Button variant="gold" className="w-full shadow-lg hover:shadow-gold/20">
+                    Get Free Consultation
+                  </Button>
+                </Link>
               </div>
             </aside>
           </div>
         </div>
-      </article>
+      </div>
 
       <Footer />
     </main>
