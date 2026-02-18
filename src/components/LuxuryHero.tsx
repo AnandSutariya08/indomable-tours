@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Link } from "react-router-dom";
+import QuoteModal from "./QuoteModal";
 
 const LuxuryHero = () => {
   const video2 =
@@ -13,9 +14,14 @@ const LuxuryHero = () => {
     "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638";
 
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
   const playVideo = (url: string) => {
     setVideoUrl(url);
+  };
+
+  const openExpertModal = () => {
+    setIsQuoteOpen(true);
   };
 
   return (
@@ -77,8 +83,8 @@ const LuxuryHero = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="gold" size="xl" asChild>
-                <Link to="tel:+17828992178">Speak to an Expert</Link>
+              <Button variant="gold" size="xl" onClick={openExpertModal}>
+                Speak to an Expert
               </Button>
             </div>
           </div>
@@ -161,6 +167,8 @@ const LuxuryHero = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} showDateTime={true} />
     </section>
   );
 };

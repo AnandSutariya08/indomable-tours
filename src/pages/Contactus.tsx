@@ -24,8 +24,6 @@ const Contact = () => {
     email: "",
     phone: "",
     destination: "India",
-    travelDates: "",
-    travelTime: "",
     message: "",
   });
 
@@ -39,11 +37,19 @@ const Contact = () => {
 
     setLoading(true);
 
-    const result = await saveInquiry(formData);
+    const result = await saveInquiry({
+      ...formData,
+      travelDates: "",
+      travelTime: ""
+    });
 
     if (result.success) {
       // Send email notification
-      sendEmailNotification(formData, 'inquiry');
+      sendEmailNotification({
+        ...formData,
+        travelDates: "",
+        travelTime: ""
+      }, 'inquiry');
       
       toast.success("Message sent successfully! We'll contact you soon.");
       setFormData({
@@ -53,8 +59,6 @@ const Contact = () => {
         email: "",
         phone: "",
         destination: "India",
-        travelDates: "",
-        travelTime: "",
         message: "",
       });
     } else {
@@ -227,34 +231,6 @@ const Contact = () => {
                       <option value="Sri Lanka">Sri Lanka</option>
                       <option value="Others">Others</option>
                     </select>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="travelDates">Dates</Label>
-                      <Input
-                        id="travelDates"
-                        type="date"
-                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
-                        value={formData.travelDates}
-                        onChange={(e) =>
-                          setFormData({ ...formData, travelDates: e.target.value })
-                        }
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="travelTime">Time</Label>
-                      <Input
-                        id="travelTime"
-                        type="time"
-                        className="h-12 rounded-xl border-2 border-border px-4 font-body text-base"
-                        value={formData.travelTime}
-                        onChange={(e) =>
-                          setFormData({ ...formData, travelTime: e.target.value })
-                        }
-                      />
-                    </div>
                   </div>
 
                   <div className="space-y-2">

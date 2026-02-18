@@ -13,6 +13,12 @@ import heroVideo from "../assets/videos/herovideo.mp4";
 const HeroSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [showDateTime, setShowDateTime] = useState(false);
+
+  const openPartnerModal = () => {
+    setShowDateTime(false);
+    setIsQuoteModalOpen(true);
+  };
 
 
 
@@ -78,7 +84,7 @@ const HeroSection = () => {
           <div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
-            <Button variant="hero" size="xl" onClick={() => setIsQuoteModalOpen(true)}>
+            <Button variant="hero" size="xl" onClick={openPartnerModal}>
               Partner with us
             </Button>
             <Button variant="heroOutline" size="xl" onClick={() => setIsVideoOpen(true)}>
@@ -114,6 +120,7 @@ const HeroSection = () => {
       <QuoteModal
         isOpen={isQuoteModalOpen}
         onClose={() => setIsQuoteModalOpen(false)}
+        showDateTime={showDateTime}
       />
     </section>
   );

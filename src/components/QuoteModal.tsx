@@ -10,9 +10,10 @@ import { toast } from "sonner";
 interface QuoteModalProps {
   isOpen: boolean;
   onClose: () => void;
+  showDateTime?: boolean;
 }
 
-const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
+const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     category: "Individual",
@@ -175,31 +176,33 @@ const QuoteModal = ({ isOpen, onClose }: QuoteModalProps) => {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="travelDates">Dates</Label>
-              <Input
-                id="travelDates"
-                type="date"
-                value={formData.travelDates}
-                onChange={(e) =>
-                  setFormData({ ...formData, travelDates: e.target.value })
-                }
-              />
-            </div>
+          {showDateTime && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="travelDates">Dates</Label>
+                <Input
+                  id="travelDates"
+                  type="date"
+                  value={formData.travelDates}
+                  onChange={(e) =>
+                    setFormData({ ...formData, travelDates: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="travelTime">Time</Label>
-              <Input
-                id="travelTime"
-                type="time"
-                value={formData.travelTime}
-                onChange={(e) =>
-                  setFormData({ ...formData, travelTime: e.target.value })
-                }
-              />
+              <div className="space-y-2">
+                <Label htmlFor="travelTime">Time</Label>
+                <Input
+                  id="travelTime"
+                  type="time"
+                  value={formData.travelTime}
+                  onChange={(e) =>
+                    setFormData({ ...formData, travelTime: e.target.value })
+                  }
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="space-y-2">
             <div className="flex justify-between">

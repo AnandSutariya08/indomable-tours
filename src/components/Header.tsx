@@ -20,6 +20,7 @@ const navItems = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [showModalDateTime, setShowModalDateTime] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { pathname } = useLocation();
 
@@ -34,6 +35,11 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const openPartnerModal = () => {
+    setShowModalDateTime(false);
+    setIsQuoteOpen(true);
+  };
 
   return (
     <>
@@ -112,7 +118,7 @@ const Header = () => {
                   <Button
                     variant="gold"
                     size={isScrolled ? "sm" : "lg"}
-                    onClick={() => setIsQuoteOpen(true)}
+                    onClick={openPartnerModal}
                     className={`transition-all duration-500 font-black tracking-widest uppercase rounded-full ${
                       !isScrolled
                         ? "px-5 py-3 shadow-xl text-[10px]"
@@ -215,7 +221,7 @@ const Header = () => {
                   className="w-full text-white font-black tracking-widest uppercase py-7 rounded-[2rem] shadow-2xl bg-gradient-to-r from-secondary to-yellow-600 border-none relative overflow-hidden group/btn"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    setIsQuoteOpen(true);
+                    openPartnerModal();
                   }}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
@@ -230,7 +236,7 @@ const Header = () => {
         )}
       </AnimatePresence>
 
-      <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} />
+      <QuoteModal isOpen={isQuoteOpen} onClose={() => setIsQuoteOpen(false)} showDateTime={showModalDateTime} />
     </>
   );
 };
