@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
-import AnimatedSection, { staggerContainer, fadeInUp } from "@/components/AnimatedSection";
+import AnimatedSection, {
+  staggerContainer,
+  fadeInUp,
+} from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useBlogPosts } from "@/hooks/useFirestoreData";
 
 import blog1 from "@/assets/blog/blog-1.jpg";
 
-const categories = ["All"];
+const categories = ["All", "Wellness", "Island", "Adventure"];
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -20,14 +23,18 @@ const Blog = () => {
   const { data: blogPosts, loading } = useBlogPosts();
 
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || post.category === selectedCategory;
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const featuredPosts = blogPosts.filter((post) => post.featured);
-  const regularPosts = filteredPosts.filter((post) => !post.featured || selectedCategory !== "All");
+  const regularPosts = filteredPosts.filter(
+    (post) => !post.featured || selectedCategory !== "All",
+  );
 
   return (
     <main className="min-h-screen bg-background">
@@ -44,7 +51,9 @@ const Blog = () => {
         <section className="py-16 bg-muted">
           <div className="container mx-auto px-4 md:px-6">
             <AnimatedSection>
-              <h2 className="heading-display-sm text-primary mb-8">Featured Stories</h2>
+              <h2 className="heading-display-sm text-primary mb-8">
+                Featured Stories
+              </h2>
             </AnimatedSection>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {featuredPosts.slice(0, 3).map((post, index) => (
@@ -57,7 +66,9 @@ const Blog = () => {
                   className={`group cursor-pointer ${index === 0 ? "lg:col-span-2 lg:row-span-2" : ""}`}
                 >
                   <Link to={`/blog/${post.id}`}>
-                    <div className={`relative rounded-2xl overflow-hidden ${index === 0 ? "h-full min-h-[400px]" : "h-64"}`}>
+                    <div
+                      className={`relative rounded-2xl overflow-hidden ${index === 0 ? "h-full min-h-[400px]" : "h-64"}`}
+                    >
                       <img
                         src={post.image}
                         alt={post.title}
@@ -68,7 +79,9 @@ const Blog = () => {
                         <span className="inline-block px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs mb-3">
                           {post.category}
                         </span>
-                        <h3 className={`font-heading text-cream mb-2 group-hover:text-secondary transition-colors ${index === 0 ? "text-2xl md:text-3xl" : "text-xl"}`}>
+                        <h3
+                          className={`font-heading text-cream mb-2 group-hover:text-secondary transition-colors ${index === 0 ? "text-2xl md:text-3xl" : "text-xl"}`}
+                        >
                           {post.title}
                         </h3>
                         <div className="flex items-center gap-4 text-cream/70 text-sm">
@@ -116,13 +129,16 @@ const Blog = () => {
 
             {/* Search */}
             <div className="relative w-full md:w-72">
-              <Search style={{zIndex:999}} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
+              <Search
+                style={{ zIndex: 999 }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5"
+              />
               <Input
                 type="text"
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 h-14 bg-white/50 backdrop-blur-sm border-black/5 rounded-2xl shadow-sm focus:bg-white transition-all duration-300"
+                className="pl-12 h-14 bg-white/50 backdrop-blur-sm border-black/5 rounded-2xl shadow-sm focus:bg-white transition-all duration-300"
               />
             </div>
           </div>
@@ -143,7 +159,10 @@ const Blog = () => {
               animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {(selectedCategory === "All" && searchQuery === "" ? regularPosts : filteredPosts).map((post, index) => (
+              {(selectedCategory === "All" && searchQuery === ""
+                ? regularPosts
+                : filteredPosts
+              ).map((post, index) => (
                 <motion.article
                   key={post.id}
                   variants={fadeInUp}
@@ -188,7 +207,9 @@ const Blog = () => {
                             <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
                               <User className="w-4 h-4 text-secondary" />
                             </div>
-                            <span className="font-body text-sm text-foreground/70">{post.author}</span>
+                            <span className="font-body text-sm text-foreground/70">
+                              {post.author}
+                            </span>
                           </div>
                           <span className="flex items-center gap-1 text-primary font-body text-sm font-medium group-hover:text-accent transition-colors">
                             Read More
@@ -205,8 +226,12 @@ const Blog = () => {
 
           {!loading && filteredPosts.length === 0 && (
             <div className="text-center py-20">
-              <h3 className="font-heading text-2xl text-primary mb-4">No articles found</h3>
-              <p className="font-body text-foreground/70">Try adjusting your search or filter criteria.</p>
+              <h3 className="font-heading text-2xl text-primary mb-4">
+                No articles found
+              </h3>
+              <p className="font-body text-foreground/70">
+                Try adjusting your search or filter criteria.
+              </p>
             </div>
           )}
         </div>
@@ -220,7 +245,8 @@ const Blog = () => {
               Get Travel Inspiration
             </h2>
             <p className="body-display-md text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-              Subscribe to our newsletter for exclusive stories, travel tips, and special offers.
+              Subscribe to our newsletter for exclusive stories, travel tips,
+              and special offers.
             </p>
             <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Input

@@ -1,33 +1,57 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Search, Save, Upload, ArrowUpDown, Loader2 } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Save,
+  Upload,
+  ArrowUpDown,
+  Loader2,
+} from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  getCollection, 
-  addDocument, 
-  updateDocument, 
+import {
+  getCollection,
+  addDocument,
+  updateDocument,
   deleteDocument,
-  COLLECTIONS 
+  COLLECTIONS,
 } from "@/services/firestoreService";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { BlogPost } from "@/hooks/useFirestoreData";
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AdminBlog = () => {
   const { toast } = useToast();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortConfig, setSortConfig] = useState<{ key: keyof BlogPost; direction: 'asc' | 'desc' } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof BlogPost;
+    direction: "asc" | "desc";
+  } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [saving, setSaving] = useState(false);
@@ -58,9 +82,13 @@ const AdminBlog = () => {
   }, []);
 
   const handleSort = (key: keyof BlogPost) => {
-    let direction: 'asc' | 'desc' = 'asc';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction: "asc" | "desc" = "asc";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "asc"
+    ) {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
   };
@@ -71,15 +99,16 @@ const AdminBlog = () => {
     const aVal = a[key];
     const bVal = b[key];
     if (aVal === undefined || bVal === undefined) return 0;
-    if (aVal < bVal) return direction === 'asc' ? -1 : 1;
-    if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+    if (aVal < bVal) return direction === "asc" ? -1 : 1;
+    if (aVal > bVal) return direction === "asc" ? 1 : -1;
     return 0;
   });
 
-  const filteredPosts = sortedPosts.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.author.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPosts = sortedPosts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const openModal = (post?: BlogPost) => {
@@ -109,7 +138,11 @@ const AdminBlog = () => {
         category: "Culture",
         author: "",
         readTime: "",
-        date: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+        date: new Date().toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }),
         featured: false,
         tags: "",
       });
@@ -131,14 +164,29 @@ const AdminBlog = () => {
         category: formData.category || "Culture",
         author: formData.author || "",
         readTime: formData.readTime || "",
-        date: formData.date || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+        date:
+          formData.date ||
+          new Date().toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }),
         featured: !!formData.featured,
-        tags: formData.tags ? formData.tags.split(",").map(s => s.trim()).filter(Boolean) : [],
+        tags: formData.tags
+          ? formData.tags
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : [],
       };
 
       if (editingPost) {
         // Use setDocument to ensure we update the existing ID correctly or updateDocument
-        const success = await updateDocument(COLLECTIONS.BLOG_POSTS, editingPost.id, postData);
+        const success = await updateDocument(
+          COLLECTIONS.BLOG_POSTS,
+          editingPost.id,
+          postData,
+        );
         if (success) {
           toast({ title: "Blog post updated successfully" });
         } else {
@@ -165,7 +213,7 @@ const AdminBlog = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this blog post?")) return;
-    
+
     const success = await deleteDocument(COLLECTIONS.BLOG_POSTS, id);
     if (success) {
       toast({ title: "Blog post deleted successfully" });
@@ -175,17 +223,33 @@ const AdminBlog = () => {
     }
   };
 
-  const categories = ["Culture", "Adventure", "Food & Culture", "Luxury Stays", "Photography", "Wellness"];
+  const categories = [
+    "Culture",
+    "Adventure",
+    "Food & Culture",
+    "Luxury Stays",
+    "Photography",
+    "Wellness",
+    "Island",
+  ];
 
   return (
     <AdminLayout>
       <div className="space-y-6 flex flex-col h-full">
         <div className="flex items-center justify-between shrink-0">
           <div>
-            <h1 className="font-heading text-3xl text-primary font-bold">Blog Management</h1>
-            <p className="font-body text-foreground/70">Share stories and travel tips with your audience</p>
+            <h1 className="font-heading text-3xl text-primary font-bold">
+              Blog Management
+            </h1>
+            <p className="font-body text-foreground/70">
+              Share stories and travel tips with your audience
+            </p>
           </div>
-          <Button variant="hero" onClick={() => openModal()} className="shadow-md">
+          <Button
+            variant="hero"
+            onClick={() => openModal()}
+            className="shadow-md"
+          >
             <Plus className="w-4 h-4 mr-2" />
             New Post
           </Button>
@@ -207,7 +271,9 @@ const AdminBlog = () => {
           {loading ? (
             <div className="flex-1 flex flex-col items-center justify-center py-12 gap-3">
               <Loader2 className="w-10 h-10 animate-spin text-primary" />
-              <p className="animate-pulse font-medium text-foreground/60">Loading blog posts...</p>
+              <p className="animate-pulse font-medium text-foreground/60">
+                Loading blog posts...
+              </p>
             </div>
           ) : filteredPosts.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center py-12 gap-4 text-center px-4">
@@ -215,8 +281,12 @@ const AdminBlog = () => {
                 <Search className="w-8 h-8 text-foreground/20" />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-semibold">No posts found</h3>
-                <p className="text-foreground/60 max-w-xs mx-auto">Start by creating your first blog story.</p>
+                <h3 className="font-heading text-lg font-semibold">
+                  No posts found
+                </h3>
+                <p className="text-foreground/60 max-w-xs mx-auto">
+                  Start by creating your first blog story.
+                </p>
               </div>
             </div>
           ) : (
@@ -225,33 +295,68 @@ const AdminBlog = () => {
                 <TableHeader className="sticky top-0 bg-card z-10 border-b">
                   <TableRow>
                     <TableHead className="w-[80px]">Image</TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('title')}>
-                      <div className="flex items-center gap-2">Title <ArrowUpDown className="w-3 h-3" /></div>
+                    <TableHead
+                      className="cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => handleSort("title")}
+                    >
+                      <div className="flex items-center gap-2">
+                        Title <ArrowUpDown className="w-3 h-3" />
+                      </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('category')}>
-                      <div className="flex items-center gap-2">Category <ArrowUpDown className="w-3 h-3" /></div>
+                    <TableHead
+                      className="cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => handleSort("category")}
+                    >
+                      <div className="flex items-center gap-2">
+                        Category <ArrowUpDown className="w-3 h-3" />
+                      </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => handleSort('author')}>
-                      <div className="flex items-center gap-2">Author <ArrowUpDown className="w-3 h-3" /></div>
+                    <TableHead
+                      className="cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => handleSort("author")}
+                    >
+                      <div className="flex items-center gap-2">
+                        Author <ArrowUpDown className="w-3 h-3" />
+                      </div>
                     </TableHead>
-                    <TableHead className="cursor-pointer hover:text-primary transition-colors text-right" onClick={() => handleSort('date')}>
-                      <div className="flex items-center justify-end gap-2">Date <ArrowUpDown className="w-3 h-3" /></div>
+                    <TableHead
+                      className="cursor-pointer hover:text-primary transition-colors text-right"
+                      onClick={() => handleSort("date")}
+                    >
+                      <div className="flex items-center justify-end gap-2">
+                        Date <ArrowUpDown className="w-3 h-3" />
+                      </div>
                     </TableHead>
                     <TableHead className="text-right pr-6">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredPosts.map((post) => (
-                    <TableRow key={post.id} className="group hover:bg-muted/30 transition-colors">
+                    <TableRow
+                      key={post.id}
+                      className="group hover:bg-muted/30 transition-colors"
+                    >
                       <TableCell>
                         <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden border border-border/50">
-                          {post.image && <img src={post.image} alt="" className="w-full h-full object-cover" />}
+                          {post.image && (
+                            <img
+                              src={post.image}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          )}
                         </div>
                       </TableCell>
                       <TableCell className="max-w-md">
                         <div className="flex flex-col">
-                          <span className="font-heading font-semibold text-primary line-clamp-1">{post.title}</span>
-                          {post.featured && <span className="text-[10px] text-secondary font-bold uppercase">Featured</span>}
+                          <span className="font-heading font-semibold text-primary line-clamp-1">
+                            {post.title}
+                          </span>
+                          {post.featured && (
+                            <span className="text-[10px] text-secondary font-bold uppercase">
+                              Featured
+                            </span>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -259,14 +364,28 @@ const AdminBlog = () => {
                           {post.category}
                         </span>
                       </TableCell>
-                      <TableCell className="text-sm font-medium">{post.author}</TableCell>
-                      <TableCell className="text-right text-xs text-foreground/50">{post.date}</TableCell>
+                      <TableCell className="text-sm font-medium">
+                        {post.author}
+                      </TableCell>
+                      <TableCell className="text-right text-xs text-foreground/50">
+                        {post.date}
+                      </TableCell>
                       <TableCell className="text-right pr-6">
                         <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" onClick={() => openModal(post)} className="h-8 w-8 hover:bg-primary/10 hover:text-primary">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => openModal(post)}
+                            className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                          >
                             <Pencil className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(post.id)} className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(post.id)}
+                            className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                          >
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
@@ -291,22 +410,27 @@ const AdminBlog = () => {
                 <Label className="font-semibold text-sm">Headline</Label>
                 <Input
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   placeholder="Catchy blog title..."
                   required
                 />
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="font-semibold text-sm">Category</Label>
                   <select
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
                     className="w-full h-10 px-3 rounded-md border border-input bg-background"
                   >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -314,33 +438,43 @@ const AdminBlog = () => {
                   <Label className="font-semibold text-sm">Author Name</Label>
                   <Input
                     value={formData.author}
-                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, author: e.target.value })
+                    }
                     placeholder="e.g., Jane Doe"
                     required
                   />
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="font-semibold text-sm">Read Time Estimate</Label>
+                  <Label className="font-semibold text-sm">
+                    Read Time Estimate
+                  </Label>
                   <Input
                     value={formData.readTime}
-                    onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, readTime: e.target.value })
+                    }
                     placeholder="e.g., 5 min read"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="font-semibold text-sm">Publication Date</Label>
+                  <Label className="font-semibold text-sm">
+                    Publication Date
+                  </Label>
                   <Input
                     value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, date: e.target.value })
+                    }
                   />
                 </div>
               </div>
-
               <div className="space-y-2">
-                <Label className="font-semibold text-sm">Featured Header Image</Label>
+                <Label className="font-semibold text-sm">
+                  Featured Header Image
+                </Label>
                 <ImageUploader
                   value={formData.image}
                   onChange={(url) => setFormData({ ...formData, image: url })}
@@ -348,19 +482,27 @@ const AdminBlog = () => {
                   label="Story Cover"
                 />
               </div>
-
               <div className="space-y-4">
-                <Label className="font-semibold text-sm">Gallery Images (Multiple)</Label>
+                <Label className="font-semibold text-sm">
+                  Gallery Images (Multiple)
+                </Label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {formData.additionalImages.map((img, index) => (
                     <div key={index} className="relative group">
-                      <img src={img} alt="" className="w-full h-24 object-cover rounded-lg border" />
+                      <img
+                        src={img}
+                        alt=""
+                        className="w-full h-24 object-cover rounded-lg border"
+                      />
                       <button
                         type="button"
                         onClick={() => {
                           const newImages = [...formData.additionalImages];
                           newImages.splice(index, 1);
-                          setFormData({ ...formData, additionalImages: newImages });
+                          setFormData({
+                            ...formData,
+                            additionalImages: newImages,
+                          });
                         }}
                         className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                       >
@@ -375,7 +517,10 @@ const AdminBlog = () => {
                         if (url) {
                           setFormData({
                             ...formData,
-                            additionalImages: [...formData.additionalImages, url]
+                            additionalImages: [
+                              ...formData.additionalImages,
+                              url,
+                            ],
                           });
                         }
                       }}
@@ -385,67 +530,83 @@ const AdminBlog = () => {
                   </div>
                 </div>
               </div>
-
               <div className="space-y-2">
                 <Label className="font-semibold text-sm">Short Excerpt</Label>
                 <Textarea
                   value={formData.excerpt}
-                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, excerpt: e.target.value })
+                  }
                   placeholder="Summary for listing view..."
                   rows={2}
                   required
                 />
               </div>
-
-// Story Content Section with Rich Text Editor
+              // Story Content Section with Rich Text Editor
               <div className="space-y-2">
                 <Label className="font-semibold text-sm">Story Content</Label>
                 <div className="bg-background rounded-md border border-input min-h-[450px] flex flex-col">
                   <ReactQuill
                     theme="snow"
                     value={formData.content}
-                    onChange={(content) => setFormData({ ...formData, content })}
+                    onChange={(content) =>
+                      setFormData({ ...formData, content })
+                    }
                     className="flex-1"
-                    style={{ height: '350px' }}
+                    style={{ height: "350px" }}
                     modules={{
                       toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        ['link', 'image'],
-                        ['clean']
+                        [{ header: [1, 2, 3, false] }],
+                        ["bold", "italic", "underline", "strike"],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["link", "image"],
+                        ["clean"],
                       ],
                     }}
                   />
-                  <div className="h-10 shrink-0" /> {/* Spacer for Quill toolbar overlap if needed */}
+                  <div className="h-10 shrink-0" />{" "}
+                  {/* Spacer for Quill toolbar overlap if needed */}
                 </div>
                 <p className="text-[10px] text-muted-foreground mt-1">
-                  Tip: Use the editor to add headings, lists, and images directly into your story.
+                  Tip: Use the editor to add headings, lists, and images
+                  directly into your story.
                 </p>
               </div>
-
               <div className="space-y-2">
-                <Label className="font-semibold text-sm">Tags (comma separated)</Label>
+                <Label className="font-semibold text-sm">
+                  Tags (comma separated)
+                </Label>
                 <Input
                   value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, tags: e.target.value })
+                  }
                   placeholder="Travel, Culture, Adventure"
                 />
               </div>
-
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <input
                   type="checkbox"
                   id="featured"
                   className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                   checked={formData.featured}
-                  onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, featured: e.target.checked })
+                  }
                 />
-                <Label htmlFor="featured" className="cursor-pointer select-none">Feature this post on home page</Label>
+                <Label
+                  htmlFor="featured"
+                  className="cursor-pointer select-none"
+                >
+                  Feature this post on home page
+                </Label>
               </div>
-
               <div className="flex justify-end gap-3 pt-6 border-t">
-                <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsModalOpen(false)}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" variant="hero" disabled={saving}>
