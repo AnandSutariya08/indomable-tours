@@ -56,12 +56,12 @@ const ToursByCity = () => {
       selectedCategory === "All" ||
       (tour.tags && tour.tags.includes(selectedCategory));
     const matchesSearch =
-      tour.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tour.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (tour.tags &&
-        tour.tags.some((tag) =>
+        tour.tags.some((tag: string) =>
           tag.toLowerCase().includes(searchQuery.toLowerCase()),
         )) ||
-      tour.location.toLowerCase().includes(searchQuery.toLowerCase());
+      tour.location?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -92,10 +92,8 @@ const ToursByCity = () => {
               {/* Desktop Tabs */}
               <div className="hidden md:flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
                 {categories.map((category) => (
-                  <motion.button
+                  <button
                     key={category}
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
                       selectedCategory === category
@@ -104,7 +102,7 @@ const ToursByCity = () => {
                     }`}
                   >
                     {category}
-                  </motion.button>
+                  </button>
                 ))}
               </div>
 
@@ -182,8 +180,7 @@ const ToursByCity = () => {
                     <motion.div
                       key={tour.id}
                       variants={fadeInUp}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      whileHover={{ y: -10 }}
+                      transition={{ duration: 0.5 }}
                       className="group flex flex-col h-full"
                     >
                       <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
@@ -192,12 +189,12 @@ const ToursByCity = () => {
                           <img
                             src={tour.image}
                             alt={tour.title}
-                            className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                             loading="lazy"
-                            onLoad={(e) =>
-                              (e.currentTarget.style.opacity = "1")
-                            }
-                            style={{ opacity: 1 }}
+                            onLoad={(e) => {
+                              e.currentTarget.style.opacity = "1";
+                            }}
+                            style={{ opacity: 0 }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 right-4">

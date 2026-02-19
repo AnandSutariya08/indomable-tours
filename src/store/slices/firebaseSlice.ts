@@ -91,6 +91,7 @@ const firebaseSlice = createSlice({
         if (action.payload.travelInfo) state.travelInfo = action.payload.travelInfo;
         if (action.payload.exploreDestinations) state.exploreDestinations = action.payload.exploreDestinations;
         state.lastFetched = Date.now();
+        state.error = null;
       })
       .addCase(fetchAllData.rejected, (state, action) => {
         state.loading = false;
