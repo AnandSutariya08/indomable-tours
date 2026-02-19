@@ -37,20 +37,51 @@ import Contact from "./pages/Contactus";
 const queryClient = new QueryClient();
 
 const ImagePrefetcher = () => {
-  const { tours, blog, destinations, cities, exploreDestinations } = useSelector((state: RootState) => state.firebase);
+  const { tours, blog, destinations, cities, exploreDestinations, testimonials } = useSelector((state: RootState) => state.firebase);
   
   useEffect(() => {
     const allImages = new Set<string>();
-    [...tours, ...blog, ...destinations, ...cities, ...exploreDestinations].forEach(item => {
+    
+    const addToSet = (item: any) => {
+      if (!item) return;
       if (item.image) allImages.add(item.image);
-      if (item.gallery) item.gallery.forEach((img: string) => allImages.add(img));
-    });
+      if (item.backgroundImage) allImages.add(item.backgroundImage);
+      if (item.avatar) allImages.add(item.avatar);
+      if (item.gallery && Array.isArray(item.gallery)) {
+        item.gallery.forEach((img: string) => {
+          if (img) allImages.add(img);
+        });
+      }
+    };
 
-    allImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, [tours, blog, destinations, cities, exploreDestinations]);
+    [...tours, ...blog, ...destinations, ...cities, ...exploreDestinations, ...testimonials].forEach(addToSet);
+
+    const priorityImages = Array.from(allImages);
+    
+    // Process in small batches to avoid blocking the main thread on mobile
+    const batchSize = 3;
+    let index = 0;
+
+    const loadBatch = () => {
+      const batch = priorityImages.slice(index, index + batchSize);
+      if (batch.length === 0) return;
+
+      batch.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      index += batchSize;
+      if (index < priorityImages.length) {
+        requestIdleCallback ? requestIdleCallback(loadBatch) : setTimeout(loadBatch, 200);
+      }
+    };
+
+    if (priorityImages.length > 0) {
+      // Start prefetching after a short delay to prioritize initial page load
+      setTimeout(loadBatch, 1000);
+    }
+  }, [tours, blog, destinations, cities, exploreDestinations, testimonials]);
 
   return null;
 };

@@ -78,13 +78,13 @@ const ToursByCity = () => {
       {/* Unified Background Wrapper */}
       <div className="bg-[#F5F1E9]">
         {/* Filter Section */}
-        <section className="py-12 relative overflow-hidden">
-          {/* Decorative background elements */}
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
+        <section className="py-8 md:py-12 relative overflow-hidden">
+          {/* Decorative background elements - reduced for mobile performance */}
+          <div className="hidden md:block absolute top-0 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full" />
+          <div className="hidden md:block absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 blur-[100px] rounded-full" />
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center gap-4 md:gap-6">
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
                 Select Category
               </span>
@@ -160,11 +160,11 @@ const ToursByCity = () => {
         </section>
 
         {/* Tours Grid */}
-        <section className="pb-16 md:pb-24">
+        <section className="pb-12 md:pb-24">
           <div className="container mx-auto px-4 md:px-6">
             {loading ? (
-              <div className="flex justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              <div className="flex justify-center py-12 md:py-20">
+                <Loader2 className="w-8 h-8 md:w-10 md:h-10 animate-spin text-primary" />
               </div>
             ) : (
               <AnimatePresence mode="wait">
@@ -174,22 +174,23 @@ const ToursByCity = () => {
                   initial="hidden"
                   animate="visible"
                   exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch"
                 >
                   {filteredTours.map((tour, index) => (
                     <motion.div
                       key={tour.id}
+                      initial={false}
                       variants={fadeInUp}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.3 }}
                       className="group flex flex-col h-full"
                     >
-                      <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full">
+                      <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-black/5 flex flex-col h-full">
                         {/* Image Section */}
-                        <div className="relative h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
+                        <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
                           <img
                             src={tour.image}
                             alt={tour.title}
-                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                             loading="lazy"
                             onLoad={(e) => {
                               e.currentTarget.style.opacity = "1";
