@@ -40,11 +40,8 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'auto'
-    });
+    // Immediate scroll to top without any animation/transition
+    window.scrollTo(0, 0);
   }, [pathname]);
   
   return null;
