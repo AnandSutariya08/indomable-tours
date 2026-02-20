@@ -19,6 +19,7 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
             transition={{ duration: 1.5, ease: "easeOut" }}
             src={backgroundImage}
             alt=""
+            loading="eager"
             className="w-full h-full object-cover"
           />
           {/* Sophisticated gradient overlay */}

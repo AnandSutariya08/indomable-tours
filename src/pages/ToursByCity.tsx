@@ -187,15 +187,16 @@ const ToursByCity = () => {
                       <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-black/5 flex flex-col h-full">
                         {/* Image Section */}
                         <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
-                          <img
-                            src={tour.image}
-                            alt={tour.title}
-                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                            onLoad={(e) => {
-                              e.currentTarget.style.opacity = "1";
-                            }}
-                            style={{ opacity: 1 }}
-                          />
+                        <img
+                          src={tour.image}
+                          alt={tour.title}
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                          loading="eager"
+                          onLoad={(e) => {
+                            e.currentTarget.style.opacity = "1";
+                          }}
+                          style={{ opacity: 1 }}
+                        />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 right-4">
                             <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium shadow-lg">
