@@ -70,7 +70,7 @@ const ImagePrefetcher = () => {
     const priorityImages = Array.from(allImages);
     
     // Process in batches
-    const batchSize = 5;
+    const batchSize = 10; // Increased batch size
     let index = 0;
 
     const loadBatch = () => {
@@ -80,15 +80,16 @@ const ImagePrefetcher = () => {
       batch.forEach(src => {
         if (!src) return;
         
-        // Add link preload tag to head
+        // Add link preload tag to head for critical performance
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'image';
         link.href = src;
+        // iOS specific hint for high priority
+        link.setAttribute('fetchpriority', 'high');
         document.head.appendChild(link);
 
         const img = new Image();
-        // Use high priority for loading
         img.fetchPriority = 'high';
         img.src = src;
       });
@@ -96,7 +97,7 @@ const ImagePrefetcher = () => {
       index += batchSize;
       if (index < priorityImages.length) {
         // Use a faster interval for mobile responsiveness
-        setTimeout(loadBatch, 20);
+        setTimeout(loadBatch, 10); // Reduced delay
       }
     };
 
