@@ -58,8 +58,8 @@ const ImagePrefetcher = () => {
 
     const priorityImages = Array.from(allImages);
     
-    // Process in small batches to avoid blocking the main thread on mobile
-    const batchSize = 3;
+    // Process in batches
+    const batchSize = 5;
     let index = 0;
 
     const loadBatch = () => {
@@ -67,19 +67,23 @@ const ImagePrefetcher = () => {
       if (batch.length === 0) return;
 
       batch.forEach(src => {
+        if (!src) return;
         const img = new Image();
+        // Use high priority for loading on iOS Safari
+        img.fetchPriority = 'high';
         img.src = src;
       });
 
       index += batchSize;
       if (index < priorityImages.length) {
-        requestIdleCallback ? requestIdleCallback(loadBatch) : setTimeout(loadBatch, 200);
+        // Use a slightly faster interval for mobile responsiveness
+        setTimeout(loadBatch, 100);
       }
     };
 
     if (priorityImages.length > 0) {
-      // Start prefetching after a short delay to prioritize initial page load
-      setTimeout(loadBatch, 1000);
+      // Start prefetching immediately after load
+      loadBatch();
     }
   }, [tours, blog, destinations, cities, exploreDestinations, testimonials]);
 

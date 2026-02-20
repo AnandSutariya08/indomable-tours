@@ -114,6 +114,15 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    /* Prevent iOS Safari bounce and white flashes */
+    -webkit-overflow-scrolling: touch;
+    background-color: #FCF8F2; /* Hardcoded cream for faster initial paint */
+  }
+
+  /* Optimized image loading for Safari */
+  img {
+    content-visibility: auto;
+    image-rendering: -webkit-optimize-contrast;
   }
 
   h1, h2, h3, h4, h5, h6 {

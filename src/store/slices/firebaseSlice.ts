@@ -13,6 +13,7 @@ interface FirebaseState {
   loading: boolean;
   error: string | null;
   lastFetched: number | null;
+  isInitialLoad: boolean;
 }
 
 const initialState: FirebaseState = {
@@ -26,11 +27,20 @@ const initialState: FirebaseState = {
   loading: false,
   error: null,
   lastFetched: null,
+  isInitialLoad: true,
 };
 
 export const fetchAllData = createAsyncThunk(
   'firebase/fetchAllData',
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
+    const state = (getState() as any).firebase as FirebaseState;
+    
+    // Cache: If data was fetched in the last 5 minutes, don't fetch again unless forced
+    const CACHE_TIME = 5 * 60 * 1000;
+    if (state.lastFetched && (Date.now() - state.lastFetched < CACHE_TIME)) {
+      return null;
+    }
+
     try {
       const collectionMapping: Record<string, string> = {
         tours: 'tours',
@@ -42,6 +52,7 @@ export const fetchAllData = createAsyncThunk(
         exploreDestinations: 'exploreDestinations'
       };
 
+      // Parallelize all requests to Firestore
       const results = await Promise.all(
         Object.entries(collectionMapping).map(async ([key, colName]) => {
           const snapshot = await getDocs(query(collection(db, colName)));
@@ -75,7 +86,7 @@ const firebaseSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllData.pending, (state) => {
-        // Only show loading on initial fetch, not background refreshes
+        // Only show loading if we have absolutely no data
         if (state.lastFetched === null) {
           state.loading = true;
         }
@@ -83,6 +94,11 @@ const firebaseSlice = createSlice({
       })
       .addCase(fetchAllData.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
+        state.isInitialLoad = false;
+        
+        // If null, it means we used cache
+        if (!action.payload) return;
+
         if (action.payload.tours) state.tours = action.payload.tours;
         if (action.payload.destinations) state.destinations = action.payload.destinations;
         if (action.payload.cities) state.cities = action.payload.cities;
@@ -95,6 +111,7 @@ const firebaseSlice = createSlice({
       })
       .addCase(fetchAllData.rejected, (state, action) => {
         state.loading = false;
+        state.isInitialLoad = false;
         state.error = action.payload as string;
       });
   },
