@@ -57,6 +57,7 @@ const TourDetails = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           src={tour.image}
           alt={tour.title}
+          loading="eager"
           className="w-full h-full object-cover"
         />
 

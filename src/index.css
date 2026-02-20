@@ -117,12 +117,26 @@
     /* Prevent iOS Safari bounce and white flashes */
     -webkit-overflow-scrolling: touch;
     background-color: #FCF8F2; /* Hardcoded cream for faster initial paint */
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    touch-action: manipulation;
+  }
+
+  #root {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
   }
 
   /* Optimized image loading for Safari */
   img {
     content-visibility: auto;
     image-rendering: -webkit-optimize-contrast;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
