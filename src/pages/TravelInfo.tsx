@@ -163,7 +163,7 @@ const TravelInfo = () => {
                     </div>
                   </a>
                   <a
-                    href="mailto:hello@indomapletours.com"
+                    href="mailto:hello@indomapletours.ca"
                     className="flex items-center gap-4 text-primary-foreground hover:text-secondary transition-colors"
                   >
                     <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center">
@@ -171,7 +171,7 @@ const TravelInfo = () => {
                     </div>
                     <div>
                       <p className="font-body text-sm text-primary-foreground/60">Email Us</p>
-                      <p className="font-heading text-lg">hello@indomapletours.com</p>
+                      <p className="font-heading text-lg">hello@indomapletours.ca</p>
                     </div>
                   </a>
                 </div>

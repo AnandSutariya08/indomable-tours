@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin
 
-Sitemap: https://indomapletours.com/sitemap.xml
+Sitemap: https://www.indomapletours.ca/sitemap.xml

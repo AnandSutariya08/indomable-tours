@@ -21,7 +21,7 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const login = (username: string, password: string): boolean => {
     // ⚠️ WARNING: This is INSECURE and for demo purposes only!
     // In production, use Firebase Authentication or proper auth system
-    if (username === "admin" && password === "123") {
+    if (username === "indomapletours" && password === "indomapletours123") {
       setIsAuthenticated(true);
       sessionStorage.setItem("admin_auth", "true");
       return true;
