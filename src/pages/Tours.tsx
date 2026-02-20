@@ -18,35 +18,44 @@ import tajMahal from "@/assets/destinations/taj-mahal.jpg";
 
 const countryList = ["All", "India", "Nepal", "Bhutan", "Sri Lanka"];
 
+const asString = (value: unknown) => (typeof value === "string" ? value : "");
+const asStringArray = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+
+const parseCountryFilter = (rawCountry: string | null) => {
+  if (!rawCountry) return "All";
+  const formattedCountry = rawCountry
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  return countryList.includes(formattedCountry) ? formattedCountry : "All";
+};
+
 const Tours = () => {
-  const [selectedCountry, setSelectedCountry] = useState("All");
+  const [searchParams] = useSearchParams();
+  const countryFilter = searchParams.get("country");
+  const [selectedCountry, setSelectedCountry] = useState(() => parseCountryFilter(countryFilter));
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
-  const [searchParams] = useSearchParams();
   const cityFilter = searchParams.get("city");
-  const countryFilter = searchParams.get("country");
 
   useEffect(() => {
-    if (countryFilter) {
-      const formattedCountry = countryFilter
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-      if (countryList.includes(formattedCountry)) {
-        setSelectedCountry(formattedCountry);
-      }
-    }
+    setSelectedCountry(parseCountryFilter(countryFilter));
   }, [countryFilter]);
 
   const filteredTours = tours.filter((tour) => {
+    const tourCountry = asString(tour?.country);
+    const tourLocation = asString(tour?.location);
+    const tourTitle = asString(tour?.title);
+
     const matchesCountry =
       selectedCountry === "All" ||
-      (tour.country &&
-        tour.country.toLowerCase() === selectedCountry.toLowerCase());
+      (tourCountry &&
+        tourCountry.toLowerCase() === selectedCountry.toLowerCase());
     const matchesCity =
       !cityFilter ||
-      tour.location.toLowerCase().includes(cityFilter.toLowerCase()) ||
-      tour.title.toLowerCase().includes(cityFilter.toLowerCase());
+      tourLocation.toLowerCase().includes(cityFilter.toLowerCase()) ||
+      tourTitle.toLowerCase().includes(cityFilter.toLowerCase());
     return matchesCountry && matchesCity;
   });
 
@@ -142,7 +151,7 @@ const Tours = () => {
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
               </div>
             ) : (
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="sync">
                 <motion.div
                   key={selectedCountry + (cityFilter || "")}
                   variants={staggerContainer}
@@ -218,8 +227,8 @@ const Tours = () => {
 
                             {/* HIGHLIGHTS */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                              {tour.highlights
-                                ?.slice(0, 3)
+                                  {asStringArray(tour.highlights)
+                                .slice(0, 3)
                                 .map((highlight: string) => (
                                   <span
                                     key={highlight}
@@ -231,13 +240,13 @@ const Tours = () => {
                             </div>
 
                             {/* TAGS */}
-                            {tour.tags && tour.tags.length > 0 && (
+                            {asStringArray(tour.tags).length > 0 && (
                               <div className="mb-6">
                                 <span className="font-body text-[10px] uppercase tracking-widest text-foreground/50 font-bold block mb-2">
                                   Categories
                                 </span>
                                 <div className="flex flex-wrap gap-2">
-                                  {tour.tags.map((tag: string) => (
+                                  {asStringArray(tour.tags).map((tag: string) => (
                                     <span
                                       key={tag}
                                       className="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-body text-[10px] font-bold uppercase tracking-wider"

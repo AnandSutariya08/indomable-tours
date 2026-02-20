@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,103 +8,108 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store";
 import { fetchAllData } from "./store/slices/firebaseSlice";
 import { AdminProvider } from "@/contexts/AdminContext";
-import Index from "./pages/Index";
-import Tours from "./pages/Tours";
-import TourDetails from "./pages/TourDetails";
-import Destinations from "./pages/Destinations";
-import TravelInfo from "./pages/TravelInfo";
-import ToursByCity from "./pages/ToursByCity";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import About from "./pages/About";
-import NotFound from "./pages/NotFound";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import CookiePolicy from "./pages/CookiePolicy";
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminTours from "./pages/admin/AdminTours";
-import AdminBlog from "./pages/admin/AdminBlog";
-import AdminTestimonials from "./pages/admin/AdminTestimonials";
-import AdminDestinations from "./pages/admin/AdminDestinations";
-import AdminCities from "./pages/admin/AdminCities";
-import AdminTeam from "./pages/admin/AdminTeam";
-import AdminTravelInfo from "./pages/admin/AdminTravelInfo";
-import AdminHomeSections from "./pages/admin/AdminHomeSections";
-import AdminInquiries from "./pages/admin/AdminInquiries";
-import Contact from "./pages/Contactus";
+
+const Index = lazy(() => import("./pages/Index"));
+const Tours = lazy(() => import("./pages/Tours"));
+const TourDetails = lazy(() => import("./pages/TourDetails"));
+const Destinations = lazy(() => import("./pages/Destinations"));
+const ToursByCity = lazy(() => import("./pages/ToursByCity"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const About = lazy(() => import("./pages/About"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const Contact = lazy(() => import("./pages/Contactus"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminTours = lazy(() => import("./pages/admin/AdminTours"));
+const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
+const AdminTestimonials = lazy(() => import("./pages/admin/AdminTestimonials"));
+const AdminDestinations = lazy(() => import("./pages/admin/AdminDestinations"));
+const AdminCities = lazy(() => import("./pages/admin/AdminCities"));
+const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
+const AdminTravelInfo = lazy(() => import("./pages/admin/AdminTravelInfo"));
+const AdminHomeSections = lazy(() => import("./pages/admin/AdminHomeSections"));
+const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 
 const queryClient = new QueryClient();
+
+type IdleCapableWindow = Window & {
+  requestIdleCallback?: (
+    callback: IdleRequestCallback,
+    options?: IdleRequestOptions
+  ) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
-  useEffect(() => {
-    // Immediate scroll to top without any animation/transition
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    // Snap to top immediately on route changes (no smooth scroll)
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname]);
   
   return null;
 };
 
-const ImagePrefetcher = () => {
+const RouteLoading = () => (
+  <div className="min-h-[40vh] flex items-center justify-center px-6">
+    <div className="w-full max-w-2xl">
+      <div className="h-3 w-56 bg-black/10 rounded-full mb-4 animate-pulse mx-auto" />
+      <div className="h-10 w-full bg-black/10 rounded-xl mb-3 animate-pulse" />
+      <div className="h-10 w-5/6 bg-black/10 rounded-xl animate-pulse" />
+    </div>
+  </div>
+);
+
+const SmartImagePrefetcher = () => {
   const { tours, blog, destinations, cities, exploreDestinations, testimonials } = useSelector((state: RootState) => state.firebase);
   
   useEffect(() => {
-    const allImages = new Set<string>();
+    const urls = new Set<string>();
     
-    const addToSet = (item: any) => {
+    const addToSet = (item: Record<string, unknown> | null | undefined) => {
       if (!item) return;
-      if (item.image) allImages.add(item.image);
-      if (item.backgroundImage) allImages.add(item.backgroundImage);
-      if (item.avatar) allImages.add(item.avatar);
-      if (item.gallery && Array.isArray(item.gallery)) {
-        item.gallery.forEach((img: string) => {
-          if (img) allImages.add(img);
+      if (typeof item.image === "string" && item.image) urls.add(item.image);
+      if (typeof item.backgroundImage === "string" && item.backgroundImage) urls.add(item.backgroundImage);
+      if (typeof item.avatar === "string" && item.avatar) urls.add(item.avatar);
+      if (Array.isArray(item.gallery)) {
+        item.gallery.forEach((img) => {
+          if (typeof img === "string" && img) urls.add(img);
         });
       }
     };
 
     [...tours, ...blog, ...destinations, ...cities, ...exploreDestinations, ...testimonials].forEach(addToSet);
 
-    const priorityImages = Array.from(allImages);
-    
-    // Process in batches
-    const batchSize = 10; // Increased batch size
-    let index = 0;
-
-    const loadBatch = () => {
-      const batch = priorityImages.slice(index, index + batchSize);
-      if (batch.length === 0) return;
-
-      batch.forEach(src => {
-        if (!src) return;
-        
-        // Add link preload tag to head for critical performance
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        // iOS specific hint for high priority
-        link.setAttribute('fetchpriority', 'high');
-        document.head.appendChild(link);
-
+    // Keep prefetch tiny and idle-only to avoid starving first render on mobile Safari.
+    const warmImages = Array.from(urls).slice(0, 8);
+    const start = () => {
+      warmImages.forEach((src) => {
         const img = new Image();
-        img.fetchPriority = 'high';
+        img.decoding = "async";
+        img.loading = "lazy";
         img.src = src;
       });
-
-      index += batchSize;
-      if (index < priorityImages.length) {
-        // Use a faster interval for mobile responsiveness
-        setTimeout(loadBatch, 10); // Reduced delay
-      }
     };
 
-    if (priorityImages.length > 0) {
-      // Start prefetching immediately after load
-      loadBatch();
+    if (warmImages.length === 0) return;
+
+    const idleWindow = window as IdleCapableWindow;
+    const requestIdle = idleWindow.requestIdleCallback;
+    if (typeof requestIdle === "function") {
+      const idleId = requestIdle(start, { timeout: 2000 });
+      return () => {
+        const cancelIdle = idleWindow.cancelIdleCallback;
+        if (typeof cancelIdle === "function") cancelIdle(idleId);
+      };
     }
+
+    const timer = window.setTimeout(start, 1200);
+    return () => window.clearTimeout(timer);
   }, [tours, blog, destinations, cities, exploreDestinations, testimonials]);
 
   return null;
@@ -114,7 +119,20 @@ const App = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchAllData());
+    const startFetch = () => dispatch(fetchAllData());
+    const idleWindow = window as IdleCapableWindow;
+    const requestIdle = idleWindow.requestIdleCallback;
+
+    if (typeof requestIdle === "function") {
+      const idleId = requestIdle(startFetch, { timeout: 1200 });
+      return () => {
+        const cancelIdle = idleWindow.cancelIdleCallback;
+        if (typeof cancelIdle === "function") cancelIdle(idleId);
+      };
+    }
+
+    const timer = window.setTimeout(startFetch, 0);
+    return () => window.clearTimeout(timer);
   }, [dispatch]);
 
   return (
@@ -123,37 +141,38 @@ const App = () => {
         <AdminProvider>
           <Toaster />
           <Sonner />
-          <ImagePrefetcher />
+          <SmartImagePrefetcher />
           <BrowserRouter>
             <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/tours" element={<Tours />} />
-              <Route path="/tours/:id" element={<TourDetails />} />
-              <Route path="/destinations" element={<Destinations />} />
-              {/* <Route path="/travel-info" element={<TravelInfo />} /> */}
-              <Route path="/catagories" element={<ToursByCity />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/cookie-policy" element={<CookiePolicy />} />
-              {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/tours" element={<AdminTours />} />
-              <Route path="/admin/blog" element={<AdminBlog />} />
-              <Route path="/admin/testimonials" element={<AdminTestimonials />} />
-              <Route path="/admin/destinations" element={<AdminDestinations />} />
-              <Route path="/admin/cities" element={<AdminCities />} />
-              <Route path="/admin/team" element={<AdminTeam />} />
-              <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
-              <Route path="/admin/home-sections" element={<AdminHomeSections />} />
-              <Route path="/admin/inquiries" element={<AdminInquiries />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<RouteLoading />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/tours" element={<Tours />} />
+                <Route path="/tours/:id" element={<TourDetails />} />
+                <Route path="/destinations" element={<Destinations />} />
+                <Route path="/catagories" element={<ToursByCity />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogPost />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/tours" element={<AdminTours />} />
+                <Route path="/admin/blog" element={<AdminBlog />} />
+                <Route path="/admin/testimonials" element={<AdminTestimonials />} />
+                <Route path="/admin/destinations" element={<AdminDestinations />} />
+                <Route path="/admin/cities" element={<AdminCities />} />
+                <Route path="/admin/team" element={<AdminTeam />} />
+                <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
+                <Route path="/admin/home-sections" element={<AdminHomeSections />} />
+                <Route path="/admin/inquiries" element={<AdminInquiries />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
         </AdminProvider>
       </TooltipProvider>
