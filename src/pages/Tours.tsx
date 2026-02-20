@@ -124,7 +124,7 @@ const Tours = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
                 Select Destination
               </span>
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2">
                 {countryList.map((country) => (
                   <motion.button
                     key={country}
@@ -173,13 +173,13 @@ const Tours = () => {
                         to={`/tours/${tour.id}`}
                         className="flex flex-col h-full focus:outline-none"
                       >
-                        <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full cursor-pointer">
+                        <div className="bg-transparent rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border-0 flex flex-col h-full cursor-pointer">
                     {/* IMAGE SECTION */}
-                    <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-[#EBE5D8]">
+                    <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-transparent">
                       <img
                         src={tour.image}
                         alt={tour.title}
-                        className="w-full h-full object-cover transition-opacity duration-300 group-hover:scale-105"
+                        className="block w-full h-full object-cover transition-opacity duration-300 group-hover:scale-105"
                         loading="eager"
                         decoding="async"
                         onLoad={(e) => {
@@ -209,7 +209,7 @@ const Tours = () => {
                           </div>
 
                           {/* CONTENT */}
-                          <div className="p-6 flex flex-col flex-grow">
+                          <div className="p-6 flex flex-col flex-grow bg-[#EBE5D8]">
                             <div className="flex items-center gap-2 text-primary/70 mb-2">
                               <MapPin className="w-4 h-4" />
                               <span className="font-body text-sm font-medium text-foreground">

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store";
-import { fetchAllData } from "./store/slices/firebaseSlice";
+import { fetchCollections, type FirebaseCollectionKey } from "./store/slices/firebaseSlice";
 import { AdminProvider } from "@/contexts/AdminContext";
 
 const Index = lazy(() => import("./pages/Index"));
@@ -52,6 +52,27 @@ const ScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname]);
   
+  return null;
+};
+
+const getCollectionsForPath = (pathname: string): FirebaseCollectionKey[] => {
+  if (pathname === "/") return ["tours", "blog", "testimonials"];
+  if (pathname === "/tours" || pathname.startsWith("/tours/")) return ["tours"];
+  if (pathname === "/blog" || pathname.startsWith("/blog/")) return ["blog"];
+  if (pathname === "/catagories") return ["tours"];
+  return [];
+};
+
+const RouteDataLoader = () => {
+  const { pathname } = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const collections = getCollectionsForPath(pathname);
+    if (collections.length === 0) return;
+    dispatch(fetchCollections(collections));
+  }, [dispatch, pathname]);
+
   return null;
 };
 
@@ -116,25 +137,6 @@ const SmartImagePrefetcher = () => {
 };
 
 const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    const startFetch = () => dispatch(fetchAllData());
-    const idleWindow = window as IdleCapableWindow;
-    const requestIdle = idleWindow.requestIdleCallback;
-
-    if (typeof requestIdle === "function") {
-      const idleId = requestIdle(startFetch, { timeout: 1200 });
-      return () => {
-        const cancelIdle = idleWindow.cancelIdleCallback;
-        if (typeof cancelIdle === "function") cancelIdle(idleId);
-      };
-    }
-
-    const timer = window.setTimeout(startFetch, 0);
-    return () => window.clearTimeout(timer);
-  }, [dispatch]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -144,6 +146,7 @@ const App = () => {
           <SmartImagePrefetcher />
           <BrowserRouter>
             <ScrollToTop />
+            <RouteDataLoader />
             <Suspense fallback={<RouteLoading />}>
               <Routes>
                 <Route path="/" element={<Index />} />
