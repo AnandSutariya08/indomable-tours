@@ -51,9 +51,9 @@ const Tours = () => {
   });
 
   useEffect(() => {
-    if (cityFilter) {
-      window.scrollTo({ top: 400, behavior: "smooth" });
-    }
+    // if (cityFilter) {
+    //   window.scrollTo({ top: 400, behavior: "smooth" });
+    // }
   }, [cityFilter]);
 
   return (
