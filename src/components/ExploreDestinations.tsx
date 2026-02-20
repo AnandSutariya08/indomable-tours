@@ -60,6 +60,8 @@ const ExploreDestinations = () => {
                 <img
                   src={dest.image}
                   alt={dest.name}
+                  loading="eager"
+                  data-fetchpriority="high"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 

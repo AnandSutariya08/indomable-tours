@@ -172,6 +172,7 @@ const Tours = () => {
                         alt={tour.title}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                         loading="eager"
+                        data-fetchpriority="high"
                         onLoad={(e) => {
                           e.currentTarget.style.opacity = "1";
                         }}

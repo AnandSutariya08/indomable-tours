@@ -82,6 +82,14 @@ const ImagePrefetcher = () => {
 
       batch.forEach(src => {
         if (!src) return;
+        
+        // Add link preload tag to head
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+
         const img = new Image();
         // Use high priority for loading
         img.fetchPriority = 'high';

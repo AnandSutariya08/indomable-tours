@@ -72,6 +72,8 @@ const ExploreTours = () => {
                   <img
                     src={tour.image}
                     alt={tour.title}
+                    loading="eager"
+                    data-fetchpriority="high"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
 
