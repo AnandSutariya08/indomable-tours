@@ -165,13 +165,17 @@ const Tours = () => {
                         className="flex flex-col h-full focus:outline-none"
                       >
                         <div className="bg-[#EBE5D8] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-black/5 flex flex-col h-full cursor-pointer">
-                          {/* IMAGE SECTION */}
-                          <div className="relative h-64 overflow-hidden shrink-0">
-                            <img
-                              src={tour.image}
-                              alt={tour.title}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
+                    {/* IMAGE SECTION */}
+                    <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-[#2D2D2D]">
+                      <img
+                        src={tour.image}
+                        alt={tour.title}
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                        onLoad={(e) => {
+                          e.currentTarget.style.opacity = "1";
+                        }}
+                        style={{ opacity: 1 }}
+                      />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
                             {/* BADGES */}

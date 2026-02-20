@@ -178,6 +178,10 @@ const Blog = () => {
                           src={post.image}
                           alt={post.title}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          onLoad={(e) => {
+                            e.currentTarget.style.opacity = "1";
+                          }}
+                          style={{ opacity: 1 }}
                         />
                         <div className="absolute top-4 left-4">
                           <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-body text-xs font-medium">

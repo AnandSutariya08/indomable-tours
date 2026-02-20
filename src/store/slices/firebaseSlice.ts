@@ -35,8 +35,8 @@ export const fetchAllData = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const state = (getState() as any).firebase as FirebaseState;
     
-    // Cache: If data was fetched in the last 5 minutes, don't fetch again unless forced
-    const CACHE_TIME = 5 * 60 * 1000;
+    // Cache: If data was fetched in the last 60 minutes, don't fetch again unless forced
+    const CACHE_TIME = 60 * 60 * 1000;
     if (state.lastFetched && (Date.now() - state.lastFetched < CACHE_TIME)) {
       return null;
     }

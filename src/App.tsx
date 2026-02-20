@@ -83,15 +83,15 @@ const ImagePrefetcher = () => {
       batch.forEach(src => {
         if (!src) return;
         const img = new Image();
-        // Use high priority for loading on iOS Safari
+        // Use high priority for loading
         img.fetchPriority = 'high';
         img.src = src;
       });
 
       index += batchSize;
       if (index < priorityImages.length) {
-        // Use a slightly faster interval for mobile responsiveness
-        setTimeout(loadBatch, 100);
+        // Use a faster interval for mobile responsiveness
+        setTimeout(loadBatch, 20);
       }
     };
 
