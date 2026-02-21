@@ -16,13 +16,24 @@ import { useBlogPosts } from "@/hooks/useFirestoreData";
 import blog1 from "@/assets/blog/blog-1.jpg";
 
 const categories = ["All", "Wellness", "Island", "Adventure"];
+const asString = (value: unknown) => (typeof value === "string" ? value : "");
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const { data: blogPosts, loading } = useBlogPosts();
+  const safeBlogPosts = (Array.isArray(blogPosts) ? blogPosts : []).map((post) => ({
+    ...post,
+    title: asString(post?.title),
+    excerpt: asString(post?.excerpt),
+    image: asString(post?.image),
+    category: asString(post?.category),
+    author: asString(post?.author),
+    readTime: asString(post?.readTime),
+    date: asString(post?.date),
+  }));
 
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = safeBlogPosts.filter((post) => {
     const matchesCategory =
       selectedCategory === "All" || post.category === selectedCategory;
     const matchesSearch =
@@ -31,7 +42,7 @@ const Blog = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPosts = blogPosts.filter((post) => post.featured);
+  const featuredPosts = safeBlogPosts.filter((post) => Boolean(post.featured));
   const regularPosts = filteredPosts.filter(
     (post) => !post.featured || selectedCategory !== "All",
   );

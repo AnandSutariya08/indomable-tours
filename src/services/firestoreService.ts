@@ -1,22 +1,24 @@
-import { 
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  addDoc, 
-  updateDoc, 
+import {
+  addDoc,
+  collection,
   deleteDoc,
-  setDoc
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-// Generic CRUD operations
+const asRecord = (value: unknown): Record<string, unknown> =>
+  value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+
 export const getCollection = async <T>(collectionName: string): Promise<T[]> => {
   try {
-    const querySnapshot = await getDocs(collection(db, collectionName));
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
+    const snapshot = await getDocs(collection(db, collectionName));
+    return snapshot.docs.map((item) => ({
+      id: item.id,
+      ...asRecord(item.data()),
     })) as T[];
   } catch (error) {
     console.error(`Error fetching ${collectionName}:`, error);
@@ -24,14 +26,14 @@ export const getCollection = async <T>(collectionName: string): Promise<T[]> => 
   }
 };
 
-export const getDocument = async <T>(collectionName: string, docId: string): Promise<T | null> => {
+export const getDocument = async <T>(
+  collectionName: string,
+  docId: string,
+): Promise<T | null> => {
   try {
-    const docRef = doc(db, collectionName, docId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as T;
-    }
-    return null;
+    const snapshot = await getDoc(doc(db, collectionName, docId));
+    if (!snapshot.exists()) return null;
+    return { id: snapshot.id, ...asRecord(snapshot.data()) } as T;
   } catch (error) {
     console.error(`Error fetching ${collectionName}/${docId}:`, error);
     return null;
@@ -39,12 +41,12 @@ export const getDocument = async <T>(collectionName: string, docId: string): Pro
 };
 
 export const addDocument = async (
-  collectionName: string, 
-  data: Record<string, unknown>
+  collectionName: string,
+  data: Record<string, unknown>,
 ): Promise<string | null> => {
   try {
-    const docRef = await addDoc(collection(db, collectionName), data);
-    return docRef.id;
+    const ref = await addDoc(collection(db, collectionName), data);
+    return ref.id;
   } catch (error) {
     console.error(`Error adding to ${collectionName}:`, error);
     return null;
@@ -54,7 +56,7 @@ export const addDocument = async (
 export const setDocument = async (
   collectionName: string,
   docId: string,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): Promise<boolean> => {
   try {
     await setDoc(doc(db, collectionName, docId), data);
@@ -68,7 +70,7 @@ export const setDocument = async (
 export const updateDocument = async (
   collectionName: string,
   docId: string,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): Promise<boolean> => {
   try {
     await updateDoc(doc(db, collectionName, docId), data);
@@ -81,7 +83,7 @@ export const updateDocument = async (
 
 export const deleteDocument = async (
   collectionName: string,
-  docId: string
+  docId: string,
 ): Promise<boolean> => {
   try {
     await deleteDoc(doc(db, collectionName, docId));
@@ -92,13 +94,13 @@ export const deleteDocument = async (
   }
 };
 
-// Collection names
 export const COLLECTIONS = {
   TOURS: "tours",
   DESTINATIONS: "destinations",
   BLOG_POSTS: "blogPosts",
   CITIES: "cities",
   TESTIMONIALS: "testimonials",
+  INQUIRIES: "inquiries",
   TRAVEL_INFO: "travelInfo",
   EXPLORE_DESTINATIONS: "exploreDestinations",
   EXPLORE_TOURS: "exploreTours",

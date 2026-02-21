@@ -20,7 +20,7 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
             src={backgroundImage}
             alt=""
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             decoding="async"
             className="w-full h-full object-cover"
           />

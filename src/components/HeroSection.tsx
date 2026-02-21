@@ -104,7 +104,7 @@ const HeroSection = () => {
           <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
             {isVideoOpen && (
               <video
-                src={"https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638"}
+                src={heroVideo}
                 autoPlay
                 controls
                 playsInline

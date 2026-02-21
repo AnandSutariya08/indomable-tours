@@ -1,18 +1,18 @@
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { storage } from "@/lib/firebase";
+const toDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 
 export const uploadImage = async (
   file: File,
   folder: string
 ): Promise<string | null> => {
   try {
-    const timestamp = Date.now();
-    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-    const path = `${folder}/${timestamp}_${sanitizedName}`;
-    const storageRef = ref(storage, path);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    return downloadURL;
+    const dataUrl = await toDataUrl(file);
+    return dataUrl;
   } catch (error) {
     console.error("Error uploading image:", error);
     return null;
@@ -21,8 +21,8 @@ export const uploadImage = async (
 
 export const deleteImage = async (path: string): Promise<boolean> => {
   try {
-    const storageRef = ref(storage, path);
-    await deleteObject(storageRef);
+    // Local mode uses data URLs; no remote object deletion required.
+    void path;
     return true;
   } catch (error) {
     console.error("Error deleting image:", error);

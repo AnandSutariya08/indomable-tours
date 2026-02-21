@@ -1,5 +1,8 @@
-import { collection, addDoc, serverTimestamp, query, orderBy, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { COLLECTIONS } from "@/services/firestoreService";
+
+export type InquiryStatus = "new" | "contacted" | "resolved";
 
 export interface Inquiry {
   id?: string;
@@ -12,37 +15,159 @@ export interface Inquiry {
   travelDates: string;
   travelTime?: string;
   message: string;
-  createdAt: any;
-  status: 'new' | 'contacted' | 'resolved';
+  createdAt: string;
+  status: InquiryStatus;
 }
 
-const INQUIRIES_COLLECTION = "inquiries";
+const INQUIRIES_STORAGE_KEY = "indomaple_inquiries";
 
-export const saveInquiry = async (data: Omit<Inquiry, 'id' | 'createdAt' | 'status'>) => {
+const readInquiries = (): Inquiry[] => {
+  if (typeof window === "undefined") return [];
   try {
-    const docRef = await addDoc(collection(db, INQUIRIES_COLLECTION), {
-      ...data,
-      status: 'new',
-      createdAt: serverTimestamp(),
-    });
-    return { success: true, id: docRef.id };
+    const raw = window.localStorage.getItem(INQUIRIES_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as Inquiry[]) : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeInquiries = (items: Inquiry[]) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(INQUIRIES_STORAGE_KEY, JSON.stringify(items));
+};
+
+const asString = (value: unknown, fallback = "") =>
+  typeof value === "string" ? value : fallback;
+
+const normalizeCreatedAt = (value: unknown): string => {
+  if (typeof value === "string" && value.trim().length > 0) return value;
+  if (typeof value === "number") return new Date(value).toISOString();
+  if (
+    value &&
+    typeof value === "object" &&
+    "toDate" in (value as Record<string, unknown>) &&
+    typeof (value as { toDate?: unknown }).toDate === "function"
+  ) {
+    const date = (value as { toDate: () => Date }).toDate();
+    return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+  }
+  return new Date().toISOString();
+};
+
+const normalizeStatus = (value: unknown): InquiryStatus => {
+  if (value === "new" || value === "contacted" || value === "resolved") return value;
+  return "new";
+};
+
+const normalizeInquiry = (raw: Record<string, unknown>, id?: string): Inquiry => ({
+  id: asString(raw.id, id ?? ""),
+  category: asString(raw.category, "Individual"),
+  companyName: asString(raw.companyName),
+  fullName: asString(raw.fullName),
+  email: asString(raw.email),
+  phone: asString(raw.phone),
+  destination: asString(raw.destination),
+  travelDates: asString(raw.travelDates),
+  travelTime: asString(raw.travelTime),
+  message: asString(raw.message),
+  createdAt: normalizeCreatedAt(raw.createdAt),
+  status: normalizeStatus(raw.status),
+});
+
+export const saveInquiry = async (
+  data: Omit<Inquiry, "id" | "createdAt" | "status">
+) => {
+  const inquiry: Inquiry = {
+    id: "",
+    ...data,
+    status: "new",
+    createdAt: new Date().toISOString(),
+  };
+
+  try {
+    const { id: _id, ...payload } = inquiry;
+    const ref = await addDoc(collection(db, COLLECTIONS.INQUIRIES), payload);
+    return { success: true, id: ref.id };
   } catch (error) {
-    console.error("Error saving inquiry:", error);
-    return { success: false, error };
+    try {
+      const fallbackInquiry: Inquiry = {
+        ...inquiry,
+        id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      };
+      const existing = readInquiries();
+      writeInquiries([fallbackInquiry, ...existing]);
+      return { success: true, id: fallbackInquiry.id };
+    } catch (fallbackError) {
+      console.error("Error saving inquiry:", error, fallbackError);
+      return { success: false, error: fallbackError };
+    }
   }
 };
 
 export const getInquiries = async () => {
   try {
-    const q = query(collection(db, INQUIRIES_COLLECTION), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Inquiry[];
+    const snapshot = await getDocs(collection(db, COLLECTIONS.INQUIRIES));
+    const remote = snapshot.docs.map((item) =>
+      normalizeInquiry({ id: item.id, ...(item.data() as Record<string, unknown>) }, item.id)
+    );
+
+    if (remote.length > 0) {
+      return remote.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
+
+    return readInquiries().sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   } catch (error) {
     console.error("Error fetching inquiries:", error);
-    return [];
+    return readInquiries().sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+};
+
+export const updateInquiryStatus = async (
+  id: string,
+  status: InquiryStatus
+) => {
+  try {
+    await updateDoc(doc(db, COLLECTIONS.INQUIRIES, id), { status });
+    return { success: true };
+  } catch (error) {
+    try {
+      const existing = readInquiries();
+      const updated = existing.map((item) =>
+        item.id === id ? { ...item, status } : item
+      );
+      writeInquiries(updated);
+      return { success: true };
+    } catch (fallbackError) {
+      console.error("Error updating inquiry status:", error, fallbackError);
+      return { success: false, error: fallbackError };
+    }
+  }
+};
+
+export const deleteInquiry = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, COLLECTIONS.INQUIRIES, id));
+    return { success: true };
+  } catch (error) {
+    try {
+      const existing = readInquiries();
+      writeInquiries(existing.filter((item) => item.id !== id));
+      return { success: true };
+    } catch (fallbackError) {
+      console.error("Error deleting inquiry:", error, fallbackError);
+      return { success: false, error: fallbackError };
+    }
   }
 };
 

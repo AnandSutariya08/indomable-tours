@@ -157,14 +157,13 @@ export const useTravelEssentials = () => {
 };
 
 export const useFaqs = () => {
-  const { travelInfo, loading, error } = useSelector((state: RootState) => state.firebase);
-  // Assuming FAQs might be part of travelInfo or a separate collection if needed
-  const memoizedFaqs = useMemo(() => travelInfo, [travelInfo]); 
+  const { faqs, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedFaqs = useMemo(() => faqs, [faqs]); 
   return { data: memoizedFaqs, loading, error };
 };
 
 export const useTeam = () => {
-  // Team is not currently in the slice, but we can add it if needed. 
-  // For now, returning empty to maintain hook interface
-  return { data: [], loading: false, error: null };
+  const { team, loading, error } = useSelector((state: RootState) => state.firebase);
+  const memoizedTeam = useMemo(() => team, [team]);
+  return { data: memoizedTeam, loading, error };
 };

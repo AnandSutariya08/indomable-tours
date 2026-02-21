@@ -1,28 +1,27 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
-import staticTours from '../../data/toursdata/data.json';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  localBlogPosts,
+  localCities,
+  localDestinations,
+  localExploreDestinations,
+  localFaqs,
+  localTeam,
+  localTestimonials,
+  localTours,
+  localTravelEssentials,
+} from "@/data/localData";
+import { COLLECTIONS, getCollection } from "@/services/firestoreService";
 
 export type FirebaseCollectionKey =
-  | 'tours'
-  | 'destinations'
-  | 'cities'
-  | 'blog'
-  | 'testimonials'
-  | 'travelInfo'
-  | 'exploreDestinations';
-
-const COLLECTION_MAPPING: Record<FirebaseCollectionKey, string> = {
-  tours: 'tours',
-  destinations: 'destinations',
-  cities: 'cities',
-  blog: 'blogPosts',
-  testimonials: 'testimonials',
-  travelInfo: 'travelInfo',
-  exploreDestinations: 'exploreDestinations'
-};
-
-const COLLECTION_KEYS = Object.keys(COLLECTION_MAPPING) as FirebaseCollectionKey[];
+  | "tours"
+  | "destinations"
+  | "cities"
+  | "blog"
+  | "testimonials"
+  | "travelInfo"
+  | "faqs"
+  | "exploreDestinations"
+  | "team";
 
 interface FirebaseState {
   tours: any[];
@@ -31,7 +30,9 @@ interface FirebaseState {
   blog: any[];
   testimonials: any[];
   travelInfo: any[];
+  faqs: any[];
   exploreDestinations: any[];
+  team: any[];
   loading: boolean;
   error: string | null;
   lastFetched: number | null;
@@ -56,88 +57,100 @@ const normalizeStaticTours = (items: unknown[]) =>
       };
     });
 
-const STATIC_TOURS = normalizeStaticTours(staticTours as unknown[]);
+const LOCAL_DATA: Record<FirebaseCollectionKey, unknown[]> = {
+  tours: normalizeStaticTours(localTours as unknown[]),
+  destinations: localDestinations as unknown[],
+  cities: localCities as unknown[],
+  blog: localBlogPosts as unknown[],
+  testimonials: localTestimonials as unknown[],
+  travelInfo: localTravelEssentials as unknown[],
+  faqs: localFaqs as unknown[],
+  exploreDestinations: localExploreDestinations as unknown[],
+  team: localTeam as unknown[],
+};
+
+const COLLECTION_KEYS = Object.keys(LOCAL_DATA) as FirebaseCollectionKey[];
 
 const initialState: FirebaseState = {
-  tours: [],
-  destinations: [],
-  cities: [],
-  blog: [],
-  testimonials: [],
-  travelInfo: [],
-  exploreDestinations: [],
+  tours: LOCAL_DATA.tours,
+  destinations: LOCAL_DATA.destinations,
+  cities: LOCAL_DATA.cities,
+  blog: LOCAL_DATA.blog,
+  testimonials: LOCAL_DATA.testimonials,
+  travelInfo: LOCAL_DATA.travelInfo,
+  faqs: LOCAL_DATA.faqs,
+  exploreDestinations: LOCAL_DATA.exploreDestinations,
+  team: LOCAL_DATA.team,
   loading: false,
   error: null,
-  lastFetched: null,
+  lastFetched: Date.now(),
   fetchedAtByCollection: {
-    tours: null,
-    destinations: null,
-    cities: null,
-    blog: null,
-    testimonials: null,
-    travelInfo: null,
-    exploreDestinations: null,
+    tours: Date.now(),
+    destinations: Date.now(),
+    cities: Date.now(),
+    blog: Date.now(),
+    testimonials: Date.now(),
+    travelInfo: Date.now(),
+    faqs: Date.now(),
+    exploreDestinations: Date.now(),
+    team: Date.now(),
   },
-  isInitialLoad: true,
+  isInitialLoad: false,
 };
 
 export const fetchCollections = createAsyncThunk(
-  'firebase/fetchCollections',
-  async (requestedKeys: FirebaseCollectionKey[], { getState, rejectWithValue }) => {
-    const state = (getState() as any).firebase as FirebaseState;
-    
-    // Route-level cache: refresh stale collections only.
-    const CACHE_TIME = 15 * 60 * 1000;
+  "firebase/fetchCollections",
+  async (requestedKeys: FirebaseCollectionKey[], { rejectWithValue }) => {
     const now = Date.now();
-
-    const uniqueKeys = Array.from(new Set(requestedKeys)).filter((key): key is FirebaseCollectionKey =>
-      COLLECTION_KEYS.includes(key as FirebaseCollectionKey)
+    const uniqueKeys = Array.from(new Set(requestedKeys)).filter(
+      (key): key is FirebaseCollectionKey =>
+        (Object.keys(LOCAL_DATA) as FirebaseCollectionKey[]).includes(
+          key as FirebaseCollectionKey
+        )
     );
 
     try {
-      const keysToFetch = uniqueKeys.filter((key) => {
-        const lastFetchedAt = state.fetchedAtByCollection?.[key] ?? null;
-        const isFresh = !!lastFetchedAt && now - lastFetchedAt < CACHE_TIME;
-        const hasData = Array.isArray(state[key]) && state[key].length > 0;
-        return !isFresh || !hasData;
-      });
-
-      if (keysToFetch.length === 0) {
+      if (uniqueKeys.length === 0) {
         return { data: null, fetchedKeys: [] as FirebaseCollectionKey[] };
       }
 
-      const results = await Promise.all(
-        keysToFetch.map(async (key) => {
-          if (key === 'tours') {
-            return {
-              key,
-              data: STATIC_TOURS,
-            };
+      const data: Partial<Record<FirebaseCollectionKey, unknown[]>> = {};
+      for (const key of uniqueKeys) {
+        if (key === "blog") {
+          try {
+            const remoteBlog = await getCollection<Record<string, unknown>>(
+              COLLECTIONS.BLOG_POSTS
+            );
+            data.blog = remoteBlog;
+          } catch {
+            data.blog = LOCAL_DATA.blog;
           }
+          continue;
+        }
+        if (key === "testimonials") {
+          try {
+            const remoteTestimonials = await getCollection<Record<string, unknown>>(
+              COLLECTIONS.TESTIMONIALS
+            );
+            data.testimonials = remoteTestimonials;
+          } catch {
+            data.testimonials = LOCAL_DATA.testimonials;
+          }
+          continue;
+        }
+        data[key] = LOCAL_DATA[key];
+      }
 
-          const colName = COLLECTION_MAPPING[key];
-          const snapshot = await getDocs(query(collection(db, colName)));
-          return {
-            key,
-            data: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-          };
-        })
-      );
-      
-      const data: any = {};
-      results.forEach(res => {
-        data[res.key] = res.data;
-      });
-      return { data, fetchedKeys: keysToFetch };
-    } catch (error: any) {
-      console.error("Redux fetch error:", error);
-      return rejectWithValue(error.message);
+      return { data, fetchedKeys: uniqueKeys, fetchedAt: now };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown local data error";
+      return rejectWithValue(message);
     }
   }
 );
 
 export const fetchAllData = createAsyncThunk(
-  'firebase/fetchAllData',
+  "firebase/fetchAllData",
   async (_, { dispatch }) => {
     await dispatch(fetchCollections(COLLECTION_KEYS));
     return null;
@@ -156,16 +169,16 @@ const firebaseSlice = createSlice({
     builder
       .addCase(fetchCollections.pending, (state, action) => {
         const requestedKeys = action.meta.arg as FirebaseCollectionKey[];
-        const hasAnyMissing = requestedKeys.some((key) => !Array.isArray(state[key]) || state[key].length === 0);
-        if (hasAnyMissing) {
-          state.loading = true;
-        }
+        const hasAnyMissing = requestedKeys.some(
+          (key) => !Array.isArray((state as any)[key]) || (state as any)[key].length === 0
+        );
+        state.loading = hasAnyMissing;
         state.error = null;
       })
       .addCase(fetchCollections.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.isInitialLoad = false;
-        
+
         if (!action.payload?.data) return;
 
         const payload = action.payload.data;
@@ -175,9 +188,11 @@ const firebaseSlice = createSlice({
         if (payload.blog) state.blog = payload.blog;
         if (payload.testimonials) state.testimonials = payload.testimonials;
         if (payload.travelInfo) state.travelInfo = payload.travelInfo;
+        if (payload.faqs) state.faqs = payload.faqs;
         if (payload.exploreDestinations) state.exploreDestinations = payload.exploreDestinations;
+        if (payload.team) state.team = payload.team;
 
-        const fetchedAt = Date.now();
+        const fetchedAt = action.payload.fetchedAt ?? Date.now();
         if (!state.fetchedAtByCollection) {
           state.fetchedAtByCollection = {
             tours: null,
@@ -186,7 +201,9 @@ const firebaseSlice = createSlice({
             blog: null,
             testimonials: null,
             travelInfo: null,
+            faqs: null,
             exploreDestinations: null,
+            team: null,
           };
         }
         (action.payload.fetchedKeys as FirebaseCollectionKey[]).forEach((key) => {

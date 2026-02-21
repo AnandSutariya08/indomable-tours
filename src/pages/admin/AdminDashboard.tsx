@@ -2,38 +2,34 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
-  Building2,
   MessageSquare,
-  Users,
   Home,
   Newspaper,
   ArrowRight,
 } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { getCollection, COLLECTIONS } from "@/services/firestoreService";
+import { getInquiries } from "@/services/inquiryService";
 
 const AdminDashboard = () => {
   const [counts, setCounts] = useState({
     blog: 0,
-    cities: 0,
     testimonials: 0,
-    team: 0,
+    inquiries: 0,
   });
 
   useEffect(() => {
     const fetchCounts = async () => {
-      const [blog, cities, testimonials, team] = await Promise.all([
+      const [blog, testimonials, inquiries] = await Promise.all([
         getCollection(COLLECTIONS.BLOG_POSTS),
-        getCollection(COLLECTIONS.CITIES),
         getCollection(COLLECTIONS.TESTIMONIALS),
-        getCollection(COLLECTIONS.TEAM),
+        getInquiries(),
       ]);
 
       setCounts({
         blog: blog.length,
-        cities: cities.length,
         testimonials: testimonials.length,
-        team: team.length,
+        inquiries: inquiries.length,
       });
     };
 
@@ -49,13 +45,6 @@ const AdminDashboard = () => {
       color: "bg-purple-500",
     },
     {
-      icon: Building2,
-      label: "Cities",
-      count: counts.cities,
-      href: "/admin/cities",
-      color: "bg-orange-500",
-    },
-    {
       icon: MessageSquare,
       label: "Testimonials",
       count: counts.testimonials,
@@ -63,11 +52,11 @@ const AdminDashboard = () => {
       color: "bg-pink-500",
     },
     {
-      icon: Users,
-      label: "Team Members",
-      count: counts.team,
-      href: "/admin/team",
-      color: "bg-indigo-500",
+      icon: MessageSquare,
+      label: "Inquiries",
+      count: counts.inquiries,
+      href: "/admin/inquiries",
+      color: "bg-emerald-600",
     },
   ];
 
@@ -136,6 +125,12 @@ const AdminDashboard = () => {
                 <p className="font-body font-medium">Edit Home Page</p>
               </div>
             </Link>
+            <Link to="/admin/inquiries">
+              <div className="p-4 bg-muted rounded-lg hover:bg-primary hover:text-primary-foreground transition-all group">
+                <MessageSquare className="w-6 h-6 mb-2" />
+                <p className="font-body font-medium">Manage Inquiries</p>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -144,10 +139,10 @@ const AdminDashboard = () => {
             Getting Started
           </h3>
           <ul className="font-body text-sm text-foreground/70 space-y-2">
-            <li>- Tours and destination categories are read from static tour data</li>
-            <li>- Images are uploaded to Firebase Storage</li>
-            <li>- Changes reflect immediately on the live site</li>
-            <li>- Blog, cities, team and testimonials are managed in admin</li>
+            <li>- Blog posts are managed in admin and synced via Firestore</li>
+            <li>- Testimonials are managed in admin and shown on home page</li>
+            <li>- Inquiries are stored in admin and sent by email</li>
+            <li>- Home section content can be updated from admin</li>
           </ul>
         </div>
       </div>

@@ -5,13 +5,11 @@ import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Link } from "react-router-dom";
 import QuoteModal from "./QuoteModal";
+import heroVideo from "../assets/videos/herovideo.mp4";
 
 const LuxuryHero = () => {
-  const video2 =
-    "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext2.mp4?alt=media&token=b1a148ef-30c7-445c-bb98-f28de0f3d53a";
-
-  const video3 =
-    "https://firebasestorage.googleapis.com/v0/b/supergames-ai.firebasestorage.app/o/common%2Fwithouttext.mp4?alt=media&token=581aeabc-62ba-40ae-b512-bc41b038c638";
+  const video2 = heroVideo;
+  const video3 = heroVideo;
 
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);

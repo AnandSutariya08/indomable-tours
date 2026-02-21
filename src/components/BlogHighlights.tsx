@@ -3,9 +3,19 @@ import { Button } from "@/components/ui/button";
 import { useBlogPosts } from "@/hooks/useFirestoreData";
 import { Link, useNavigate } from "react-router-dom";
 
+const asString = (value: unknown) => (typeof value === "string" ? value : "");
+
 const BlogHighlights = () => {
   const { data: blogPosts, loading } = useBlogPosts();
   const navigate = useNavigate();
+  const safeBlogPosts = (Array.isArray(blogPosts) ? blogPosts : []).map((post) => ({
+    ...post,
+    title: asString(post?.title),
+    excerpt: asString(post?.excerpt),
+    image: asString(post?.image),
+    category: asString(post?.category),
+    readTime: asString(post?.readTime),
+  }));
 
   return (
     <section className="py-20 md:py-28 bg-background">
@@ -34,7 +44,7 @@ const BlogHighlights = () => {
             {loading ? (
               <div className="flex justify-center py-12"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
             ) : (
-              blogPosts.slice(0, 3).map((post) => (
+              safeBlogPosts.slice(0, 3).map((post) => (
                 <Link key={post.id} to={`/blog/${post.id}`} className="flex gap-5 group cursor-pointer">
                   <div className="flex-shrink-0 w-28 h-28 md:w-36 md:h-36 rounded-xl overflow-hidden">
                     <img 

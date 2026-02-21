@@ -58,7 +58,7 @@ const TourDetails = () => {
           src={tour.image}
           alt={tour.title}
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="async"
           className="w-full h-full object-cover"
         />

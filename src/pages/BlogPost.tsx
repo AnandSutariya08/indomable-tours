@@ -8,10 +8,26 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { useBlogPosts } from "@/hooks/useFirestoreData";
 
+const asString = (value: unknown) => (typeof value === "string" ? value : "");
+const asStringArray = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+
 const BlogPost = () => {
   const { id } = useParams();
   const { data: blogPosts, loading } = useBlogPosts();
-  const post = blogPosts.find((p) => p.id === id);
+  const safeBlogPosts = (Array.isArray(blogPosts) ? blogPosts : []).map((post) => ({
+    ...post,
+    title: asString(post?.title),
+    excerpt: asString(post?.excerpt),
+    content: asString(post?.content),
+    image: asString(post?.image),
+    category: asString(post?.category),
+    author: asString(post?.author),
+    readTime: asString(post?.readTime),
+    date: asString(post?.date),
+    tags: asStringArray(post?.tags),
+  }));
+  const post = safeBlogPosts.find((p) => p.id === id);
 
   if (loading) {
     return (
@@ -39,7 +55,7 @@ const BlogPost = () => {
     );
   }
 
-  const relatedPosts = blogPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3);
+  const relatedPosts = safeBlogPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-background">
