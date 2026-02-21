@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import staticTours from '../../data/toursdata/data.json';
 
 export type FirebaseCollectionKey =
   | 'tours'
@@ -37,6 +38,25 @@ interface FirebaseState {
   fetchedAtByCollection: Record<FirebaseCollectionKey, number | null>;
   isInitialLoad: boolean;
 }
+
+const normalizeStaticTours = (items: unknown[]) =>
+  items
+    .filter((item): item is Record<string, unknown> => !!item && typeof item === 'object')
+    .map((item) => {
+      const tags = Array.isArray(item.tags)
+        ? item.tags.filter((tag): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+        : [];
+
+      return {
+        ...item,
+        country: typeof item.country === 'string' ? item.country : '',
+        location: typeof item.location === 'string' ? item.location : '',
+        title: typeof item.title === 'string' ? item.title : '',
+        tags,
+      };
+    });
+
+const STATIC_TOURS = normalizeStaticTours(staticTours as unknown[]);
 
 const initialState: FirebaseState = {
   tours: [],
@@ -88,6 +108,13 @@ export const fetchCollections = createAsyncThunk(
 
       const results = await Promise.all(
         keysToFetch.map(async (key) => {
+          if (key === 'tours') {
+            return {
+              key,
+              data: STATIC_TOURS,
+            };
+          }
+
           const colName = COLLECTION_MAPPING[key];
           const snapshot = await getDocs(query(collection(db, colName)));
           return {

@@ -2,9 +2,6 @@ import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
-  Map, 
-  Compass, 
-  FileText, 
   Building2, 
   MessageSquare, 
   Users,
@@ -22,8 +19,6 @@ interface AdminLayoutProps {
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
-  { icon: Map, label: "Tours", href: "/admin/tours" },
-  { icon: Compass, label: "Destinations", href: "/admin/destinations" },
   { icon: Newspaper, label: "Blog Posts", href: "/admin/blog" },
   { icon: Building2, label: "Cities", href: "/admin/cities" },
   { icon: MessageSquare, label: "Testimonials", href: "/admin/testimonials" },

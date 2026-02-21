@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { saveInquiry, sendEmailNotification } from "@/services/inquiryService";
 import { toast } from "sonner";
 import PhoneInput, { EmailInput, validateEmail, type PhoneValue } from "@/components/PhoneInput";
@@ -17,6 +19,18 @@ interface QuoteModalProps {
 const defaultPhone: PhoneValue = { countryCode: "+91", number: "", isValid: false, full: "" };
 
 const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) => {
+  const { tours } = useSelector((state: RootState) => state.firebase);
+  const destinationOptions = useMemo(() => {
+    const countries = new Set<string>();
+    tours.forEach((tour) => {
+      if (typeof tour?.country === "string" && tour.country.trim().length > 0) {
+        countries.add(tour.country.trim());
+      }
+    });
+    const sorted = Array.from(countries).sort((a, b) => a.localeCompare(b));
+    return sorted.length > 0 ? sorted : ["India", "Nepal", "Bhutan", "Sri Lanka"];
+  }, [tours]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [phone, setPhone] = useState<PhoneValue>(defaultPhone);
@@ -28,11 +42,17 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
     companyName: "",
     fullName: "",
     email: "",
-    destination: "India",
+    destination: destinationOptions[0],
     travelDates: "",
     travelTime: "",
     message: "",
   });
+
+  useEffect(() => {
+    if (!destinationOptions.includes(formData.destination) && formData.destination !== "Others") {
+      setFormData((prev) => ({ ...prev, destination: destinationOptions[0] }));
+    }
+  }, [destinationOptions, formData.destination]);
 
   const validate = () => {
     let ok = true;
@@ -80,7 +100,7 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
         companyName: "",
         fullName: "",
         email: "",
-        destination: "India",
+        destination: destinationOptions[0],
         travelDates: "",
         travelTime: "",
         message: "",
@@ -187,10 +207,11 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
               value={formData.destination}
               onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
             >
-              <option value="India">India</option>
-              <option value="Nepal">Nepal</option>
-              <option value="Bhutan">Bhutan</option>
-              <option value="Sri Lanka">Sri Lanka</option>
+              {destinationOptions.map((destination) => (
+                <option key={destination} value={destination}>
+                  {destination}
+                </option>
+              ))}
               <option value="Others">Others</option>
             </select>
           </div>

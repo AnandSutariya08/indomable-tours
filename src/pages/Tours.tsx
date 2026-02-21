@@ -38,7 +38,6 @@ const Tours = () => {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
   const cityFilter = searchParams.get("city");
-
   useEffect(() => {
     setSelectedCountry(parseCountryFilter(countryFilter));
   }, [countryFilter]);
@@ -131,11 +130,10 @@ const Tours = () => {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedCountry(country)}
-                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
-                      selectedCountry === country
+                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${selectedCountry === country
                         ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
                         : "text-cream/60 hover:text-secondary hover:bg-white/5"
-                    }`}
+                      }`}
                   >
                     {country}
                   </motion.button>
@@ -174,19 +172,19 @@ const Tours = () => {
                         className="flex flex-col h-full focus:outline-none"
                       >
                         <div className="bg-transparent rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border-0 flex flex-col h-full cursor-pointer">
-                    {/* IMAGE SECTION */}
-                    <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-transparent">
-                      <img
-                        src={tour.image}
-                        alt={tour.title}
-                        className="block w-full h-full object-cover transition-opacity duration-300 group-hover:scale-105"
-                        loading="eager"
-                        decoding="async"
-                        onLoad={(e) => {
-                          e.currentTarget.style.opacity = "1";
-                        }}
-                        style={{ opacity: 0 }}
-                      />
+                          {/* IMAGE SECTION */}
+                          <div className="relative h-56 md:h-64 overflow-hidden shrink-0 bg-transparent">
+                            <img
+                              src={tour.image}
+                              alt={tour.title}
+                              className="block w-full h-full object-cover transition-opacity duration-300 group-hover:scale-105"
+                              loading="eager"
+                              decoding="async"
+                              onLoad={(e) => {
+                                e.currentTarget.style.opacity = "1";
+                              }}
+                              style={{ opacity: 0 }}
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
                             {/* BADGES */}
@@ -227,7 +225,7 @@ const Tours = () => {
 
                             {/* HIGHLIGHTS */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                                  {asStringArray(tour.highlights)
+                              {asStringArray(tour.highlights)
                                 .slice(0, 3)
                                 .map((highlight: string) => (
                                   <span

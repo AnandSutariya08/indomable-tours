@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowRight, Search, Loader2, Menu, ChevronDown } from "lucide-react";
+import { MapPin, ArrowRight, Search, Loader2, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -23,33 +23,31 @@ import {
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
 
-const categories = [
-  "All",
-  "Culture & Heritage",
-  "Wildlife",
-  "Wellness & Spiritual",
-  "Luxury",
-  "Adventure & Himalayas",
-  "Islands & Coastal Escapes",
-  "Nature",
-];
-
-// const categories = [
-//   "All",
-//   "Culture & Heritage",
-//   "Wildlife Safaris",
-//   "Wellness & Spiritual",
-//   "Luxury & Palace",
-//   "Adventure & Himalayas",
-//   "Islands & Coastal Escapes",
-//   "Nature",
-// ];
-
 const ToursByCity = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
+
+  const categories = useMemo(() => {
+    const tagSet = new Set<string>();
+    tours.forEach((tour) => {
+      if (Array.isArray(tour?.tags)) {
+        tour.tags.forEach((tag: unknown) => {
+          if (typeof tag === "string" && tag.trim().length > 0) {
+            tagSet.add(tag.trim());
+          }
+        });
+      }
+    });
+    return ["All", ...Array.from(tagSet).sort((a, b) => a.localeCompare(b))];
+  }, [tours]);
+
+  useEffect(() => {
+    if (!categories.includes(selectedCategory)) {
+      setSelectedCategory("All");
+    }
+  }, [categories, selectedCategory]);
 
   const filteredTours = tours.filter((tour) => {
     const matchesCategory =

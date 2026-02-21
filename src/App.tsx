@@ -24,10 +24,8 @@ const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Contact = lazy(() => import("./pages/Contactus"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const AdminTours = lazy(() => import("./pages/admin/AdminTours"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminTestimonials = lazy(() => import("./pages/admin/AdminTestimonials"));
-const AdminDestinations = lazy(() => import("./pages/admin/AdminDestinations"));
 const AdminCities = lazy(() => import("./pages/admin/AdminCities"));
 const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
 const AdminTravelInfo = lazy(() => import("./pages/admin/AdminTravelInfo"));
@@ -164,10 +162,8 @@ const App = () => {
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/tours" element={<AdminTours />} />
                 <Route path="/admin/blog" element={<AdminBlog />} />
                 <Route path="/admin/testimonials" element={<AdminTestimonials />} />
-                <Route path="/admin/destinations" element={<AdminDestinations />} />
                 <Route path="/admin/cities" element={<AdminCities />} />
                 <Route path="/admin/team" element={<AdminTeam />} />
                 <Route path="/admin/travel-info" element={<AdminTravelInfo />} />
