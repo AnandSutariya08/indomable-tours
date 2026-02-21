@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store";
 import { fetchCollections, type FirebaseCollectionKey } from "./store/slices/firebaseSlice";
 import { AdminProvider } from "@/contexts/AdminContext";
+import Tours from "./pages/Tours";
 
 const Index = lazy(() => import("./pages/Index"));
-const Tours = lazy(() => import("./pages/Tours"));
 const TourDetails = lazy(() => import("./pages/TourDetails"));
 const Destinations = lazy(() => import("./pages/Destinations"));
 const ToursByCity = lazy(() => import("./pages/ToursByCity"));

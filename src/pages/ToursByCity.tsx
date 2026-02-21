@@ -14,12 +14,6 @@ import AnimatedSection, {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import QuoteModal from "@/components/QuoteModal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
 
@@ -87,59 +81,26 @@ const ToursByCity = () => {
                 Select Category
               </span>
               
-              {/* Desktop Tabs */}
-              <div className="hidden md:flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
-                      selectedCategory === category
-                        ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
-                        : "text-cream/60 hover:text-secondary hover:bg-white/5"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-
-              {/* Mobile Burger Menu */}
-              <div className="md:hidden w-full px-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      className="w-full h-14 bg-black/80 backdrop-blur-2xl border-white/10 text-cream/90 flex justify-between items-center px-6 rounded-2xl shadow-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        {/* <Menu className="w-5 h-5 text-secondary" /> */}
-                        <span className="font-body font-bold text-xs uppercase tracking-widest">
-                          {selectedCategory}
-                        </span>
-                      </div>
-                      <ChevronDown className="w-4 h-4 text-secondary/60" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent 
-                    className="w-[calc(100vw-2rem)] bg-black/95 backdrop-blur-xl border-white/10 p-2 rounded-2xl shadow-2xl"
-                    align="center"
+              {/* Native Select - stable on iOS Safari */}
+              <div className="w-full max-w-md">
+                <label htmlFor="category-select" className="sr-only">
+                  Select Category
+                </label>
+                <div className="relative">
+                  <select
+                    id="category-select"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full h-14 rounded-2xl border border-black/10 bg-white/80 text-primary font-body font-semibold text-sm tracking-wide px-5 pr-12 shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary appearance-none"
                   >
                     {categories.map((category) => (
-                      <DropdownMenuItem
-                        key={category}
-                        onClick={() => setSelectedCategory(category)}
-                        className={`px-6 py-4 rounded-xl font-body font-bold text-xs uppercase tracking-widest transition-all duration-300 mb-1 last:mb-0 focus:bg-secondary focus:text-primary ${
-                          selectedCategory === category
-                            ? "bg-secondary text-primary"
-                            : "text-cream/60 hover:text-secondary hover:bg-white/5"
-                        }`}
-                      >
+                      <option key={category} value={category}>
                         {category}
-                      </DropdownMenuItem>
+                      </option>
                     ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/60" />
+                </div>
               </div>
 
               {/* Search */}
@@ -189,12 +150,9 @@ const ToursByCity = () => {
                           src={tour.image}
                           alt={tour.title}
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                          loading="eager"
-                          data-fetchpriority="high"
-                          onLoad={(e) => {
-                            e.currentTarget.style.opacity = "1";
-                          }}
-                          style={{ opacity: 1 }}
+                          loading={index < 3 ? "eager" : "lazy"}
+                          fetchPriority={index === 0 ? "high" : "auto"}
+                          decoding="async"
                         />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute top-4 right-4">

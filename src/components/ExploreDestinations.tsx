@@ -2,36 +2,63 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer } from "./AnimatedSection";
+import indiaImage from "@/assets/destinations/taj-mahal.jpg";
+import nepalImage from "@/assets/destinations/nepal.jpg";
+import bhutanImage from "@/assets/destinations/bhutan.jpg";
+import sriLankaImage from "@/assets/destinations/srilanka.jpg";
 
 const destinations = [
   {
     id: "india",
     name: "India",
     tagline: "A Continent in One Country",
-    description: "Few countries offer deserts, rainforests, Himalayas, spirituality, wildlife & luxury palaces — all in one journey. Where ancient civilization meets vibrant modern energy.",
-image:"https://images.unsplash.com/photo-1514222134-b57cbb8ce073?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  },
+    description:
+      "Few countries offer deserts, rainforests, Himalayas, spirituality, wildlife & luxury palaces - all in one journey. Where ancient civilization meets vibrant modern energy.",
+    image: indiaImage,
+  },
   {
     id: "nepal",
     name: "Nepal",
     tagline: "Where Earth Touches the Sky",
-    description: "The only place where you can have breakfast facing Mount Everest and safari with rhinos in the same trip.",
-    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80",
+    description:
+      "The only place where you can have breakfast facing Mount Everest and safari with rhinos in the same trip.",
+    image: nepalImage,
   },
   {
     id: "bhutan",
     name: "Bhutan",
     tagline: "Exclusive. Peaceful. Profound.",
-    description: "A carbon-negative kingdom that measures success by Gross National Happiness",
-    image: "https://images.unsplash.com/photo-1555821108-3fb2763b226a?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    description:
+      "A carbon-negative kingdom that measures success by Gross National Happiness.",
+    image: bhutanImage,
   },
   {
     id: "sri-lanka",
     name: "Sri Lanka",
     tagline: "The Pearl of the Indian Ocean",
-    description: "A complete Asia experience packed into a compact island. Wildlife, culture & coast — seamlessly combined.",
-    image: "https://images.unsplash.com/photo-1529154036614-a60975f5c760?auto=format&fit=crop&q=80",
+    description:
+      "A complete Asia experience packed into a compact island. Wildlife, culture & coast - seamlessly combined.",
+    image: sriLankaImage,
   },
 ];
+
+const countryTourPreview: Record<string, string[]> = {
+  india: ["/assets/tours/02-luxury-ladakh-monasteries-high-passes-himalayan-majesty.jpg"],
+  nepal: ["/assets/tours/20-magical-nepal-culture-wildlife-himalayan-views.jpg"],
+  bhutan: ["/assets/tours/07-royal-bhutan-monasteries-valleys-himalayan-majesty.jpg"],
+  "sri-lanka": ["/assets/tours/01-sri-lanka-signature-heritage-tea-hills-coastal-luxury.jpg"],
+};
+
+const warmCountryAssets = (countryId: string) => {
+  void import("@/pages/Tours");
+
+  const images = countryTourPreview[countryId] || [];
+  images.forEach((src) => {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = src;
+  });
+};
 
 const ExploreDestinations = () => {
   return (
@@ -44,7 +71,7 @@ const ExploreDestinations = () => {
           </p>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -55,22 +82,24 @@ const ExploreDestinations = () => {
             <motion.div key={dest.id} variants={fadeInUp}>
               <Link
                 to={`/tours?country=${dest.id}`}
+                onTouchStart={() => warmCountryAssets(dest.id)}
+                onMouseEnter={() => warmCountryAssets(dest.id)}
+                onFocus={() => warmCountryAssets(dest.id)}
                 className="group relative block h-[500px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
               >
                 <img
                   src={dest.image}
                   alt={dest.name}
                   loading="eager"
-                  data-fetchpriority="high"
+                  fetchPriority="high"
+                  decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                  <h3 className="font-heading text-3xl text-cream mb-2">
-                    {dest.name}
-                  </h3>
+                  <h3 className="font-heading text-3xl text-cream mb-2">{dest.name}</h3>
 
                   <p className="font-body text-secondary font-bold text-sm uppercase tracking-wider mb-3">
                     {dest.tagline}
@@ -88,7 +117,6 @@ const ExploreDestinations = () => {
               </Link>
             </motion.div>
           ))}
-
         </motion.div>
       </div>
     </section>

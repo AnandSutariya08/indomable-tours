@@ -117,15 +117,18 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 md:p-4">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/65" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-background rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+      <div
+        className="relative w-full max-w-lg max-h-[92dvh] overflow-hidden rounded-2xl bg-[#F8F6F1] text-foreground shadow-2xl flex flex-col min-h-0"
+        style={{ WebkitTransform: "translateZ(0)" }}
+      >
 
-        {/* Sticky Header */}
-        <div className="sticky top-0 z-10 bg-background border-b border-border p-6 pb-4">
+        {/* Header */}
+        <div className="bg-[#F8F6F1] border-b border-border p-6 pb-4 shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 p-2 rounded-lg text-foreground/60 hover:text-primary hover:bg-muted transition-colors"
@@ -140,7 +143,10 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+        <div
+          className="flex-1 overflow-y-auto overscroll-contain px-6 py-5 space-y-5"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
 
           {/* Category */}
           <div className="space-y-2">
@@ -247,13 +253,13 @@ const QuoteModal = ({ isOpen, onClose, showDateTime = false }: QuoteModalProps) 
           </div>
         </div>
 
-        {/* Sticky Footer */}
-        <div className="sticky bottom-0 bg-background border-t border-border p-6">
+        {/* Footer */}
+        <div className="bg-[#F8F6F1] border-t border-border p-6 shrink-0">
           <Button
             type="submit"
             variant="hero"
             size="xl"
-            className="w-full"
+            className="w-full !bg-primary !text-primary-foreground"
             disabled={isSubmitting}
             onClick={(e) => { setSubmitted(true); handleSubmit(e as any); }}
           >

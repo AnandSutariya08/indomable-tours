@@ -20,7 +20,8 @@ const PageHeader = ({ badge, title, subtitle, backgroundImage }: PageHeaderProps
             src={backgroundImage}
             alt=""
             loading="eager"
-            data-fetchpriority="high"
+            fetchPriority="high"
+            decoding="async"
             className="w-full h-full object-cover"
           />
           {/* Sophisticated gradient overlay */}
