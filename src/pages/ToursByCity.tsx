@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowRight, Search, Loader2, ChevronDown } from "lucide-react";
+import { MapPin, ArrowRight, Search, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -17,25 +17,24 @@ import QuoteModal from "@/components/QuoteModal";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
 
+const CATEGORY_OPTIONS = [
+  "All",
+  "Culture & Heritage",
+  "Wildlife",
+  "Wellness & Spiritual",
+  "Luxury",
+  "Adventure & Himalayas",
+  "Islands & Coastal Escapes",
+  "Nature",
+];
+
 const ToursByCity = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
 
-  const categories = useMemo(() => {
-    const tagSet = new Set<string>();
-    tours.forEach((tour) => {
-      if (Array.isArray(tour?.tags)) {
-        tour.tags.forEach((tag: unknown) => {
-          if (typeof tag === "string" && tag.trim().length > 0) {
-            tagSet.add(tag.trim());
-          }
-        });
-      }
-    });
-    return ["All", ...Array.from(tagSet).sort((a, b) => a.localeCompare(b))];
-  }, [tours]);
+  const categories = useMemo(() => CATEGORY_OPTIONS, []);
 
   useEffect(() => {
     if (!categories.includes(selectedCategory)) {
@@ -81,26 +80,22 @@ const ToursByCity = () => {
                 Select Category
               </span>
               
-              {/* Native Select - stable on iOS Safari */}
-              <div className="w-full max-w-md">
-                <label htmlFor="category-select" className="sr-only">
-                  Select Category
-                </label>
-                <div className="relative">
-                  <select
-                    id="category-select"
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full h-14 rounded-2xl border border-black/10 bg-white/80 text-primary font-body font-semibold text-sm tracking-wide px-5 pr-12 shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary appearance-none"
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2">
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-6 md:px-8 py-2.5 rounded-xl font-body font-bold text-xs md:text-sm uppercase tracking-widest transition-all duration-500 ${
+                      selectedCategory === category
+                        ? "bg-secondary text-primary shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                        : "text-cream/60 hover:text-secondary hover:bg-white/5"
+                    }`}
                   >
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/60" />
-                </div>
+                    {category}
+                  </motion.button>
+                ))}
               </div>
 
               {/* Search */}

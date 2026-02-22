@@ -3,7 +3,7 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 import QuoteModal from "./QuoteModal";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
@@ -11,7 +11,7 @@ const navItems = [
   { label: "Tours", href: "/tours" },
   { label: "Destinations", href: "/destinations" },
   // { label: "Travel Info", href: "/travel-info" },
-  { label: "Category", href: "/catagories" },
+  { label: "Category", href: "/categories" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -23,10 +23,9 @@ const Header = () => {
   const [showModalDateTime, setShowModalDateTime] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // window.scrollTo(0, 0);
-  }, [pathname]);
+ 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +38,12 @@ const Header = () => {
   const openPartnerModal = () => {
     setShowModalDateTime(false);
     setIsQuoteOpen(true);
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    navigate("/");
   };
 
   return (
@@ -61,12 +66,13 @@ const Header = () => {
               <div className="flex-1 flex justify-start items-center">
                 <Link
                   to="/"
+                  onClick={handleLogoClick}
                   className="transition-all duration-300 hover:scale-105 active:scale-95"
                 >
                   <img
                     src={logo}
                     alt="Indomaple Tours"
-                    className={`transition-all duration-500 object-contain ${
+                    className={`relative z-10 transition-all duration-500 object-contain ${
                       isScrolled ? "h-5 md:h-6" : "h-6 md:h-7 lg:h-8"
                     } w-auto`}
                   />
@@ -167,6 +173,7 @@ const Header = () => {
                 <img
                   src={logo}
                   alt="Indomaple Tours"
+                  onClick={handleLogoClick}
                   className="h-8 w-auto object-contain brightness-110"
                 />
                 <button

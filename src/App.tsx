@@ -229,7 +229,7 @@ const App = () => {
                 <Route path="/tours" element={<Tours />} />
                 <Route path="/tours/:id" element={<TourDetails />} />
                 <Route path="/destinations" element={<Destinations />} />
-                <Route path="/catagories" element={<ToursByCity />} />
+                <Route path="/categories" element={<ToursByCity />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:id" element={<BlogPost />} />
                 <Route path="/about" element={<About />} />
