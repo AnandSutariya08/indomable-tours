@@ -1,6 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowRight, Search, Loader2 } from "lucide-react";
+import {
+  MapPin,
+  ArrowRight,
+  Search,
+  Loader2,
+  ChevronDown,
+  Check,
+  Menu,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -13,13 +21,6 @@ import AnimatedSection, {
 } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import QuoteModal from "@/components/QuoteModal";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
@@ -39,6 +40,8 @@ const ToursByCity = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
+  const mobileCategoryRef = useRef<HTMLDivElement | null>(null);
   const { tours, loading } = useSelector((state: RootState) => state.firebase);
 
   const categories = useMemo(() => CATEGORY_OPTIONS, []);
@@ -48,6 +51,30 @@ const ToursByCity = () => {
       setSelectedCategory("All");
     }
   }, [categories, selectedCategory]);
+
+  useEffect(() => {
+    const closeOnOutsideTap = (event: MouseEvent | TouchEvent) => {
+      if (!mobileCategoryRef.current) return;
+      if (mobileCategoryRef.current.contains(event.target as Node)) return;
+      setIsMobileCategoryOpen(false);
+    };
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileCategoryOpen(false);
+      }
+    };
+
+    document.addEventListener("touchstart", closeOnOutsideTap, { passive: true });
+    document.addEventListener("mousedown", closeOnOutsideTap);
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.removeEventListener("touchstart", closeOnOutsideTap);
+      document.removeEventListener("mousedown", closeOnOutsideTap);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   const filteredTours = tours.filter((tour) => {
     const matchesCategory =
@@ -87,29 +114,55 @@ const ToursByCity = () => {
                 Select Category
               </span>
 
-              <div className="w-full max-w-md md:hidden">
-                <Select
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
+              <div className="w-full max-w-md md:hidden" ref={mobileCategoryRef}>
+                <button
+                  type="button"
+                  aria-label="Select category"
+                  aria-expanded={isMobileCategoryOpen}
+                  onClick={() => setIsMobileCategoryOpen((prev) => !prev)}
+                  className="h-12 w-full rounded-xl border border-white/10 bg-black/85 px-4 font-body text-sm text-cream shadow-sm flex items-center justify-between"
                 >
-                  <SelectTrigger
-                    aria-label="Select category"
-                    className="h-12 w-full rounded-xl border-white/10 bg-black/80 px-4 font-body text-sm text-cream focus:ring-secondary focus:ring-offset-0"
-                  >
-                    <SelectValue placeholder="Select Category" />
-                  </SelectTrigger>
-                  <SelectContent className="border-white/10 bg-black/95 text-cream">
-                    {categories.map((category) => (
-                      <SelectItem
-                        key={category}
-                        value={category}
-                        className="font-body text-cream/85 focus:bg-secondary focus:text-primary data-[state=checked]:bg-secondary data-[state=checked]:text-primary"
-                      >
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <span className="flex items-center gap-2">
+                    <Menu className="w-4 h-4 text-secondary" />
+                    {selectedCategory}
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-secondary transition-transform duration-200 ${
+                      isMobileCategoryOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {isMobileCategoryOpen && (
+                  <div className="mt-2 w-full rounded-xl border border-white/10 bg-black/95 backdrop-blur-xl overflow-hidden shadow-xl">
+                    <div
+                      className="max-h-64 overflow-y-auto py-1 scrollbar-thin scrollbar-thumb-secondary/60 scrollbar-track-transparent [&::-webkit-scrollbar]:w-1"
+                      style={{ scrollbarWidth: "thin" }}
+                    >
+                      {categories.map((category) => {
+                        const isActive = selectedCategory === category;
+                        return (
+                          <button
+                            key={category}
+                            type="button"
+                            onClick={() => {
+                              setSelectedCategory(category);
+                              setIsMobileCategoryOpen(false);
+                            }}
+                            className={`w-full px-4 py-2.5 text-left font-body text-sm transition-colors duration-200 flex items-center justify-between ${
+                              isActive
+                                ? "bg-secondary text-primary font-semibold"
+                                : "text-cream/85 hover:bg-white/10"
+                            }`}
+                          >
+                            <span>{category}</span>
+                            {isActive && <Check className="w-4 h-4" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="hidden md:flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2">
