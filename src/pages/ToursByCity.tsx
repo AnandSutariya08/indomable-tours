@@ -13,6 +13,13 @@ import AnimatedSection, {
 } from "@/components/AnimatedSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import QuoteModal from "@/components/QuoteModal";
 
 import jaipur from "@/assets/destinations/jaipur.jpg";
@@ -79,8 +86,33 @@ const ToursByCity = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">
                 Select Category
               </span>
-              
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2">
+
+              <div className="w-full max-w-md md:hidden">
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
+                  <SelectTrigger
+                    aria-label="Select category"
+                    className="h-12 w-full rounded-xl border-white/10 bg-black/80 px-4 font-body text-sm text-cream focus:ring-secondary focus:ring-offset-0"
+                  >
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent className="border-white/10 bg-black/95 text-cream">
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category}
+                        value={category}
+                        className="font-body text-cream/85 focus:bg-secondary focus:text-primary data-[state=checked]:bg-secondary data-[state=checked]:text-primary"
+                      >
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="hidden md:flex flex-wrap justify-center gap-3 md:gap-4 bg-black/80 backdrop-blur-2xl border border-white/5 rounded-2xl p-2">
                 {categories.map((category) => (
                   <motion.button
                     key={category}
