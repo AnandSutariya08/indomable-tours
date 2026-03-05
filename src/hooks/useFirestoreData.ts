@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { localBlogPosts } from "@/data/localData";
+import { localBlogPosts, localTestimonials } from "@/data/localData";
 
 // Types
 export interface Tour {
@@ -132,9 +132,7 @@ export const useCities = () => {
 };
 
 export const useTestimonials = () => {
-  const { testimonials, loading, error } = useSelector((state: RootState) => state.firebase);
-  const memoizedTestimonials = useMemo(() => testimonials, [testimonials]);
-  return { data: memoizedTestimonials, loading, error };
+  return { data: localTestimonials as Testimonial[], loading: false, error: null };
 };
 
 export const useExploreDestinations = () => {

@@ -7,6 +7,110 @@ import varanasi from "@/assets/destinations/varanasi.jpg";
 
 export const localTours = tours as unknown[];
 
+export const localCities = [
+  {
+    id: "city-1",
+    name: "Delhi",
+    country: "India",
+    image: "/src/assets/destinations/delhi.jpg",
+    tours: 12,
+    description: "The heart of India, where history meets modernity.",
+    popular: ["Red Fort", "Qutub Minar", "India Gate"]
+  },
+  {
+    id: "city-2",
+    name: "Jaipur",
+    country: "India",
+    image: "/src/assets/destinations/jaipur.jpg",
+    tours: 8,
+    description: "The Pink City, known for its magnificent palaces and forts.",
+    popular: ["Amber Fort", "Hawa Mahal", "City Palace"]
+  },
+  {
+    id: "city-3",
+    name: "Kathmandu",
+    country: "Nepal",
+    image: "/src/assets/destinations/kathmandu.jpg",
+    tours: 15,
+    description: "A city of temples and gateway to the Himalayas.",
+    popular: ["Swayambhunath", "Pashupatinath", "Boudhanath"]
+  }
+];
+
+export const localDestinations = [
+  {
+    id: "dest-1",
+    name: "India",
+    tagline: "Incredible India",
+    description: "A land of diverse cultures, stunning landscapes, and ancient history.",
+    image: tajMahal,
+    highlights: ["Taj Mahal", "Varanasi Ghats", "Kerala Backwaters"],
+    subDestinations: [
+      { name: "North India", image: tajMahal, tours: 25 },
+      { name: "South India", image: srilanka, tours: 18 }
+    ]
+  },
+  {
+    id: "dest-2",
+    name: "Nepal",
+    tagline: "Roof of the World",
+    description: "Home to Mount Everest and breathtaking mountain vistas.",
+    image: nepal,
+    highlights: ["Everest Base Camp", "Pokhara Lakes", "Chitwan Wildlife"],
+    subDestinations: [
+      { name: "Kathmandu Valley", image: nepal, tours: 12 },
+      { name: "Annapurna Region", image: nepal, tours: 15 }
+    ]
+  }
+];
+
+export const localExploreDestinations = [
+  {
+    id: "exp-1",
+    name: "Taj Mahal",
+    landmark: "Agra, India",
+    image: tajMahal,
+    description: "An ivory-white marble mausoleum on the south bank of the Yamuna river."
+  },
+  {
+    id: "exp-2",
+    name: "Varanasi",
+    landmark: "Uttar Pradesh, India",
+    image: varanasi,
+    description: "The spiritual capital of India, known for its many ghats."
+  }
+];
+
+export const localFaqs = [
+  {
+    id: "faq-1",
+    question: "When is the best time to visit India?",
+    answer: "The best time to visit most of India is during the cool, dry season from November to March."
+  },
+  {
+    id: "faq-2",
+    question: "Do I need a visa for Nepal?",
+    answer: "Most nationalities can obtain a visa on arrival in Nepal at the airport or land borders."
+  }
+];
+
+export const localTeam = [
+  {
+    id: "team-1",
+    name: "Aarav Sharma",
+    role: "Founder & CEO",
+    image: "/src/assets/team/aarav.jpg",
+    bio: "Passionate traveler with 20 years of experience in South Asian tourism."
+  },
+  {
+    id: "team-2",
+    name: "Priya Patel",
+    role: "Head of Operations",
+    image: "/src/assets/team/priya.jpg",
+    bio: "Expert in logistics and ensuring seamless travel experiences."
+  }
+];
+
 export const localBlogPosts = [
     {
         "id": "7vzCwplLaPoqIkBXrUBx",
@@ -187,6 +291,7 @@ export const localTestimonials = [
       "Flawless execution from planning to on-ground support. Every hotel and transfer felt premium.",
     rating: 5,
     avatar: "SM",
+    image: "/src/assets/testimonials/sarah.jpg"
   },
   {
     id: "test-2",
@@ -196,6 +301,7 @@ export const localTestimonials = [
       "Their India routing was practical and luxurious. We saved time and still saw so much.",
     rating: 5,
     avatar: "AP",
+    image: "/src/assets/testimonials/arjun.jpg"
   },
   {
     id: "test-3",
@@ -205,6 +311,7 @@ export const localTestimonials = [
       "Nepal + Bhutan was curated beautifully. Highly responsive team and excellent local guides.",
     rating: 5,
     avatar: "ER",
+    image: "/src/assets/testimonials/emma.jpg"
   },
 ];
 

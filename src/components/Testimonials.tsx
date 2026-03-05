@@ -29,9 +29,17 @@ const Testimonials = () => {
                 </div>
                 <p className="font-body text-foreground leading-relaxed mb-8">"{testimonial.quote}"</p>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-heading text-lg">
-                    {testimonial.avatar}
-                  </div>
+                  {testimonial.image ? (
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-heading text-lg">
+                      {testimonial.avatar}
+                    </div>
+                  )}
                   <div>
                     <h4 className="font-heading text-lg text-primary">{testimonial.name}</h4>
                     <p className="font-body text-sm text-foreground/70">{testimonial.location}</p>
